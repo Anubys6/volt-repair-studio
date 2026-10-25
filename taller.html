@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volt Repair Studio | Centro de Operaciones & Dispositivograma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: rgba(18, 26, 43, 0.75);
+      --bg-card-hover: rgba(26, 38, 64, 0.85);
+      --border-color: rgba(0, 240, 255, 0.18);
+      --border-glow: rgba(0, 240, 255, 0.4);
+      --cyan-neon: #00f0ff;
+      --blue-electric: #0066ff;
+      --purple-accent: #a855f7;
+      --green-ok: #10b981;
+      --yellow-warn: #f59e0b;
+      --red-fail: #ef4444;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 15% 15%, #111a2e 0%, #080c14 100%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Lighting */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -150px;
+      right: -100px;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header & Nav */
+    header {
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan-neon), var(--blue-electric));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      font-weight: 800;
+      font-size: 20px;
+      color: #050b14;
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .brand-text span {
+      font-size: 0.75rem;
+      color: var(--cyan-neon);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    nav.nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 102, 255, 0.2));
+      color: var(--cyan-neon);
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Container */
+    .app-container {
+      max-width: 1350px;
+      margin: 28px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* GRID LAYOUTS */
+    .grid-dispositivo {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-dispositivo {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* VISUAL PHONE EXPLORER ("DISPOSITIVOGRAMA") */
+    .phone-stage-card {
+      text-align: center;
+      background: rgba(13, 20, 36, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .phone-views-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .view-btn {
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .view-btn.active {
+      background: var(--cyan-neon);
+      color: #050b14;
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    /* SVG DIAGRAMS */
+    .phone-svg-container {
+      position: relative;
+      width: 280px;
+      margin: 0 auto;
+    }
+
+    .device-part {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      stroke-width: 2px;
+    }
+
+    .device-part:hover {
+      filter: brightness(1.3) drop-shadow(0 0 8px var(--cyan-neon));
+    }
+
+    /* Status Colors */
+    .status-ok { fill: rgba(16, 185, 129, 0.25); stroke: #10b981; }
+    .status-warn { fill: rgba(245, 158, 11, 0.35); stroke: #f59e0b; }
+    .status-fail { fill: rgba(239, 68, 68, 0.4); stroke: #ef4444; }
+    .status-repair { fill: rgba(0, 240, 255, 0.35); stroke: #00f0ff; }
+    .status-untested { fill: rgba(148, 163, 184, 0.15); stroke: #64748b; }
+
+    /* Legend */
+    .status-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      font-size: 0.78rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-ok { background: var(--green-ok); box-shadow: 0 0 6px var(--green-ok); }
+    .dot-warn { background: var(--yellow-warn); box-shadow: 0 0 6px var(--yellow-warn); }
+    .dot-fail { background: var(--red-fail); box-shadow: 0 0 6px var(--red-fail); }
+    .dot-repair { background: var(--cyan-neon); box-shadow: 0 0 6px var(--cyan-neon); }
+
+    /* Component List & Details */
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .component-tile {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .component-tile:hover {
+      border-color: var(--border-glow);
+      background: rgba(26, 38, 64, 0.6);
+    }
+
+    .component-info h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .component-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .component-actions select {
+      background: #0d1527;
+      color: #fff;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* FORM STYLES */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      background: rgba(13, 21, 38, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan-neon), var(--blue-electric));
+      color: #040914;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: #062b14;
+      font-weight: 800;
+    }
+
+    .btn-whatsapp:hover {
+      box-shadow: 0 0 18px rgba(37, 211, 102, 0.5);
+    }
+
+    /* KANBAN CRM BOARD */
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .kanban-col {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 400px;
+    }
+
+    .kanban-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .kanban-col-header h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kanban-card {
+      background: rgba(23, 34, 59, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+      cursor: grab;
+    }
+
+    .kanban-card:hover {
+      border-color: var(--cyan-neon);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-domicilio {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .badge-taller {
+      background: rgba(0, 240, 255, 0.2);
+      color: var(--cyan-neon);
+      border: 1px solid var(--border-glow);
+    }
+
+    /* CONTENT HUB (REDES SOCIALES) */
+    .content-template-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .content-template-card h4 {
+      color: var(--cyan-neon);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .script-box {
+      background: #080c14;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      margin: 12px 0;
+    }
+
+    /* MODAL PRINT/INVOICE */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-sheet {
+      background: #ffffff;
+      color: #0f172a;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      font-family: var(--font-sans);
+    }
+
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printArea, #printArea * {
+        visibility: visible;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="brand-logo">
+      <img src="assets/logo-volt-studio.jpg" alt="Volt Logo" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-glow); box-shadow: 0 0 15px rgba(0,240,255,0.4);">
+      <div class="brand-text">
+        <h1>VOLT REPAIR STUDIO</h1>
+        <span>Centro de Operaciones & Taller Online</span>
+      </div>
+    </a>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-dispositivo')">
+        📱 Dispositivograma
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-ordenes')">
+        📋 Órdenes & Taller
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-redes')">
+        🚀 Creador de Redes & Viralidad
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-cotizador')">
+        💰 Cotizador a Domicilio
+      </button>
+      <button class="tab-btn" onclick="switchTab('tab-branding')">
+        🎨 Renders & Creador de Posts
+      </button>
+      <a href="videos/reels-promocionales.html" class="tab-btn" style="text-decoration: none; color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.4); background: rgba(255, 0, 85, 0.1);">
+        🎬 Estudio de Videos & Reels
+      </a>
+      <a href="sitio-oficial.html" target="_blank" class="tab-btn" style="text-decoration: none; color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1);">
+        🌐 Ver Sitio Oficial con Bot
+      </a>
+    </nav>
+  </header>
+
+  <div class="app-container">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: DISPOSITIVOGRAMA CLÍNICO ("ODONTOGRAMA") -->
+    <!-- ========================================== -->
+    <div id="tab-dispositivo" class="tab-content active">
+      <div class="card">
+        <div class="card-title">
+          <span>🩺</span> Dispositivograma Clínico de Diagnóstico
+          <span style="font-size: 0.75rem; background: rgba(0,240,255,0.15); color: var(--cyan-neon); padding: 4px 10px; border-radius: 12px; margin-left: 10px;">
+            Patrón Odontograma v2.0
+          </span>
+        </div>
+        <p class="card-subtitle">
+          Inspección visual anatómica del dispositivo. Haz clic en las zonas o componentes para marcar diagnósticos de daño estético, funcional o componentes a reparar antes de abrir el equipo.
+        </p>
+
+        <!-- FORMULARIO CLIENTE Y EQUIPO -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre del Cliente</label>
+            <input type="text" id="diagClientName" class="form-control" placeholder="Ej. Carlos Mendoza">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp del Cliente</label>
+            <input type="text" id="diagClientPhone" class="form-control" placeholder="Ej. 521XXXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>Modelo de Dispositivo</label>
+            <select id="diagModel" class="form-control" onchange="updateModelName()">
+              <option value="iPhone 15 Pro / Pro Max">iPhone 15 Pro / Pro Max</option>
+              <option value="iPhone 14 / 14 Pro">iPhone 14 / 14 Pro</option>
+              <option value="iPhone 13 / 13 Pro">iPhone 13 / 13 Pro</option>
+              <option value="iPhone 12 / 12 Pro">iPhone 12 / 12 Pro</option>
+              <option value="iPhone 11 / 11 Pro">iPhone 11 / 11 Pro</option>
+              <option value="iPhone XR / XS / X">iPhone XR / XS / X</option>
+              <option value="iPhone 7 / 8 / SE">iPhone 7 / 8 / SE</option>
+              <option value="iPad / Tablet">iPad / Tablet</option>
+              <option value="Android / Samsung">Android / Samsung</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Modalidad de Servicio</label>
+            <select id="diagModality" class="form-control">
+              <option value="Servicio a Domicilio">🏠 Servicio a Domicilio (En sitio)</option>
+              <option value="Pickup & Delivery">🛵 Recolección & Entrega</option>
+              <option value="Taller Central">🔬 Taller Central / Envío</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-dispositivo">
+          
+          <!-- VISOR DE SMARTPHONE (DIAGRAMA INTERACTIVO) -->
+          <div class="phone-stage-card">
+            <div class="phone-views-toggle">
+              <button class="view-btn active" id="btnViewFront" onclick="toggleView('front')">Frontal (Pantalla)</button>
+              <button class="view-btn" id="btnViewBack" onclick="toggleView('back')">Trasero (Chasis)</button>
+              <button class="view-btn" id="btnViewInternal" onclick="toggleView('internal')">Anatomía Interna</button>
+            </div>
+
+            <div class="phone-svg-container">
+              <!-- DIAGRAMA SVG FRONTAL -->
+              <svg id="svgFront" viewBox="0 0 240 480" width="100%" height="auto">
+                <!-- Marco Exterior -->
+                <rect x="10" y="10" width="220" height="460" rx="36" fill="#0d1322" stroke="#00f0ff" stroke-width="3"/>
+                <!-- Pantalla Cristal/Display (Clickable) -->
+                <rect id="part_screen_glass" class="device-part status-ok" x="22" y="24" width="196" height="432" rx="26" onclick="cycleComponentStatus('screen_glass')"/>
+                <!-- Dynamic Island / Notch -->
+                <rect id="part_faceid" class="device-part status-ok" x="78" y="32" width="84" height="22" rx="11" onclick="cycleComponentStatus('faceid')"/>
+                <!-- Parlante Superior Auricular -->
+                <line x1="95" y1="28" x2="145" y2="28" stroke="#64748b" stroke-width="3" stroke-linecap="round"/>
+                <!-- Texto Guía -->
+                <text x="120" y="240" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="sans-serif" pointer-events="none">PANTALLA / TOUCH</text>
+                <text x="120" y="260" fill="#64748b" font-size="10" text-anchor="middle" font-family="sans-serif" pointer-events="none">(Clic para cambiar estado)</text>
+              </svg>
+
+              <!-- DIAGRAMA SVG TRASERO -->
+              <svg id="svgBack" viewBox="0 0 240 480" width="100%" height="auto" style="display:none;">
+                <rect x="10" y="10" width="220" height="460" rx="36" fill="#0d1322" stroke="#00f0ff" stroke-width="3"/>
+                <!-- Tapa Trasera Cristal -->
+                <rect id="part_back_glass" class="device-part status-ok" x="20" y="20" width="200" height="440" rx="30" onclick="cycleComponentStatus('back_glass')"/>
+                <!-- Módulo de Cámaras -->
+                <rect id="part_camera_module" class="device-part status-ok" x="30" y="30" width="85" height="95" rx="18" onclick="cycleComponentStatus('camera_module')"/>
+                <!-- Lentes -->
+                <circle cx="55" cy="55" r="14" fill="#050b14" stroke="#00f0ff" stroke-width="2"/>
+                <circle cx="90" cy="75" r="14" fill="#050b14" stroke="#00f0ff" stroke-width="2"/>
+                <circle cx="55" cy="100" r="14" fill="#050b14" stroke="#00f0ff" stroke-width="2"/>
+                <!-- Logo Volt / Manzana -->
+                <circle cx="120" cy="240" r="18" fill="rgba(0,240,255,0.2)" stroke="#00f0ff"/>
+                <text x="120" y="245" fill="#00f0ff" font-size="14" text-anchor="middle" font-weight="bold">⚡</text>
+                <text x="120" y="380" fill="#94a3b8" font-size="11" text-anchor="middle">CRISTAL TRASERO</text>
+              </svg>
+
+              <!-- DIAGRAMA SVG INTERNO -->
+              <svg id="svgInternal" viewBox="0 0 240 480" width="100%" height="auto" style="display:none;">
+                <rect x="10" y="10" width="220" height="460" rx="36" fill="#070b12" stroke="#64748b" stroke-width="2"/>
+                <!-- Batería -->
+                <rect id="part_battery" class="device-part status-ok" x="25" y="100" width="95" height="230" rx="8" onclick="cycleComponentStatus('battery')"/>
+                <text x="72" y="215" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">BATERÍA</text>
+                <!-- Placa Madre / Board -->
+                <rect id="part_motherboard" class="device-part status-ok" x="125" y="80" width="90" height="200" rx="8" onclick="cycleComponentStatus('motherboard')"/>
+                <text x="170" y="180" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">PLACA LÓGICA</text>
+                <!-- Puerto Carga Flex -->
+                <rect id="part_charging_port" class="device-part status-ok" x="65" y="380" width="110" height="50" rx="8" onclick="cycleComponentStatus('charging_port')"/>
+                <text x="120" y="410" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">PUERTO CARGA</text>
+              </svg>
+            </div>
+
+            <!-- LEYENDA TIPO ODONTOGRAMA -->
+            <div class="status-legend">
+              <div class="legend-item"><span class="dot dot-ok"></span> 100% Sano</div>
+              <div class="legend-item"><span class="dot dot-warn"></span> Desgaste/Leve</div>
+              <div class="legend-item"><span class="dot dot-fail"></span> Dañado/Quebrado</div>
+              <div class="legend-item"><span class="dot dot-repair"></span> En Reparación</div>
+            </div>
+          </div>
+
+          <!-- CHECKLIST CLÍNICO COMPONENTES -->
+          <div>
+            <h3 style="font-size: 1rem; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <span>Ficha Anatómica por Órgano / Componente</span>
+              <span id="diagnosticSummaryText" style="font-size: 0.8rem; color: var(--cyan-neon);">0 piezas a intervenir</span>
+            </h3>
+
+            <div class="components-grid" id="componentsListContainer">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- OBSERVACIONES & COTIZACIÓN -->
+            <div style="margin-top: 18px; display: grid; grid-template-columns: 1fr 220px; gap: 14px;">
+              <div class="form-group">
+                <label>Diagnóstico Técnico / Síntomas Reportados</label>
+                <input type="text" id="diagNotes" class="form-control" placeholder="Ej. Cristal estallado por caída, Face ID funcional, batería al 74% de vida útil...">
+              </div>
+              <div class="form-group">
+                <label>Presupuesto Total Estimado</label>
+                <input type="number" id="diagPrice" class="form-control" placeholder="$600.00" value="600">
+              </div>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN PROFESIONAL -->
+            <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="generateDiagnosticSheet()">
+                📄 Generar Expediente Clínico (PDF / Imprimir)
+              </button>
+              <button class="btn btn-whatsapp" onclick="sendWhatsAppDiagnostic()">
+                💬 Enviar Diagnóstico Odontograma a WhatsApp
+              </button>
+              <button class="btn btn-secondary" onclick="saveAsKanbanOrder()">
+                📥 Registrar en Taller / Órdenes
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: ÓRDENES Y TALLER (KANBAN CRM 1-PERSONA) -->
+    <!-- ========================================== -->
+    <div id="tab-ordenes" class="tab-content">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div class="card-title"><span>🛠️</span> Tablero de Órdenes & Servicio a Domicilio</div>
+            <p class="card-subtitle">Diseñado para que una sola persona controle el flujo sin perder clientes ni garantías.</p>
+          </div>
+          <button class="btn btn-primary" onclick="quickNewOrder()">+ Nueva Reparación Rápida</button>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Columna 1 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <h3>📥 Recibidos / Agendados</h3>
+              <span class="badge badge-domicilio" id="count-recibidos">0</span>
+            </div>
+            <div id="col-recibidos"></div>
+          </div>
+
+          <!-- Columna 2 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <h3>🔬 Diagnóstico / Desarme</h3>
+              <span class="badge badge-taller" id="count-diagnostico">0</span>
+            </div>
+            <div id="col-diagnostico"></div>
+          </div>
+
+          <!-- Columna 3 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <h3>⚡ En Mesa de Reparación</h3>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;" id="count-reparando">0</span>
+            </div>
+            <div id="col-reparando"></div>
+          </div>
+
+          <!-- Columna 4 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <h3>✅ Listo / Entregado</h3>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;" id="count-listo">0</span>
+            </div>
+            <div id="col-listo"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: VIRALIDAD & REDES SOCIALES -->
+    <!-- ========================================== -->
+    <div id="tab-redes" class="tab-content">
+      <div class="card">
+        <div class="card-title"><span>🚀</span> Fábrica de Contenido & Viralidad (Taller Online)</div>
+        <p class="card-subtitle">
+          Por qué tu post anterior tuvo 16 visitas: era un folleto estático con precio. En redes la gente no compra folletos; compra <b>historias de rescate, curiosidad y el alivio de no gastar $15,000 en un teléfono nuevo</b>.
+        </p>
+
+        <!-- ESTRATEGIA INMEDIATA -->
+        <div style="background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 102, 255, 0.15)); border: 1px solid var(--border-glow); border-radius: 14px; padding: 18px; margin-bottom: 24px;">
+          <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 8px;">🔥 Plan de Choque de 3 Pasos para Volt Repair Studio:</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; font-size: 0.88rem; color: #cbd5e1;">
+            <div>
+              <strong style="color: var(--cyan-neon);">1. Formato Video Corto (Reels / TikTok):</strong>
+              Graba 15 segundos con tu propio teléfono enfocando la mesa, el microscopio o la llegada a la casa del cliente. Pon el gancho en texto grande.
+            </div>
+            <div>
+              <strong style="color: var(--cyan-neon);">2. El "Dispositivograma" en tus historias:</strong>
+              Publica la captura del reporte dental de tu cliente con el título: <i>"Así entregamos la revisión clínica de este iPhone 14 Pro"</i>. Destruye la competencia por profesionalismo.
+            </div>
+            <div>
+              <strong style="color: var(--cyan-neon);">3. Google Maps + WhatsApp Business:</strong>
+              El 70% de las reparaciones urgentes no se buscan en Facebook, se buscan en Google como "reparación de celulares cerca de mí a domicilio".
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIONES LISTOS PARA GRABAR HOY -->
+        <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 14px;">🎬 Guiones Listos para Grabar (1 minuto o menos)</h3>
+
+        <div class="content-template-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4>Guión 1: El Mito del Arroz (Destructor de Mitos - Alto Compartido)</h4>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="copyScript('script1')">Copiar Guión</button>
+          </div>
+          <div class="script-box" id="script1">
+[GANCHO VISUAL - Primeros 3 seg]:
+(Muestras un iPhone dentro de un bote con arroz y luego lo sacas con cara de seriedad)
+VOZ / TEXTO EN PANTALLA: "Si se te cayó el celular al agua, ¡por favor NUNCA hagas esto!"
+
+[DESARROLLO - Segundos 4 al 20]:
+"El arroz no absorbe la humedad interna; lo único que hace es soltar almidón que se mezcla con el agua, corroe la placa lógica y pudre los circuitos de tu teléfono. En Volt Repair Studio reparamos teléfonos mojados con baño ultrasónico y micro-limpieza directa en tu domicilio o en nuestro taller."
+
+[LLAMADA A LA ACCIÓN - Final]:
+"Si tu iPhone se mojó hoy, no lo conectes al cargador. Mándanos un mensaje al link del perfil y te enviamos tu diagnóstico clínico de inmediato."
+          </div>
+        </div>
+
+        <div class="content-template-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4>Guión 2: Servicio a Domicilio "En tu Sala" (Generador de Confianza Extrema)</h4>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="copyScript('script2')">Copiar Guión</button>
+          </div>
+          <div class="script-box" id="script2">
+[GANCHO VISUAL]:
+(Tomas una maleta técnica portátil abriéndose en una mesa de sala o escritorio)
+VOZ / TEXTO: "¿Te da miedo dejar tu iPhone en una plaza porque te cambien piezas o te roben tus fotos?"
+
+[DESARROLLO]:
+"Te entiendo completamente. Por eso en Volt Repair Studio creamos el servicio técnico a domicilio:
+1. Llego a tu casa u oficina con mi laboratorio móvil.
+2. Hacemos el escaneo anatómico frente a ti.
+3. Te cambiamos pantalla o batería en 25 minutos mientras tú te tomas un café.
+Cero riesgo, 100% de transparencia y garantía por escrito."
+
+[LLAMADA A LA ACCIÓN]:
+"Desde $600 con el traslado incluido. Comenta 'REPARACIÓN' o toca el botón para agendar tu horario hoy mismo."
+          </div>
+        </div>
+
+        <div class="content-template-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4>Guión 3: El Odontograma de Celulares (Innovación Pura)</h4>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="copyScript('script3')">Copiar Guión</button>
+          </div>
+          <div class="script-box" id="script3">
+[GANCHO VISUAL]:
+(Muestras en una tablet o computadora la pantalla del Dispositivograma interactivo)
+TEXTO: "Los dentistas tienen su odontograma... ¿por qué tu celular no tenía uno?"
+
+[DESARROLLO]:
+"En Volt Repair Studio no te decimos 'a ver qué tiene'. Cada teléfono que entra recibe un expediente clínico digital con mapeo anatómico: Face ID, salud de batería, estanqueidad y TrueTone. Sabes exactamente qué piezas están sanas y cuáles necesitan cura."
+
+[LLAMADA A LA ACCIÓN]:
+"Hazle un check-up profesional a tu equipo hoy mismo. Mándanos un WhatsApp."
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: COTIZADOR & RENTABILIDAD DOMICILIO -->
+    <!-- ========================================== -->
+    <div id="tab-cotizador" class="tab-content">
+      <div class="card">
+        <div class="card-title"><span>💰</span> Cotizador Inteligente con Margen & Domicilio</div>
+        <p class="card-subtitle">Calcula precios con rentabilidad real para que tu servicio a domicilio sea un negocio rentable y no trabajes gratis en fletes.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Costo del Repuesto / Pantalla ($)</label>
+            <input type="number" id="calcPartCost" class="form-control" value="350" oninput="calculateQuote()">
+          </div>
+          <div class="form-group">
+            <label>Traslado a Domicilio / Gasolina ($)</label>
+            <input type="number" id="calcTravelCost" class="form-control" value="80" oninput="calculateQuote()">
+          </div>
+          <div class="form-group">
+            <label>Mano de Obra / Ganancia Deseada ($)</label>
+            <input type="number" id="calcLaborCost" class="form-control" value="350" oninput="calculateQuote()">
+          </div>
+        </div>
+
+        <div style="background: rgba(13, 21, 38, 0.9); border: 1px solid var(--border-glow); border-radius: 14px; padding: 22px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">PRECIO SUGERIDO AL CLIENTE (DOMICILIO INCLUIDO)</div>
+            <div id="calcTotalPrice" style="font-size: 2.2rem; font-weight: 800; color: var(--cyan-neon); font-family: var(--font-mono);">$780 MXN</div>
+            <div id="calcProfitText" style="font-size: 0.85rem; color: var(--green-ok); font-weight: 600;">Ganancia neta estimada: $350 MXN (44.8%)</div>
+          </div>
+          <button class="btn btn-whatsapp" onclick="copyClientQuoteText()">
+            📋 Copiar Mensaje de Cotización para WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: BRANDING, RENDERS & CREADOR DE POSTS -->
+    <!-- ========================================== -->
+    <div id="tab-branding" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>🎨</span> Identidad Visual, Renders 3D & Creador de Publicaciones
+        </div>
+        <p class="card-subtitle">
+          Materiales gráficos de alta gama para que tu marca se vea como un laboratorio tecnológico internacional y no como un taller improvisado.
+        </p>
+
+        <!-- ACCESO AL ESTUDIO DE VIDEOS -->
+        <div style="background: linear-gradient(135deg, rgba(255, 0, 85, 0.15), rgba(0, 240, 255, 0.15)); border: 1px solid #ff0055; border-radius: 16px; padding: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.5rem;">🎬</span>
+              <h3 style="color: #fff; font-size: 1.15rem;">Estudio de Videos & Reels Promocionales (Formato Vertical 9:16)</h3>
+              <span class="badge" style="background: #ff0055; color: #fff;">NUEVO</span>
+            </div>
+            <p style="color: #cbd5e1; font-size: 0.85rem; margin-top: 4px;">
+              Genera y descarga videos animados para TikTok, Facebook Reels e Instagram Reels basados en la economía real de tu taller.
+            </p>
+          </div>
+          <a href="videos/reels-promocionales.html" class="btn" style="background: #ff0055; color: #fff; font-weight: 800; text-decoration: none;">
+            ▶️ Abrir Estudio de Videos
+          </a>
+        </div>
+
+        <!-- FOTOGRAFÍAS REALES DEL TALLER (100% HUMANAS) -->
+        <h3 style="color: var(--cyan-neon); font-size: 1.15rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span>📸</span> Fotografías 100% Reales de Taller (Cero Aspecto de IA)
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">HIPERREALISMO HUMANO</span>
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px;">
+          Fotografías con textura auténtica de cámara de smartphone: iluminación natural, herramientas reales desgastadas y ambiente de trabajo honesto sin brillo artificial.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          
+          <!-- FOTO REAL TALLER -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 2px solid #10b981; border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/foto-real-taller.jpg" alt="Foto Real Taller" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">🛠️ Fotografía Real: Mesa de Trabajo</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Mesa de madera con tapete azul magnético, estación Yihua real, microscopio LCD, desarmadores e iPhone desmontado.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/foto-real-taller.jpg" download="foto-real-taller.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('foto_taller')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+          <!-- FOTO REAL DOMICILIO -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 2px solid #10b981; border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/foto-real-domicilio.jpg" alt="Foto Real Domicilio" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">🏠 Fotografía Real: En Casa del Cliente</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Técnico con guantes de nitrilo conectando flex de pantalla sobre la mesa del comedor, con estuche de lona y taza de café.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/foto-real-domicilio.jpg" download="foto-real-domicilio.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('foto_domicilio')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+          <!-- FOTO REAL COMPUTADORA -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 2px solid #10b981; border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/foto-real-computadora.jpg" alt="Foto Real Computadora" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">💻 Fotografía Real: Diagnóstico con Laptop</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Laptop ThinkPad con 3uTools conectada a iPhone, multímetro digital amarillo y libreta espiral con notas a mano.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/foto-real-computadora.jpg" download="foto-real-computadora.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('foto_computadora')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+        </div>
+
+        <h3 style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 14px;">📐 Renders Conceptuales Complementarios</h3>
+
+        <!-- RENDERS Y LOGO SHOWCASE -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          
+          <!-- RENDER TALLER HUMILDE REALISTA -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-glow); border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/render-taller-humilde.jpg" alt="Taller Real" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">🛠️ Taller Real: Mesa de Cirugía</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Mesa de madera sólida, tapete azul térmico imantado, estación de aire compacta, microscopio USB y orden impecable.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/render-taller-humilde.jpg" download="render-taller-humilde.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('taller_humilde')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+          <!-- RENDER DOMICILIO HUMILDE REALISTA -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-glow); border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/render-domicilio-humilde.jpg" alt="Domicilio Real" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">🏠 Servicio a Domicilio Auténtico</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Reparación en la mesa del comedor del cliente con estuche de herramientas de lona, cuidado extremo y taza de café.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/render-domicilio-humilde.jpg" download="render-domicilio-humilde.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('domicilio_humilde')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+          <!-- RENDER COMPUTADORA HUMILDE REALISTA -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-glow); border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/render-computadora-humilde.jpg" alt="Ordenador Real" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">💻 Estación de Diagnóstico Real</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Laptop ThinkPad/Dell estándar con 3uTools y esquemáticos 2D, multímetro digital, cable de prueba y libreta de clientes.</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="assets/render-computadora-humilde.jpg" download="render-computadora-humilde.jpg" class="btn btn-secondary" style="font-size: 0.78rem; flex: 1;">📥 Descargar</a>
+              <button class="btn btn-primary" onclick="selectBgForPost('computadora_humilde')" style="font-size: 0.78rem; flex: 1;">🎨 Usar en Post</button>
+            </div>
+          </div>
+
+          <!-- LOGOTIPO OFICIAL -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; text-align: center;">
+            <img src="assets/logo-volt-studio.jpg" alt="Logo Volt Repair Studio" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);">
+            <h3 style="color: #fff; font-size: 1.05rem; margin-bottom: 4px;">⚡ Logotipo Oficial Volt Studio</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Rayo de alto voltaje, microcircuito de silicio y micro-soldadura láser sobre obsidiana.</p>
+            <a href="assets/logo-volt-studio.jpg" download="logo-volt-studio.jpg" class="btn btn-secondary" style="font-size: 0.8rem; width: 100%;">
+              📥 Descargar Logotipo HD
+            </a>
+          </div>
+
+        </div>
+
+        <!-- GENERADOR INTERACTIVO DE POSTS -->
+        <div style="background: rgba(11, 17, 30, 0.95); border: 1px solid var(--border-glow); border-radius: 18px; padding: 24px;">
+          <h3 style="color: var(--cyan-neon); font-size: 1.15rem; margin-bottom: 8px;">🖼️ Generador Instantáneo de Banners para Redes (1080 x 1080 px)</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+            Crea publicaciones de alto impacto para Facebook e Instagram en 10 segundos sin tocar Photoshop ni Canva.
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start;">
+            <!-- Controles -->
+            <div>
+              <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 0.75rem; color: var(--cyan-neon); font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">
+                  ⚡ Plantillas Populares de Alto Impacto (Fórmula ReparaShop):
+                </label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 6px 12px;" onclick="loadPreset('combo')">🔋 Combo Pantalla + Batería</button>
+                  <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 6px 12px;" onclick="loadPreset('tarjeta')">💳 Aceptamos Tarjetas</button>
+                  <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 6px 12px;" onclick="loadPreset('domicilio')">🏠 En tu Sala en 25 Min</button>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label>Gancho / Titular Principal</label>
+                <input type="text" id="postTitle" class="form-control" value="¿PANTALLA ROTA O BATERÍA MUERTA?" oninput="drawPostBanner()">
+              </div>
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label>Subtítulo de Confianza</label>
+                <input type="text" id="postSubtitle" class="form-control" value="Reparación en tu sala u oficina en 25 minutos" oninput="drawPostBanner()">
+              </div>
+              <div class="form-row" style="margin-bottom: 14px;">
+                <div class="form-group">
+                  <label>Modelos Incluidos</label>
+                  <input type="text" id="postModels" class="form-control" value="iPhone 8 al 15 Pro Max" oninput="drawPostBanner()">
+                </div>
+                <div class="form-group">
+                  <label>Precio / Oferta Clave</label>
+                  <input type="text" id="postPrice" class="form-control" value="DESDE $600 A DOMICILIO" oninput="drawPostBanner()">
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom: 16px;">
+                <label>Fondo de Publicación (Fotografía o Render)</label>
+                <select id="postBgSelect" class="form-control" onchange="drawPostBanner()">
+                  <option value="foto_taller" selected>📸 Foto 100% Real: Mesa de Trabajo con Yihua y Tapete</option>
+                  <option value="foto_domicilio">📸 Foto 100% Real: En Casa de Cliente (Mesa Comedor)</option>
+                  <option value="foto_computadora">📸 Foto 100% Real: Laptop ThinkPad con 3uTools y Libreta</option>
+                  <option value="taller_humilde">🛠️ Render Taller: Mesa de Trabajo con Tapete Azul</option>
+                  <option value="domicilio_humilde">🏠 Render Servicio: Mesa del Cliente</option>
+                  <option value="computadora_humilde">💻 Render Diagnóstico: Laptop y Multímetro</option>
+                  <option value="computadora">🖥️ Render Conceptual: Ordenador Maestro "Volt OS"</option>
+                  <option value="termica">🌡️ Render Conceptual: Cámara Infrarroja (Cortos)</option>
+                  <option value="microsoldadura">⚡ Render Conceptual: Micro-Soldadura</option>
+                  <option value="laser">🔵 Render Conceptual: Máquina Láser</option>
+                </select>
+              </div>
+
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="downloadPostBanner()">
+                  🚀 Descargar Imagen Lista para Publicar (PNG)
+                </button>
+                <button class="btn btn-secondary" onclick="copyPostCaption()">
+                  📋 Copiar Texto / Copy de Acompañamiento
+                </button>
+              </div>
+            </div>
+
+            <!-- Vista Previa Canvas -->
+            <div style="text-align: center;">
+              <canvas id="postCanvas" width="1080" height="1080" style="width: 100%; max-width: 380px; height: auto; border-radius: 14px; border: 2px solid var(--border-glow); box-shadow: 0 10px 30px rgba(0,0,0,0.6);"></canvas>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Vista previa formato cuadrado 1:1 (Feed de Instagram y Facebook)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL / EXPEDIENTE IMPRIMIBLE -->
+  <!-- ========================================== -->
+  <div id="diagnosticModal" class="modal-overlay">
+    <div class="modal-sheet" id="printArea">
+      <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 14px; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px;">⚡ VOLT REPAIR STUDIO</h2>
+          <div style="font-size: 0.85rem; color: #64748b;">Expediente Clínico & Diagnóstico Anatómico de Dispositivos</div>
+          <div style="font-size: 0.8rem; color: #64748b;">Servicio a Domicilio & Laboratorio Online</div>
+        </div>
+        <div style="text-align: right;">
+          <div id="sheetOrderCode" style="font-weight: 800; font-family: monospace; font-size: 1.1rem; color: #0284c7;">EXP-2026-001</div>
+          <div id="sheetDate" style="font-size: 0.82rem; color: #64748b;">Fecha: 24/10/2026</div>
+        </div>
+      </div>
+
+      <!-- Datos del paciente / cliente -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; font-size: 0.88rem; background: #f8fafc; padding: 12px; border-radius: 8px;">
+        <div><strong>Cliente:</strong> <span id="sheetClientName">-</span></div>
+        <div><strong>WhatsApp / Tel:</strong> <span id="sheetClientPhone">-</span></div>
+        <div><strong>Equipo / Modelo:</strong> <span id="sheetDeviceModel">-</span></div>
+        <div><strong>Modalidad:</strong> <span id="sheetModality">-</span></div>
+      </div>
+
+      <!-- Tabla clínica -->
+      <h4 style="margin-bottom: 8px; font-size: 0.95rem; color: #0f172a; text-transform: uppercase;">Estado Anatómico del Dispositivo</h4>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 18px;">
+        <thead>
+          <tr style="background: #e2e8f0; text-align: left;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Componente</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Diagnóstico</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Acción Técnica</th>
+          </tr>
+        </thead>
+        <tbody id="sheetTableBody">
+          <!-- Rendered via JS -->
+        </tbody>
+      </table>
+
+      <!-- Resumen & Costo -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 2px dashed #cbd5e1; padding-top: 14px;">
+        <div style="max-width: 60%; font-size: 0.78rem; color: #475569;">
+          <strong>Términos & Garantía Volt Repair Studio:</strong>
+          <p>Se otorga garantía estipulada sobre el componente reemplazado. Equipos con daño por líquido o deformación severa de chasis cuentan con garantía limitada a piezas funcionales.</p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.85rem; color: #64748b;">TOTAL DE REPARACIÓN:</div>
+          <div id="sheetTotalCost" style="font-size: 1.6rem; font-weight: 800; color: #0f172a;">$600.00 MXN</div>
+        </div>
+      </div>
+
+      <!-- Firma del Cliente -->
+      <div style="display: flex; justify-content: space-around; margin-top: 35px; text-align: center;">
+        <div style="border-top: 1px solid #94a3b8; width: 220px; padding-top: 6px; font-size: 0.78rem; color: #64748b;">
+          Firma / Conformidad del Cliente
+        </div>
+        <div style="border-top: 1px solid #94a3b8; width: 220px; padding-top: 6px; font-size: 0.78rem; color: #64748b;">
+          Técnico Especialista Volt
+        </div>
+      </div>
+
+      <!-- Botones de Impresión / Cierre -->
+      <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;" class="no-print">
+        <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC -->
+  <!-- ========================================== -->
+  <script>
+    // ESTADO GENERAL DE COMPONENTES DEL DISPOSITIVOGRAMA
+    const componentsState = {
+      screen_glass: { name: 'Cristal / Pantalla Frontal', status: 'repair', desc: 'Vidrio quebrado / requiere cambio' },
+      faceid: { name: 'Face ID / Cámara Frontal', status: 'ok', desc: 'Biometría 100% funcional' },
+      battery: { name: 'Batería Li-Ion', status: 'warn', desc: 'Salud al 78%, desgaste natural' },
+      back_glass: { name: 'Cristal Trasero / Tapa', status: 'ok', desc: 'Sin roturas ni golpes' },
+      camera_module: { name: 'Módulo de Cámaras Traseras', status: 'ok', desc: 'Lentes limpios y enfoque óptimo' },
+      motherboard: { name: 'Placa Lógica / CPU / IC', status: 'ok', desc: 'Sin corto ni consumo anormal' },
+      charging_port: { name: 'Puerto Lightning / Tipo C', status: 'ok', desc: 'Carga rápida y micrófono limpios' }
+    };
+
+    // STATUS DEFINITIONS
+    const statusMeta = {
+      ok: { label: 'Óptimo (100% Sano)', class: 'status-ok', color: '#10b981' },
+      warn: { label: 'Desgaste / Observación', class: 'status-warn', color: '#f59e0b' },
+      fail: { label: 'Dañado / No Funciona', class: 'status-fail', color: '#ef4444' },
+      repair: { label: 'A Reemplazar / Reparar', class: 'status-repair', color: '#00f0ff' }
+    };
+
+    // CAMBIAR PESTAÑAS
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // ALTERNAR VISTAS DEL DISPOSITIVO (FRONTAL, TRASERO, INTERNO)
+    function toggleView(view) {
+      document.getElementById('btnViewFront').classList.remove('active');
+      document.getElementById('btnViewBack').classList.remove('active');
+      document.getElementById('btnViewInternal').classList.remove('active');
+
+      document.getElementById('svgFront').style.display = 'none';
+      document.getElementById('svgBack').style.display = 'none';
+      document.getElementById('svgInternal').style.display = 'none';
+
+      if (view === 'front') {
+        document.getElementById('btnViewFront').classList.add('active');
+        document.getElementById('svgFront').style.display = 'block';
+      } else if (view === 'back') {
+        document.getElementById('btnViewBack').classList.add('active');
+        document.getElementById('svgBack').style.display = 'block';
+      } else {
+        document.getElementById('btnViewInternal').classList.add('active');
+        document.getElementById('svgInternal').style.display = 'block';
+      }
+    }
+
+    // CICLO DE ESTADO DE UN COMPONENTE (TIPO ODONTOGRAMA)
+    const statusCycle = ['ok', 'warn', 'fail', 'repair'];
+    function cycleComponentStatus(key) {
+      const current = componentsState[key].status;
+      const nextIndex = (statusCycle.indexOf(current) + 1) % statusCycle.length;
+      componentsState[key].status = statusCycle[nextIndex];
+      renderComponentsList();
+      updateSvgColors();
+    }
+
+    function setComponentStatus(key, status) {
+      componentsState[key].status = status;
+      renderComponentsList();
+      updateSvgColors();
+    }
+
+    // ACTUALIZAR COLORES EN EL SVG
+    function updateSvgColors() {
+      for (const [key, comp] of Object.entries(componentsState)) {
+        const svgEl = document.getElementById('part_' + key);
+        if (svgEl) {
+          svgEl.className.baseVal = 'device-part status-' + comp.status;
+        }
+      }
+    }
+
+    // RENDERIZAR LISTA DE COMPONENTES
+    function renderComponentsList() {
+      const container = document.getElementById('componentsListContainer');
+      container.innerHTML = '';
+      let repairCount = 0;
+
+      for (const [key, comp] of Object.entries(componentsState)) {
+        if (comp.status === 'repair' || comp.status === 'fail') repairCount++;
+
+        const tile = document.createElement('div');
+        tile.className = 'component-tile';
+        tile.innerHTML = `
+          <div class="component-info">
+            <h4>${comp.name}</h4>
+            <p>${comp.desc}</p>
+          </div>
+          <div class="component-actions">
+            <select onchange="setComponentStatus('${key}', this.value)">
+              <option value="ok" ${comp.status === 'ok' ? 'selected' : ''}>✅ Sano</option>
+              <option value="warn" ${comp.status === 'warn' ? 'selected' : ''}>⚠️ Desgaste</option>
+              <option value="fail" ${comp.status === 'fail' ? 'selected' : ''}>❌ Roto/Falla</option>
+              <option value="repair" ${comp.status === 'repair' ? 'selected' : ''}>⚡ A Reparar</option>
+            </select>
+          </div>
+        `;
+        container.appendChild(tile);
+      }
+
+      document.getElementById('diagnosticSummaryText').innerText = `${repairCount} componentes a intervenir`;
+    }
+
+    // GENERAR EXPEDIENTE CLÍNICO
+    function generateDiagnosticSheet() {
+      const name = document.getElementById('diagClientName').value || 'Cliente Particular';
+      const phone = document.getElementById('diagClientPhone').value || 'Sin teléfono';
+      const model = document.getElementById('diagModel').value;
+      const modality = document.getElementById('diagModality').value;
+      const price = document.getElementById('diagPrice').value || '600';
+
+      document.getElementById('sheetClientName').innerText = name;
+      document.getElementById('sheetClientPhone').innerText = phone;
+      document.getElementById('sheetDeviceModel').innerText = model;
+      document.getElementById('sheetModality').innerText = modality;
+      document.getElementById('sheetTotalCost').innerText = `$${price} MXN`;
+      document.getElementById('sheetDate').innerText = 'Fecha: ' + new Date().toLocaleDateString('es-MX');
+
+      const tbody = document.getElementById('sheetTableBody');
+      tbody.innerHTML = '';
+
+      for (const [key, comp] of Object.entries(componentsState)) {
+        const meta = statusMeta[comp.status];
+        let action = 'Mantener original (sin intervención)';
+        if (comp.status === 'repair') action = 'Reemplazo con repuesto Grado A+ / Calibración';
+        if (comp.status === 'fail') action = 'Reparación de circuito / Diagnóstico de microelectrónica';
+        if (comp.status === 'warn') action = 'Monitoreo preventivo';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: 600;">${comp.name}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1; color: ${meta.color}; font-weight: bold;">${meta.label}</td>
+          <td style="padding: 8px; border: 1px solid #cbd5e1;">${action}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('diagnosticModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('diagnosticModal').style.display = 'none';
+    }
+
+    // ENVIAR DIAGNÓSTICO POR WHATSAPP
+    function sendWhatsAppDiagnostic() {
+      const name = document.getElementById('diagClientName').value || 'Cliente';
+      const phone = document.getElementById('diagClientPhone').value.replace(/\D/g, '');
+      const model = document.getElementById('diagModel').value;
+      const price = document.getElementById('diagPrice').value || '600';
+
+      let partsToFix = [];
+      for (const [key, comp] of Object.entries(componentsState)) {
+        if (comp.status === 'repair' || comp.status === 'fail') {
+          partsToFix.push(`• ${comp.name}: ${statusMeta[comp.status].label}`);
+        }
+      }
+
+      const text = encodeURIComponent(
+`⚡ *VOLT REPAIR STUDIO* | Reporte Clínico de Dispositivo
+Hola ${name}, te comparto el diagnóstico técnico de tu *${model}*:
+
+📋 *Estado Anatómico Inspeccionado:*
+${partsToFix.length > 0 ? partsToFix.join('\n') : '• Revisión general de rutina'}
+
+💰 *Presupuesto Estimado:* $${price} MXN (Servicio a Domicilio Incluido)
+🛡️ *Garantía:* Certificada por escrito y prueba de componentes en vivo.
+
+¿Deseas confirmar la cita para tu reparación a domicilio hoy?`
+      );
+
+      const url = phone ? `https://wa.me/${phone}?text=${text}` : `https://api.whatsapp.com/send?text=${text}`;
+      window.open(url, '_blank');
+    }
+
+    // REGISTRAR EN KANBAN
+    let orders = JSON.parse(localStorage.getItem('volt_orders') || '[]');
+    if (orders.length === 0) {
+      orders = [
+        { id: 'ORD-101', client: 'Sofía Ramos', phone: '5512345678', model: 'iPhone 13', service: 'Pantalla + Batería', modality: 'Domicilio', price: '1200', status: 'reparando' },
+        { id: 'ORD-102', client: 'Roberto Gómez', phone: '5598765432', model: 'iPhone 11 Pro', service: 'Cristal Trasero', modality: 'Domicilio', price: '750', status: 'recibidos' }
+      ];
+    }
+
+    function renderKanban() {
+      const cols = {
+        recibidos: document.getElementById('col-recibidos'),
+        diagnostico: document.getElementById('col-diagnostico'),
+        reparando: document.getElementById('col-reparando'),
+        listo: document.getElementById('col-listo')
+      };
+
+      for (const key in cols) {
+        cols[key].innerHTML = '';
+        document.getElementById(`count-${key}`).innerText = '0';
+      }
+
+      const counts = { recibidos: 0, diagnostico: 0, reparando: 0, listo: 0 };
+
+      orders.forEach(ord => {
+        counts[ord.status] = (counts[ord.status] || 0) + 1;
+        const card = document.createElement('div');
+        card.className = 'kanban-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <strong style="color:#00f0ff; font-size:0.8rem;">${ord.id}</strong>
+            <span class="badge ${ord.modality === 'Domicilio' ? 'badge-domicilio' : 'badge-taller'}">${ord.modality}</span>
+          </div>
+          <div style="font-weight:700; color:#fff; font-size:0.95rem;">${ord.client}</div>
+          <div style="font-size:0.8rem; color:#94a3b8; margin:4px 0;">📱 ${ord.model} - ${ord.service}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+            <span style="font-weight:800; color:#10b981;">$${ord.price} MXN</span>
+            <select style="background:#090e1a; color:#fff; border:1px solid #334155; font-size:0.75rem; padding:3px 6px; border-radius:4px;" onchange="moveOrder('${ord.id}', this.value)">
+              <option value="recibidos" ${ord.status === 'recibidos' ? 'selected' : ''}>📥 Recibido</option>
+              <option value="diagnostico" ${ord.status === 'diagnostico' ? 'selected' : ''}>🔬 Diagnóstico</option>
+              <option value="reparando" ${ord.status === 'reparando' ? 'selected' : ''}>⚡ Reparando</option>
+              <option value="listo" ${ord.status === 'listo' ? 'selected' : ''}>✅ Listo</option>
+            </select>
+          </div>
+        `;
+        if (cols[ord.status]) cols[ord.status].appendChild(card);
+      });
+
+      for (const key in counts) {
+        document.getElementById(`count-${key}`).innerText = counts[key];
+      }
+
+      localStorage.setItem('volt_orders', JSON.stringify(orders));
+    }
+
+    function moveOrder(id, newStatus) {
+      const ord = orders.find(o => o.id === id);
+      if (ord) {
+        ord.status = newStatus;
+        renderKanban();
+      }
+    }
+
+    function saveAsKanbanOrder() {
+      const client = document.getElementById('diagClientName').value || 'Cliente Nuevo';
+      const phone = document.getElementById('diagClientPhone').value || '';
+      const model = document.getElementById('diagModel').value;
+      const price = document.getElementById('diagPrice').value || '600';
+      const modality = document.getElementById('diagModality').value.includes('Domicilio') ? 'Domicilio' : 'Taller';
+
+      const newId = 'ORD-' + Math.floor(100 + Math.random() * 900);
+      orders.unshift({
+        id: newId,
+        client,
+        phone,
+        model,
+        service: 'Reparación ' + model,
+        modality,
+        price,
+        status: 'recibidos'
+      });
+
+      renderKanban();
+      alert('¡Reparación registrada en el Tablero de Órdenes con folio ' + newId + '!');
+      switchTab('tab-ordenes');
+    }
+
+    function quickNewOrder() {
+      const client = prompt('Nombre del cliente:');
+      if (!client) return;
+      const model = prompt('Modelo (ej. iPhone 12):', 'iPhone 12');
+      const price = prompt('Precio total acordado ($):', '600');
+      const newId = 'ORD-' + Math.floor(100 + Math.random() * 900);
+
+      orders.unshift({
+        id: newId,
+        client,
+        phone: '',
+        model: model || 'Dispositivo',
+        service: 'Mantenimiento General',
+        modality: 'Domicilio',
+        price: price || '600',
+        status: 'recibidos'
+      });
+      renderKanban();
+    }
+
+    // COTIZADOR INTELIGENTE
+    function calculateQuote() {
+      const part = parseFloat(document.getElementById('calcPartCost').value) || 0;
+      const travel = parseFloat(document.getElementById('calcTravelCost').value) || 0;
+      const labor = parseFloat(document.getElementById('calcLaborCost').value) || 0;
+
+      const total = part + travel + labor;
+      const profit = labor;
+      const margin = total > 0 ? ((profit / total) * 100).toFixed(1) : 0;
+
+      document.getElementById('calcTotalPrice').innerText = `$${total.toFixed(0)} MXN`;
+      document.getElementById('calcProfitText').innerText = `Ganancia neta estimada: $${profit.toFixed(0)} MXN (${margin}%)`;
+    }
+
+    function copyClientQuoteText() {
+      const part = document.getElementById('calcPartCost').value;
+      const total = document.getElementById('calcTotalPrice').innerText;
+      const text = `Hola! En Volt Repair Studio tu cotización es de ${total} pesos con el servicio a domicilio ya incluido. Llegamos hasta donde estés con laboratorio portátil y repuestos certificados con garantía. ¿Te agendamos hoy?`;
+      navigator.clipboard.writeText(text);
+      alert('¡Mensaje para WhatsApp copiado al portapapeles!');
+    }
+
+    function copyScript(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text);
+      alert('¡Guión copiado al portapapeles! Listo para grabar.');
+    }
+
+    // CANVAS POST BANNER GENERATOR
+    const bgImages = {
+      foto_taller: new Image(),
+      foto_domicilio: new Image(),
+      foto_computadora: new Image(),
+      taller_humilde: new Image(),
+      domicilio_humilde: new Image(),
+      computadora_humilde: new Image(),
+      computadora: new Image(),
+      termica: new Image(),
+      microsoldadura: new Image(),
+      laser: new Image(),
+      laboratorio: new Image(),
+      domicilio: new Image()
+    };
+    bgImages.foto_taller.src = 'assets/foto-real-taller.jpg';
+    bgImages.foto_domicilio.src = 'assets/foto-real-domicilio.jpg';
+    bgImages.foto_computadora.src = 'assets/foto-real-computadora.jpg';
+    bgImages.taller_humilde.src = 'assets/render-taller-humilde.jpg';
+    bgImages.domicilio_humilde.src = 'assets/render-domicilio-humilde.jpg';
+    bgImages.computadora_humilde.src = 'assets/render-computadora-humilde.jpg';
+    bgImages.computadora.src = 'assets/render-computadora-laboratorio.jpg';
+    bgImages.termica.src = 'assets/render-camara-termica.jpg';
+    bgImages.microsoldadura.src = 'assets/render-equipo-microsoldadura.jpg';
+    bgImages.laser.src = 'assets/render-maquina-laser.jpg';
+    bgImages.laboratorio.src = 'assets/render-taller-laboratorio.jpg';
+    bgImages.domicilio.src = 'assets/render-servicio-domicilio.jpg';
+
+    const logoImg = new Image();
+    logoImg.src = 'assets/logo-volt-studio.jpg';
+
+    // Redraw canvas when images load
+    for (const key in bgImages) {
+      bgImages[key].onload = () => drawPostBanner();
+    }
+    logoImg.onload = () => drawPostBanner();
+
+    function loadPreset(type) {
+      if (type === 'combo') {
+        document.getElementById('postTitle').value = 'COMBO PANTALLA + BATERÍA NUEVA';
+        document.getElementById('postSubtitle').value = '¡Aprovecha y renueva ambos con descuento a domicilio!';
+        document.getElementById('postModels').value = 'iPhone 8 hasta 15 Pro Max';
+        document.getElementById('postPrice').value = 'PAQUETE ESPECIAL A DOMICILIO';
+        document.getElementById('postBgSelect').value = 'foto_taller';
+      } else if (type === 'tarjeta') {
+        document.getElementById('postTitle').value = '¡REPARAMOS HOY Y PAGAS CON TARJETA!';
+        document.getElementById('postSubtitle').value = 'Llevamos terminal a tu domicilio | Meses sin intereses';
+        document.getElementById('postModels').value = 'Todas las marcas y modelos';
+        document.getElementById('postPrice').value = 'DESDE $600 CON TERMINAL';
+        document.getElementById('postBgSelect').value = 'foto_domicilio';
+      } else if (type === 'domicilio') {
+        document.getElementById('postTitle').value = '¿PANTALLA ROTA? EN TU SALA EN 25 MIN';
+        document.getElementById('postSubtitle').value = 'Sin dejar tu teléfono en plazas | Cero riesgo';
+        document.getElementById('postModels').value = 'iPhone y Samsung Galaxy';
+        document.getElementById('postPrice').value = 'DESDE $600 A DOMICILIO';
+        document.getElementById('postBgSelect').value = 'foto_domicilio';
+      }
+      drawPostBanner();
+    }
+
+    function selectBgForPost(bgKey) {
+      const select = document.getElementById('postBgSelect');
+      if (select) {
+        select.value = bgKey;
+        drawPostBanner();
+        select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function drawPostBanner() {
+      const canvas = document.getElementById('postCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = 1080;
+      const h = 1080;
+
+      const title = document.getElementById('postTitle').value || '¿PANTALLA ROTA O BATERÍA?';
+      const subtitle = document.getElementById('postSubtitle').value || 'Reparación en tu sala u oficina en 25 minutos';
+      const models = document.getElementById('postModels').value || 'iPhone 11 hasta 16 Pro Max';
+      const price = document.getElementById('postPrice').value || 'DESDE $600 A DOMICILIO';
+      const bgChoice = document.getElementById('postBgSelect').value;
+      const bg = bgImages[bgChoice];
+
+      // Clean background
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(0, 0, w, h);
+
+      if (bg.complete && bg.naturalHeight !== 0) {
+        ctx.drawImage(bg, 0, 0, w, h);
+      }
+
+      // Dark cinematic gradient overlay
+      const gradient = ctx.createLinearGradient(0, 0, 0, h);
+      gradient.addColorStop(0, 'rgba(9, 13, 22, 0.9)');
+      gradient.addColorStop(0.35, 'rgba(9, 13, 22, 0.45)');
+      gradient.addColorStop(0.7, 'rgba(9, 13, 22, 0.75)');
+      gradient.addColorStop(1, 'rgba(9, 13, 22, 0.97)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, w, h);
+
+      // Neon Top Border Accent
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillRect(0, 0, w, 14);
+
+      // Header Brand
+      if (logoImg.complete && logoImg.naturalHeight !== 0) {
+        ctx.save();
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(70, 60, 90, 90, 20);
+        else ctx.rect(70, 60, 90, 90);
+        ctx.clip();
+        ctx.drawImage(logoImg, 70, 60, 90, 90);
+        ctx.restore();
+      }
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 36px sans-serif';
+      ctx.fillText('VOLT REPAIR STUDIO', 180, 100);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '700 20px sans-serif';
+      ctx.fillText('LABORATORIO DE CIRUGÍA TÉCNICA A DOMICILIO', 180, 135);
+
+      // Main Title Hook
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 54px sans-serif';
+      ctx.shadowColor = 'rgba(0, 240, 255, 0.6)';
+      ctx.shadowBlur = 16;
+      
+      const words = title.split(' ');
+      let line = '';
+      let y = 380;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > 920 && n > 0) {
+          ctx.fillText(line.trim(), 70, y);
+          line = words[n] + ' ';
+          y += 68;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), 70, y);
+      ctx.shadowBlur = 0;
+
+      // Subtitle
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '600 30px sans-serif';
+      ctx.fillText(subtitle, 70, y + 60);
+
+      // Models Pill Badge
+      ctx.fillStyle = 'rgba(0, 102, 255, 0.35)';
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(70, y + 105, 520, 65, 14);
+      else ctx.rect(70, y + 105, 520, 65);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '700 24px sans-serif';
+      ctx.fillText('📱 ' + models, 95, y + 146);
+
+      // Bottom Price Card
+      const cardY = 820;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.96)';
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(70, cardY, 940, 180, 24);
+      else ctx.rect(70, cardY, 940, 180);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#10b981';
+      ctx.font = '800 22px sans-serif';
+      ctx.fillText('⚡ GARANTÍA POR ESCRITO + EXPEDIENTE CLÍNICO', 110, cardY + 55);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '900 46px monospace';
+      ctx.fillText(price, 110, cardY + 125);
+
+      // CTA Button inside card
+      ctx.fillStyle = '#25d366';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(720, cardY + 50, 250, 80, 16);
+      else ctx.rect(720, cardY + 50, 250, 80);
+      ctx.fill();
+
+      ctx.fillStyle = '#062b14';
+      ctx.font = '800 24px sans-serif';
+      ctx.fillText('💬 AGENDAR', 760, cardY + 100);
+    }
+
+    function downloadPostBanner() {
+      const canvas = document.getElementById('postCanvas');
+      const link = document.createElement('a');
+      link.download = 'volt-post-' + Date.now() + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function copyPostCaption() {
+      const title = document.getElementById('postTitle').value;
+      const models = document.getElementById('postModels').value;
+      const price = document.getElementById('postPrice').value;
+      const text = `${title} ⚡\n\n¿Por qué arriesgarte en plazas desconocidas? En Volt Repair Studio llevamos nuestro laboratorio a tu casa u oficina:\n\n🔬 Reparamos frente a ti en 25 minutos.\n🩺 Expediente clínico anatómico antes de abrir tu equipo.\n🛡️ Garantía por escrito y refacciones certificadas.\n\n📱 Modelos: ${models}\n💰 ${price}\n\nEnvíanos un WhatsApp directo al enlace de nuestro perfil y agendamos tu cita hoy mismo.`;
+      navigator.clipboard.writeText(text);
+      alert('¡Texto del post copiado al portapapeles!');
+    }
+
+    // INITIALIZATION
+    window.onload = function() {
+      renderComponentsList();
+      updateSvgColors();
+      renderKanban();
+      calculateQuote();
+      setTimeout(drawPostBanner, 300);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volt Repair Studio | Micro-Cirugía de Smartphones & Servicio a Domicilio</title>
+  <meta name="description" content="Reparación profesional de iPhone y celulares en tu propia sala u oficina en 25 minutos. Laboratorio móvil, diagnóstico anatómico digital y garantía por escrito.">
+  
+  <!-- Favicon & Fonts -->
+  <link rel="icon" type="image/jpeg" href="assets/logo-volt-studio.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #060911;
+      --bg-surface: rgba(13, 20, 36, 0.7);
+      --bg-card: rgba(18, 27, 49, 0.65);
+      --border: rgba(0, 240, 255, 0.16);
+      --border-hover: rgba(0, 240, 255, 0.5);
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.4);
+      --blue: #0066ff;
+      --green-wa: #25d366;
+      --green-glow: rgba(37, 211, 102, 0.4);
+      --purple-accent: #a855f7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* CANVAS DE PARTÍCULAS ELÉCTRICAS DE FONDO */
+    #electricCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.75;
+    }
+
+    /* AMBIENT LIGHTING */
+    .ambient-glow-1 {
+      position: fixed;
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.14), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(40px);
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: -150px;
+      left: -100px;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(50px);
+    }
+
+    /* HEADER */
+    header {
+      background: rgba(6, 9, 17, 0.8);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--border-hover);
+      box-shadow: 0 0 16px var(--cyan-glow);
+      object-fit: cover;
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .brand:hover img {
+      transform: scale(1.08) rotate(4deg);
+    }
+
+    .brand-text h1 {
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-text span {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+      transition: color 0.25s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      transition: width 0.3s var(--ease-spring);
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s var(--ease-spring);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-wa {
+      background: var(--green-wa);
+      color: #042410;
+      box-shadow: 0 4px 20px var(--green-glow);
+    }
+
+    .btn-wa:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #040914;
+      box-shadow: 0 4px 20px var(--cyan-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(0, 240, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* SCROLL REVEAL ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+    }
+
+    .reveal-scale.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      z-index: 2;
+      max-width: 1250px;
+      margin: 60px auto 40px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (max-width: 950px) {
+      .hero { grid-template-columns: 1fr; text-align: center; margin-top: 30px; }
+      .nav-links { display: none; }
+      .hero-actions { justify-content: center; }
+      .hero-badges-row { justify-content: center; }
+    }
+
+    .badge-animated {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid var(--border-hover);
+      color: var(--cyan);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .hero h2 {
+      font-size: 3.1rem;
+      font-weight: 900;
+      line-height: 1.12;
+      margin-bottom: 20px;
+      letter-spacing: -0.8px;
+    }
+
+    .hero h2 span.gradient-text {
+      background: linear-gradient(135deg, var(--cyan) 0%, #38bdf8 50%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.3));
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-bottom: 32px;
+      max-width: 620px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badges-row {
+      display: flex;
+      gap: 18px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .micro-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .micro-badge span {
+      color: var(--cyan);
+      font-size: 1.05rem;
+    }
+
+    /* 3D TILT PHOTO HERO CARD */
+    .tilt-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-hover);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.2);
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      cursor: pointer;
+    }
+
+    .tilt-card img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .tilt-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .tilt-floating-tag {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      right: 18px;
+      background: rgba(13, 20, 36, 0.92);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      padding: 14px 18px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* STATS COUNTER STRIP */
+    .stats-strip {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 40px auto 70px;
+      padding: 0 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 32px;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--cyan);
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 2px;
+      letter-spacing: -1px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* SERVICES SECTION */
+    .section {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 90px auto;
+      padding: 0 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-header h3 {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px;
+    }
+
+    /* 3D INTERACTIVE CARDS */
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.35s var(--ease-spring);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(14px);
+    }
+
+    .service-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(0, 240, 255, 0.18);
+    }
+
+    .service-icon-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--border-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover .service-icon-box {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    .service-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .service-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .service-price {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--cyan);
+      font-family: 'Montserrat', monospace;
+    }
+
+    .service-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* EL DISPOSITIVOGRAMA BANNER */
+    .odontograma-banner {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(0, 102, 255, 0.16));
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(14px);
+    }
+
+    @media (max-width: 850px) {
+      .odontograma-banner { grid-template-columns: 1fr; }
+    }
+
+    /* FAQ ACCORDION */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    .faq-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .faq-item:hover {
+      border-color: var(--cyan);
+      background: rgba(18, 27, 49, 0.8);
+    }
+
+    .faq-item h5 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #03060b;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 50px 24px 30px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 18px 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+
+    /* ================================================= */
+    /* INTERACTIVE WHATSAPP BOT WIDGET (HIGH CONVERSION) */
+    /* ================================================= */
+    .wa-widget-button {
+      position: fixed;
+      bottom: 26px;
+      right: 26px;
+      width: 65px;
+      height: 65px;
+      background: var(--green-wa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 35px var(--green-glow);
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+      animation: bounceWidget 4s infinite;
+    }
+
+    @keyframes bounceWidget {
+      0%, 80%, 100% { transform: translateY(0); }
+      85% { transform: translateY(-8px); }
+      90% { transform: translateY(0); }
+      95% { transform: translateY(-4px); }
+    }
+
+    .wa-widget-button:hover {
+      transform: scale(1.1) rotate(-6deg);
+      box-shadow: 0 15px 45px rgba(37, 211, 102, 0.8);
+    }
+
+    .wa-widget-button svg {
+      width: 36px;
+      height: 36px;
+      fill: #ffffff;
+    }
+
+    .wa-badge-pulse {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      background: #ff0055;
+      border: 3px solid #060911;
+      border-radius: 50%;
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.8); }
+      70% { transform: scale(1.15); box-shadow: 0 0 0 10px rgba(255, 0, 85, 0); }
+      100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); }
+    }
+
+    /* BOT CHAT POPUP WINDOW */
+    .wa-chat-window {
+      position: fixed;
+      bottom: 105px;
+      right: 26px;
+      width: 375px;
+      max-width: calc(100vw - 32px);
+      height: 520px;
+      background: #0f172a;
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.25);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      overflow: hidden;
+      animation: slideUpModal 0.35s var(--ease-spring) forwards;
+    }
+
+    @keyframes slideUpModal {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .wa-chat-header {
+      background: #064e3b;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    .wa-chat-header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wa-chat-header-user img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #34d399;
+    }
+
+    .wa-chat-header-user h5 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .wa-chat-header-user span {
+      font-size: 0.74rem;
+      color: #a7f3d0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .wa-chat-close {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .wa-chat-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Chat Messages Body */
+    .wa-chat-body {
+      flex: 1;
+      padding: 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #090e18;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    .chat-bubble {
+      max-width: 86%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      animation: fadeInMsg 0.3s ease;
+    }
+
+    @keyframes fadeInMsg {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-bubble-bot {
+      background: #1e293b;
+      color: #f1f5f9;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    .chat-bubble-user {
+      background: #059669;
+      color: #ffffff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    .chat-options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 6px;
+    }
+
+    .chat-option-btn {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--border-hover);
+      color: var(--cyan);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .chat-option-btn:hover {
+      background: var(--cyan);
+      color: #040914;
+      transform: translateX(4px);
+    }
+
+    /* Typing Dots Animation */
+    .typing-indicator {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 14px;
+      background: #1e293b;
+      border-radius: 12px;
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: typingBlink 1.4s infinite ease-in-out both;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes typingBlink {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Chat Footer */
+    .wa-chat-footer {
+      padding: 14px;
+      background: #0f172a;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      gap: 10px;
+    }
+
+    .wa-chat-input {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .wa-chat-input:focus {
+      border-color: var(--cyan);
+    }
+
+    .wa-chat-send {
+      background: var(--green-wa);
+      border: none;
+      color: #042410;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .wa-chat-send:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTÍCULAS ELÉCTRICAS EN VIVO (CANVAS ANIMADO) -->
+  <canvas id="electricCanvas"></canvas>
+
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="brand">
+      <img src="assets/logo-volt-studio.jpg" alt="Logo Volt Repair">
+      <div class="brand-text">
+        <h1>VOLT REPAIR STUDIO</h1>
+        <span>Micro-Cirugía de Smartphones & Taller a Domicilio</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#expediente">Ficha Odontograma</a>
+      <a href="#faq">Preguntas</a>
+      <a href="taller.html" style="color: var(--cyan);">🔬 Suite de Taller</a>
+      <a href="videos/reels-promocionales.html" style="color: #ff0055;">🎬 Reels</a>
+    </div>
+
+    <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa">
+      💬 Cotizar por WhatsApp
+    </a>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="reveal">
+      <div class="badge-animated">
+        <span>⚡</span> Servicio a Domicilio Incluido
+      </div>
+      <h2>
+        Reparación de iPhone y Celulares <span class="gradient-text">en tu propia sala</span>
+      </h2>
+      <p>
+        Olvídate del tráfico y de dejar tu teléfono días enteros con desconocidos. Llevamos nuestro laboratorio móvil hasta tu casa u oficina: <b>reparamos frente a tus ojos en 25 minutos</b>, con total privacidad, refacciones certificadas y garantía por escrito.
+      </p>
+
+      <div class="hero-actions">
+        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="font-size: 1rem; padding: 14px 28px;">
+          💬 Iniciar Diagnóstico por WhatsApp
+        </a>
+        <a href="#servicios" class="btn btn-secondary" style="font-size: 1rem; padding: 14px 24px;">
+          Ver Tarifas y Modelos
+        </a>
+      </div>
+
+      <div class="hero-badges-row">
+        <div class="micro-badge"><span>🛡️</span> Garantía por Escrito</div>
+        <div class="micro-badge"><span>💳</span> Terminal para Tarjetas</div>
+        <div class="micro-badge"><span>🔒</span> 100% Privacidad (No pido contraseñas)</div>
+        <div class="micro-badge"><span>🩺</span> Dispositivograma Clínico</div>
+      </div>
+    </div>
+
+    <!-- IMAGEN HERO CON TILT 3D INTERACTIVO -->
+    <div class="tilt-card reveal-scale" id="heroTiltCard">
+      <img src="assets/foto-real-domicilio.jpg" alt="Servicio a Domicilio Volt Repair">
+      <div class="tilt-floating-tag">
+        <div>
+          <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Trabajo 100% Transparente</div>
+          <div style="font-size: 0.76rem; color: #34d399;">En tu comedor mientras te tomas un café ☕</div>
+        </div>
+        <div style="color: var(--cyan); font-weight: 900; font-size: 1.15rem; font-family: monospace;">⚡ 25 MIN</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTADOR DE ESTADÍSTICAS (ANIMADO AL SCROLL) -->
+  <section class="stats-strip reveal">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" data-target="850">0</div>
+        <div class="stat-label">Dispositivos Revividos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="25">0</div>
+        <div class="stat-label">Minutos por Reparación</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">% Satisfacción & Garantía</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="0">0</div>
+        <div class="stat-label">Costo por Traslado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS ESTRELLA -->
+  <section class="section" id="servicios">
+    <div class="section-header reveal">
+      <h3>Servicios Más Solicitados</h3>
+      <p>Repuestos de grado certificado instalados en tu sala con herramienta quirúrgica.</p>
+    </div>
+
+    <div class="services-grid">
+      <!-- Servicio 1 -->
+      <div class="service-card reveal">
+        <div>
+          <div class="service-icon-box">📱</div>
+          <h4>Cambio de Pantalla Express</h4>
+          <p>Solucionamos cristales estrellados, líneas de colores, manchas negras y fallas de touch en 25 minutos con TrueTone calibrado.</p>
+        </div>
+        <div class="service-bottom">
+          <div class="service-price">Desde $600</div>
+          <div class="service-badge">25 min a domicilio</div>
+        </div>
+      </div>
+
+      <!-- Servicio 2 -->
+      <div class="service-card reveal">
+        <div>
+          <div class="service-icon-box">🔋</div>
+          <h4>Batería Nueva Grado A+</h4>
+          <p>Recupera la autonomía de tu día completo. Instalamos celdas Li-Ion certificadas sin mensajes de advertencia y con salud al 100%.</p>
+        </div>
+        <div class="service-bottom">
+          <div class="service-price">Desde $550</div>
+          <div class="service-badge">Salud al 100%</div>
+        </div>
+      </div>
+
+      <!-- Servicio 3 -->
+      <div class="service-card reveal">
+        <div>
+          <div class="service-icon-box">💧</div>
+          <h4>Rescate de Equipos Mojados</h4>
+          <p>¿Se cayó al agua? ¡Nunca uses arroz! Realizamos limpieza por tina de ultrasonido y eliminación de sulfatación en microcircuitos.</p>
+        </div>
+        <div class="service-bottom">
+          <div class="service-price">Diagnóstico</div>
+          <div class="service-badge">Tina Ultrasonido</div>
+        </div>
+      </div>
+
+      <!-- Servicio 4 -->
+      <div class="service-card reveal">
+        <div>
+          <div class="service-icon-box">✨</div>
+          <h4>Cristal Trasero & Chasis</h4>
+          <p>Reemplazamos tapas traseras estalladas conservando intacta la bobina de carga inalámbrica MagSafe original de tu iPhone.</p>
+        </div>
+        <div class="service-bottom">
+          <div class="service-price">Desde $650</div>
+          <div class="service-badge">MagSafe Protegido</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL ODONTOGRAMA DE CELULARES -->
+  <section class="section" id="expediente">
+    <div class="odontograma-banner reveal">
+      <div>
+        <div class="badge-animated" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #34d399;">
+          <span>🩺</span> Innovación Única en tu Ciudad
+        </div>
+        <h3 style="font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 14px;">
+          Cada Dispositivo recibe un Expediente Clínico Digital
+        </h3>
+        <p style="font-size: 0.98rem; color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
+          Igual que los dentistas con su odontograma, nosotros inspeccionamos visualmente cada órgano de tu teléfono: Face ID, batería, estanqueidad, TrueTone y cámaras. Sabes exactamente qué piezas están sanas antes de que toquemos un solo tornillo.
+        </p>
+        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa">
+          Pedir Check-up con Dispositivograma
+        </a>
+      </div>
+      <div class="tilt-card" id="bannerTiltCard">
+        <img src="assets/foto-real-taller.jpg" alt="Mesa de Trabajo Real Volt">
+      </div>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section class="section" id="faq">
+    <div class="section-header reveal">
+      <h3>Preguntas Frecuentes</h3>
+      <p>Resolvemos tus dudas antes de agendar tu reparación.</p>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <h5><span>❓</span> ¿Cobran extra por venir a mi domicilio?</h5>
+        <p>No. El precio cotizado incluye el traslado del especialista hasta tu casa u oficina dentro de nuestra zona de cobertura habitual.</p>
+      </div>
+
+      <div class="faq-item reveal">
+        <h5><span>🔒</span> ¿Tienen acceso a mis fotos o datos personales?</h5>
+        <p>Cero acceso. Tú estás presente viendo el trabajo sobre tu mesa y para cambios de pantalla o batería NO requerimos tu contraseña de desbloqueo.</p>
+      </div>
+
+      <div class="faq-item reveal">
+        <h5><span>💳</span> ¿Qué métodos de pago aceptan?</h5>
+        <p>Llevamos terminal bancaria para cobro con tarjeta de crédito o débito, además de transferencias bancarias SPEI o efectivo.</p>
+      </div>
+
+      <div class="faq-item reveal">
+        <h5><span>⏱️</span> ¿Cuánto tardan en realizar la reparación?</h5>
+        <p>Un cambio de pantalla o batería promedio toma entre 20 y 30 minutos directamente frente a ti.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img src="assets/logo-volt-studio.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 8px;">
+      <span>VOLT REPAIR STUDIO</span>
+    </div>
+    <p>Micro-Cirugía de Smartphones & Taller a Domicilio</p>
+    
+    <div class="footer-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#expediente">Dispositivograma</a>
+      <a href="taller.html">Panel Interno de Taller</a>
+      <a href="videos/reels-promocionales.html">Estudio de Video Reels</a>
+      <a href="javascript:void(0)" onclick="openWaBot()">WhatsApp Oficial</a>
+    </div>
+
+    <p style="margin-top: 15px; font-size: 0.78rem; color: #64748b;">
+      Lunes a Sábado: 11:00 AM – 8:00 PM | Todos los derechos reservados &copy; 2026 Volt Repair Studio.
+    </p>
+  </footer>
+
+  <!-- ============================================== -->
+  <!-- BOT FLOTANTE DE WHATSAPP CON CHAT AUTOMATIZADO -->
+  <!-- ============================================== -->
+  <div class="wa-widget-button" onclick="toggleWaChat()" title="Hablar con un Especialista Volt">
+    <div class="wa-badge-pulse"></div>
+    <svg viewBox="0 0 32 32">
+      <path d="M16.01 2.01C8.28 2.01 2 8.29 2 16.02c0 2.65.74 5.22 2.15 7.46L2 30l6.73-2.1c2.16 1.33 4.67 2.03 7.28 2.03 7.73 0 14.01-6.28 14.01-14.01S23.74 2.01 16.01 2.01zm0 25.64c-2.31 0-4.57-.63-6.53-1.83l-.47-.29-4.86 1.52 1.55-4.73-.31-.49c-1.33-2.07-2.04-4.48-2.04-6.95 0-6.42 5.22-11.64 11.66-11.64 6.43 0 11.65 5.22 11.65 11.64s-5.22 11.77-11.65 11.77zm6.39-8.73c-.35-.18-2.07-1.02-2.39-1.14-.32-.12-.55-.18-.78.18-.23.35-.9 1.14-1.1 1.37-.2.23-.4.26-.75.09-.35-.18-1.48-.55-2.82-1.74-1.04-.93-1.74-2.08-1.95-2.43-.2-.35-.02-.54.15-.71.16-.16.35-.4.52-.61.18-.2.23-.35.35-.58.12-.23.06-.43-.03-.61-.09-.18-.78-1.88-1.07-2.57-.28-.68-.57-.59-.78-.6h-.66c-.23 0-.61.09-.93.43-.32.35-1.22 1.19-1.22 2.91 0 1.72 1.25 3.38 1.43 3.61.18.23 2.46 3.76 5.96 5.27.83.36 1.48.58 1.99.74.84.27 1.6.23 2.21.14.67-.1 2.07-.85 2.36-1.66.29-.82.29-1.52.2-1.66-.09-.15-.32-.23-.67-.41z"/>
+    </svg>
+  </div>
+
+  <!-- VENTANA DEL ASISTENTE VIRTUAL DE WHATSAPP -->
+  <div class="wa-chat-window" id="waChatWindow">
+    <div class="wa-chat-header">
+      <div class="wa-chat-header-user">
+        <img src="assets/logo-volt-studio.jpg" alt="Manuel Volt">
+        <div>
+          <h5>Volt Studio ⚡ Soporte</h5>
+          <span><span class="online-dot"></span> En línea | Responde al instante</span>
+        </div>
+      </div>
+      <button class="wa-chat-close" onclick="toggleWaChat()">✕</button>
+    </div>
+
+    <!-- Mensajes del Chat -->
+    <div class="wa-chat-body" id="waChatBody">
+      <div class="chat-bubble chat-bubble-bot">
+        ¡Hola! 👋 Bienvenido a <b>Volt Repair Studio</b>.<br>
+        Soy el asistente técnico de Manuel. ¿Qué problema presenta tu equipo hoy?
+      </div>
+
+      <div class="chat-options-container" id="botStep1Options">
+        <button class="chat-option-btn" onclick="selectBotOption('Pantalla rota o estrellada')">📱 Pantalla rota o estrellada</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Batería degradada / No dura')">🔋 Batería dura muy poco</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Teléfono mojado con agua')">💧 Se cayó al agua / No enciende</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Otro problema / Hablar con Manuel')">💬 Hablar con el especialista Manuel</button>
+      </div>
+
+      <!-- Bouncing dots typing indicator -->
+      <div class="typing-indicator" id="typingIndicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <!-- Input Footer -->
+    <div class="wa-chat-footer">
+      <input type="text" id="waChatInput" class="wa-chat-input" placeholder="Escribe tu modelo (ej. iPhone 13)..." onkeypress="handleKeyPress(event)">
+      <button class="wa-chat-send" onclick="sendUserCustomMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: ANIMACIONES & LÓGICA DE BOT -->
+  <script>
+    // ==========================================
+    // 1. ANIMACIÓN CANVAS DE PARTÍCULAS ELÉCTRICAS
+    // ==========================================
+    const canvas = document.getElementById('electricCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles = [];
+    let mouse = { x: null, y: null, radius: 140 };
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = [];
+      const count = Math.floor((width * height) / 16000);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: (Math.random() - 0.5) * 0.8,
+          size: Math.random() * 2 + 1
+        });
+      }
+    }
+
+    window.addEventListener('resize', initCanvas);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function renderElectricNetwork() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // Update & Draw Particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Connect nearby particles
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        // Mouse reaction
+        if (mouse.x !== null) {
+          const mdx = p.x - mouse.x;
+          const mdy = p.y - mouse.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < mouse.radius) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.5 * (1 - mDist / mouse.radius)})`;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(renderElectricNetwork);
+    }
+
+    initCanvas();
+    renderElectricNetwork();
+
+    // ==========================================
+    // 2. SCROLL REVEAL OBSERVER
+    // ==========================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObserver.observe(el));
+
+    // ==========================================
+    // 3. STATS NUMBER COUNTER ANIMATION
+    // ==========================================
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.stat-num').forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            if (target === 0) {
+              counter.innerText = '$0';
+              return;
+            }
+            let count = 0;
+            const step = Math.ceil(target / 40);
+            const interval = setInterval(() => {
+              count += step;
+              if (count >= target) {
+                counter.innerText = (target === 100) ? '100%' : (target === 25 ? '25 min' : '+' + target);
+                clearInterval(interval);
+              } else {
+                counter.innerText = count;
+              }
+            }, 30);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsElem = document.querySelector('.stats-strip');
+    if (statsElem) statsObserver.observe(statsElem);
+
+    // ==========================================
+    // 4. 3D TILT EFFECT ON CARDS
+    // ==========================================
+    function setupTilt(cardId) {
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        card.style.transform = `perspective(1000px) rotateY(${x / 20}deg) rotateX(${-y / 20}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)`;
+      });
+    }
+
+    setupTilt('heroTiltCard');
+    setupTilt('bannerTiltCard');
+
+    // ==========================================
+    // 5. INTERACTIVE WHATSAPP BOT LOGIC
+    // ==========================================
+    let chatStep = 1;
+    let userIssue = '';
+    let userModel = '';
+
+    function toggleWaChat() {
+      const win = document.getElementById('waChatWindow');
+      win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function openWaBot() {
+      const win = document.getElementById('waChatWindow');
+      win.style.display = 'flex';
+      win.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showTyping(callback, delay = 800) {
+      const typing = document.getElementById('typingIndicator');
+      const chatBody = document.getElementById('waChatBody');
+      typing.style.display = 'flex';
+      chatBody.appendChild(typing);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      setTimeout(() => {
+        typing.style.display = 'none';
+        callback();
+      }, delay);
+    }
+
+    function selectBotOption(issue) {
+      userIssue = issue;
+      addMessage(issue, 'user');
+      document.getElementById('botStep1Options').style.display = 'none';
+
+      showTyping(() => {
+        addMessage('Excelente. Para cotizarte con servicio a domicilio incluido, ¿cuál es el <b>modelo de tu celular</b>? (Ej. iPhone 11, iPhone 13 Pro, Samsung S22...)', 'bot');
+        chatStep = 2;
+      });
+    }
+
+    function sendUserCustomMessage() {
+      const input = document.getElementById('waChatInput');
+      const val = input.value.trim();
+      if (!val) return;
+
+      addMessage(val, 'user');
+      input.value = '';
+
+      if (chatStep === 1) {
+        userIssue = val;
+        showTyping(() => {
+          addMessage('Enterado. ¿Cuál es el <b>modelo exacto</b> y en qué <b>colonia o zona</b> necesitas el servicio a domicilio?', 'bot');
+          chatStep = 2;
+        });
+      } else if (chatStep === 2) {
+        userModel = val;
+        showTyping(() => {
+          addMessage('¡Listo! Ya organicé tu reporte técnico. Presiona el botón verde para contactar al especialista Manuel por WhatsApp con tu cotización preparada ⚡', 'bot');
+          
+          const chatBody = document.getElementById('waChatBody');
+          const btnDiv = document.createElement('div');
+          btnDiv.style.marginTop = '10px';
+          btnDiv.innerHTML = `
+            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Hola Manuel, vi la página web de Volt Repair Studio. Necesito cotizar: ' + userIssue + ' para mi equipo ' + userModel + '. ¿Tendrás turno disponible a domicilio hoy?')}" target="_blank" class="btn btn-wa" style="width:100%; text-align:center; padding:14px; font-size:0.9rem;">
+              👉 Abrir Chat Oficial en WhatsApp
+            </a>
+          `;
+          chatBody.appendChild(btnDiv);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        });
+      }
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendUserCustomMessage();
+    }
+
+    function addMessage(text, sender) {
+      const chatBody = document.getElementById('waChatBody');
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + (sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot');
+      bubble.innerHTML = text;
+      chatBody.appendChild(bubble);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
+</body>
+</html>

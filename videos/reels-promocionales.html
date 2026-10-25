@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudio de Videos y Reels | Volt Repair Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090e17;
+      --card: #121a29;
+      --cyan: #00f0ff;
+      --accent: #ff0055;
+      --green: #10b981;
+      --yellow: #ffcc00;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #111a2f 0%, #080c14 100%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(10, 15, 25, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand h1 { font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; }
+    .brand span { font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; font-weight: 700; }
+
+    .main-layout {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+      align-items: start;
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+    }
+
+    /* REEL PLAYER PHONE FRAME */
+    .phone-mockup {
+      width: 340px;
+      height: 604px; /* 9:16 aspect ratio */
+      background: #000;
+      border-radius: 40px;
+      border: 8px solid #1e293b;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 240, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    /* Dynamic Island */
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 22px;
+      background: #000;
+      border-radius: 14px;
+      z-index: 30;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    canvas#reelCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #090e17;
+    }
+
+    /* CONTROLS CARD */
+    .controls-card {
+      background: var(--card);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, var(--cyan), #0066ff);
+      color: #040914;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-play:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 240, 255, 0.7); }
+
+    .btn-record {
+      background: linear-gradient(135deg, var(--accent), #ff0055);
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .video-selector-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px;
+      border-radius: 12px;
+      text-align: left;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .video-selector-btn:hover, .video-selector-btn.active {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    .video-selector-btn h4 { font-size: 0.95rem; margin-bottom: 4px; color: var(--cyan); }
+    .video-selector-btn p { font-size: 0.8rem; color: var(--muted); }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(8, 12, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo-volt-studio.jpg" alt="Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+      <div>
+        <h1>VOLT REPAIR STUDIO</h1>
+        <span>Estudio de Videos & Reels de Conversión</span>
+      </div>
+    </a>
+    <a href="../index.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.8rem;">
+      ⬅️ Volver a la Suite Principal
+    </a>
+  </header>
+
+  <div class="main-layout">
+
+    <!-- REEL PREVIEWER (PHONE FRAME) -->
+    <div>
+      <div class="phone-mockup">
+        <div class="notch"></div>
+        <canvas id="reelCanvas" width="720" height="1280"></canvas>
+      </div>
+
+      <!-- PLAYBACK BUTTONS -->
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 16px;">
+        <button class="btn btn-play" id="btnPlay" onclick="togglePlay()">
+          ▶️ Reproducir Reel
+        </button>
+        <button class="btn btn-record" id="btnRecord" onclick="recordVideo()">
+          🔴 Grabar & Descargar Video (WebM/MP4)
+        </button>
+      </div>
+      <div id="recordStatus" style="text-align: center; font-size: 0.78rem; color: var(--cyan); margin-top: 8px; height: 18px;"></div>
+    </div>
+
+    <!-- CONTROLS & CAMPAIGN SELECTOR -->
+    <div class="controls-card">
+      <h2 style="font-size: 1.25rem; margin-bottom: 6px;">🎬 Campañas en Video para Reels y TikTok</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
+        Videos animados en formato vertical (9:16) con ganchos anti-scroll, texto de impacto y sonido, basados en la <b>economía y taller real</b>.
+      </p>
+
+      <!-- SELECTOR DE VIDEOS -->
+      <div class="video-selector-btn active" id="btnCamp1" onclick="selectCampaign(1)">
+        <h4>Campaña 1: "Servicio a Domicilio en tu Mesa"</h4>
+        <p>Elimina el miedo de las plazas. Muestra reparación honesta y transparente frente a los ojos del cliente.</p>
+      </div>
+
+      <div class="video-selector-btn" id="btnCamp2" onclick="selectCampaign(2)">
+        <h4>Campaña 2: "El Mito del Arroz y Teléfonos Mojados"</h4>
+        <p>Destruye el mito popular y ofrece diagnóstico honesto de sulfatación antes de que sea tarde.</p>
+      </div>
+
+      <div class="video-selector-btn" id="btnCamp3" onclick="selectCampaign(3)">
+        <h4>Campaña 3: "Ahorra $15,000 en vez de Comprar Otro"</h4>
+        <p>Demuestra que una pantalla rota o batería vieja no justifica endeudarse en un teléfono nuevo.</p>
+      </div>
+
+      <!-- PERSONALIZACIÓN RÁPIDA -->
+      <h3 style="font-size: 0.95rem; margin: 20px 0 12px; color: #fff; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+        ⚙️ Personalizar Datos en Pantalla
+      </h3>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Precio Promocional</label>
+          <input type="text" id="customPrice" class="form-control" value="DESDE $600 A DOMICILIO" oninput="updateCustoms()">
+        </div>
+        <div class="form-group">
+          <label>Modelos de Celular</label>
+          <input type="text" id="customModels" class="form-control" value="iPhone 8 al 15 Pro Max" oninput="updateCustoms()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Llamada a la Acción (CTA)</label>
+        <input type="text" id="customCTA" class="form-control" value="¡Envía WhatsApp al link del perfil!" oninput="updateCustoms()">
+      </div>
+
+      <!-- INSTRUCCIONES DE GRABACIÓN CASERA -->
+      <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 12px; padding: 14px; margin-top: 16px; font-size: 0.82rem; color: #cbd5e1;">
+        <strong style="color: var(--cyan);">💡 ¿Quieres grabarlo tú mismo con tu celular?</strong>
+        <p style="margin-top: 4px;">Pon tu teléfono en una taza o tripié enfocando tu mesa con el tapete azul. Solo necesitas 3 tomas de 5 segundos: 1) El teléfono roto, 2) Tus manos usando el desarmador, 3) El teléfono encendido nuevo. ¡Eso genera miles de vistas!</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // CAMPAÑAS DE VIDEO
+    const campaigns = {
+      1: {
+        title: "SERVICIO A DOMICILIO",
+        scenes: [
+          { time: 0, hook: "¿TE DA MIEDO DEJAR TU IPHONE EN UNA PLAZA?", sub: "Nadie quiere que le cambien piezas o le revisen sus fotos...", color: "#ff0055", img: "domicilio" },
+          { time: 3, hook: "LLEVAMOS EL TALLER A TU SALA U OFICINA", sub: "Reparamos frente a ti en 25 minutos con total transparencia", color: "#00f0ff", img: "domicilio" },
+          { time: 6.5, hook: "HERRAMIENTA Y REPUESTOS CERTIFICADOS", sub: "Tapete térmico, tornillería organizada y garantía por escrito", color: "#10b981", img: "taller" },
+          { time: 10, hook: "AGENDA HOY TU SERVICIO", sub: "¡Envía mensaje y te visitamos hoy mismo!", color: "#ffcc00", img: "taller" }
+        ],
+        duration: 13
+      },
+      2: {
+        title: "EL MITO DEL ARROZ",
+        scenes: [
+          { time: 0, hook: "¡POR FAVOR NUNCA METAS TU CELULAR EN ARROZ!", sub: "El peor error cuando un teléfono se cae al agua...", color: "#ff0055", img: "taller" },
+          { time: 3, hook: "EL ARROZ SUELTA ALMIDÓN Y CORROE", sub: "Pudre las pistas de la placa en menos de 24 horas", color: "#f59e0b", img: "computadora" },
+          { time: 6.5, hook: "LIMPIEZA TÉCNICA Y DIAGNÓSTICO HONESTO", sub: "Revisamos tu equipo sin inventar fallas caras", color: "#00f0ff", img: "taller" },
+          { time: 10, hook: "¡SALVA TUS FOTOS Y TU TELÉFONO!", sub: "Escríbenos antes de que la humedad lo dañe", color: "#10b981", img: "domicilio" }
+        ],
+        duration: 13
+      },
+      3: {
+        title: "AHORRA $15,000",
+        scenes: [
+          { time: 0, hook: "¿COMPRAR OTRO IPHONE POR UNA PANTALLA ROTA?", sub: "No tires tu dinero a la basura endeudándote...", color: "#ff0055", img: "taller" },
+          { time: 3, hook: "RENOVAMOS TU PANTALLA EN TU DOMICILIO", sub: "Mismo brillo, misma respuesta táctil, cero complicaciones", color: "#00f0ff", img: "domicilio" },
+          { time: 6.5, hook: "PRECIOS REALES PARA GENTE REAL", sub: "Desde $600 con el traslado incluido hasta tu puerta", color: "#10b981", img: "taller" },
+          { time: 10, hook: "ESTRENA TELÉFONO OTRA VEZ", sub: "Toca el botón y cotiza tu modelo en 1 minuto", color: "#ffcc00", img: "computadora" }
+        ],
+        duration: 13
+      }
+    };
+
+    let activeCampaignId = 1;
+    let isPlaying = false;
+    let currentTime = 0;
+    let animFrame = null;
+    let lastTimestamp = 0;
+
+    // IMÁGENES DE FONDO (CARGADAS DESDE ASSETS)
+    const images = {
+      taller: new Image(),
+      domicilio: new Image(),
+      computadora: new Image(),
+      logo: new Image()
+    };
+
+    images.taller.src = '../assets/foto-real-taller.jpg';
+    images.domicilio.src = '../assets/foto-real-domicilio.jpg';
+    images.computadora.src = '../assets/foto-real-computadora.jpg';
+    images.logo.src = '../assets/logo-volt-studio.jpg';
+
+    // FALLBACKS
+    images.taller.onerror = () => { images.taller.src = '../assets/render-taller-humilde.jpg'; };
+    images.domicilio.onerror = () => { images.domicilio.src = '../assets/render-domicilio-humilde.jpg'; };
+    images.computadora.onerror = () => { images.computadora.src = '../assets/render-computadora-humilde.jpg'; };
+
+    // WEB AUDIO SOUND EFFECTS
+    let audioCtx = null;
+    function playBeep(freq = 440, duration = 0.08) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function selectCampaign(id) {
+      activeCampaignId = id;
+      document.querySelectorAll('.video-selector-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btnCamp' + id).classList.add('active');
+      currentTime = 0;
+      drawFrame(0);
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        isPlaying = false;
+        document.getElementById('btnPlay').innerText = '▶️ Reproducir Reel';
+        cancelAnimationFrame(animFrame);
+      } else {
+        isPlaying = true;
+        document.getElementById('btnPlay').innerText = '⏸️ Pausar Reel';
+        lastTimestamp = performance.now();
+        animFrame = requestAnimationFrame(videoLoop);
+      }
+    }
+
+    function videoLoop(timestamp) {
+      if (!isPlaying) return;
+      const delta = (timestamp - lastTimestamp) / 1000;
+      lastTimestamp = timestamp;
+
+      currentTime += delta;
+      const dur = campaigns[activeCampaignId].duration;
+      if (currentTime >= dur) {
+        currentTime = 0; // Loop
+      }
+
+      drawFrame(currentTime);
+      animFrame = requestAnimationFrame(videoLoop);
+    }
+
+    function drawFrame(t) {
+      const canvas = document.getElementById('reelCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = 720;
+      const h = 1280;
+      const camp = campaigns[activeCampaignId];
+
+      // Determinar escena actual
+      let currentScene = camp.scenes[0];
+      for (let i = 0; i < camp.scenes.length; i++) {
+        if (t >= camp.scenes[i].time) {
+          currentScene = camp.scenes[i];
+        }
+      }
+
+      // FONDO
+      ctx.fillStyle = '#080c14';
+      ctx.fillRect(0, 0, w, h);
+
+      const bgImg = images[currentScene.img] || images.taller;
+      if (bgImg.complete && bgImg.naturalHeight !== 0) {
+        // Zoom sutil continuo (Ken Burns effect)
+        const scale = 1.0 + (t % 3) * 0.03;
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        ctx.scale(scale, scale);
+        ctx.drawImage(bgImg, -w / 2, -h / 2, w, h);
+        ctx.restore();
+      }
+
+      // GRADIENTE OSCURO CINEMATOGRÁFICO
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, 'rgba(8, 12, 20, 0.85)');
+      grad.addColorStop(0.3, 'rgba(8, 12, 20, 0.3)');
+      grad.addColorStop(0.65, 'rgba(8, 12, 20, 0.7)');
+      grad.addColorStop(1, 'rgba(8, 12, 20, 0.98)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // BARRA SUPERIOR BRANDING
+      if (images.logo.complete && images.logo.naturalHeight !== 0) {
+        ctx.save();
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(40, 60, 60, 60, 14);
+        else ctx.rect(40, 60, 60, 60);
+        ctx.clip();
+        ctx.drawImage(images.logo, 40, 60, 60, 60);
+        ctx.restore();
+      }
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '900 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('VOLT REPAIR STUDIO', 115, 90);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '700 15px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('TALLER & SERVICIO A DOMICILIO', 115, 110);
+
+      // PILL CENTRAL "SERVICIO HONESTO"
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.2)';
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(40, 360, 340, 46, 23);
+      else ctx.rect(40, 360, 340, 46);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '800 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('⚡ ' + camp.title, 60, 390);
+
+      // GANCHO PRINCIPAL (GRANDE TIPO TIKTOK)
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 46px "Montserrat", sans-serif';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 12;
+
+      // Wrap text
+      const words = currentScene.hook.split(' ');
+      let line = '';
+      let y = 460;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > 620 && n > 0) {
+          // Highlight color
+          if (line.includes('NO') || line.includes('MIEDO') || line.includes('NUNCA') || line.includes('TIRES')) {
+            ctx.fillStyle = currentScene.color;
+          } else {
+            ctx.fillStyle = '#ffffff';
+          }
+          ctx.fillText(line.trim(), 40, y);
+          line = words[n] + ' ';
+          y += 56;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), 40, y);
+      ctx.shadowBlur = 0;
+
+      // SUBTÍTULO
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '600 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(currentScene.sub, 40, y + 46);
+
+      // TARJETA DE OFERTA INFERIOR
+      const priceText = document.getElementById('customPrice').value;
+      const modelsText = document.getElementById('customModels').value;
+      const ctaText = document.getElementById('customCTA').value;
+
+      const cardY = 980;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(40, cardY, 640, 210, 24);
+      else ctx.rect(40, cardY, 640, 210);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#10b981';
+      ctx.font = '800 17px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('📱 ' + modelsText, 65, cardY + 45);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '900 36px monospace';
+      ctx.fillText(priceText, 65, cardY + 95);
+
+      // BOTÓN VERDE WHATSAPP CTA
+      ctx.fillStyle = '#25d366';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(65, cardY + 120, 590, 65, 16);
+      else ctx.rect(65, cardY + 120, 590, 65);
+      ctx.fill();
+
+      ctx.fillStyle = '#062b14';
+      ctx.font = '900 22px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('💬 ' + ctaText, 85, cardY + 162);
+
+      // BARRA DE PROGRESO DE REEL AL FONDO
+      const progress = t / camp.duration;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fillRect(0, 1270, w, 10);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillRect(0, 1270, w * progress, 10);
+    }
+
+    function updateCustoms() {
+      drawFrame(currentTime);
+    }
+
+    // GRABADOR DE VIDEO
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function recordVideo() {
+      const canvas = document.getElementById('reelCanvas');
+      const status = document.getElementById('recordStatus');
+      const dur = campaigns[activeCampaignId].duration;
+
+      status.innerText = '🔴 Grabando Reel en formato vertical... Espere ' + dur + ' segundos.';
+      currentTime = 0;
+      isPlaying = false;
+      cancelAnimationFrame(animFrame);
+
+      const stream = canvas.captureStream(30); // 30 fps
+      recordedChunks = [];
+
+      try {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+      } catch(e) {
+        mediaRecorder = new MediaRecorder(stream);
+      }
+
+      mediaRecorder.ondataavailable = function(e) {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = function() {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reel-volt-' + Date.now() + '.webm';
+        a.click();
+        status.innerText = '✅ ¡Video descargado con éxito! Listo para subir a TikTok o Reels.';
+      };
+
+      mediaRecorder.start();
+
+      // Reproducir ciclo exacto
+      isPlaying = true;
+      lastTimestamp = performance.now();
+      animFrame = requestAnimationFrame(function recordLoop(timestamp) {
+        const delta = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+        currentTime += delta;
+        drawFrame(currentTime);
+
+        if (currentTime < dur) {
+          animFrame = requestAnimationFrame(recordLoop);
+        } else {
+          isPlaying = false;
+          mediaRecorder.stop();
+        }
+      });
+    }
+
+    window.onload = function() {
+      drawFrame(0);
+    };
+  </script>
+</body>
+</html>
