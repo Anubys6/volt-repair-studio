@@ -70,7 +70,7 @@ No necesitas cámaras profesionales. Tu propio celular en un soporte o tripié g
 | **Lunes** | Instagram / TikTok | Reel / Video corto | Antes y después de un rescate a domicilio (pantalla rota a pantalla nueva). |
 | **Martes** | Facebook / Grupos | Post con foto real | "Tip técnico: Por qué la carga rápida con cables baratos infla tu batería". |
 | **Miércoles** | Historias (FB + IG + WA) | Captura interactiva | Subir una captura del Dispositivograma de una reparación del día. |
-| **Jueves** | TikTok / Reels | Destructor de mitos | "El peligro de meter el teléfono en arroz cuando se moja". |
+| **Jueves** | TikTok / Reels | Demostración de valor | "Pantalla rota Samsung / Moto / iPhone: Cambio express en 25 min en tu sala". |
 | **Viernes** | Facebook / Instagram | Post de urgencias | "¿Fin de semana y tu pantalla está en blanco y negro? Agenda tu turno a domicilio hoy". |
 | **Sábado** | Historias de WhatsApp | Prueba social | Foto del cliente contento con su teléfono entregado en su sala. |
 

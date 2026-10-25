@@ -66,19 +66,19 @@ Por eso en Volt Repair Studio creamos el servicio técnico a domicilio:
 Envíanos un WhatsApp directo al enlace de nuestro perfil y agendamos tu horario para hoy.
 ```
 
-### Plantilla 2: Educación & Gancho de Curiosidad (Para Facebook y Grupos)
+### Plantilla 2: Confianza & Seguridad (Para Facebook y Grupos)
 ```text
-⚠️ ¡Si tu iPhone se cayó al agua, NO LO METAS EN ARROZ! ⚠️
+⚠️ ¿Te piden dejar tu teléfono 3 días por un cambio de pantalla? ¡Cuidado! ⚠️
 
-El 90% de los teléfonos que recibimos muertos en el taller cometieron este error. 
-El arroz no absorbe la humedad interna de los microcircuitos; lo único que hace es soltar polvo de almidón que se mezcla con el agua y sulfata la placa base en menos de 24 horas.
+El 90% de los clientes nos cuentan que les da pavor dejar su celular en plazas o locales desconocidos por miedo a que les cambien refacciones originales por genéricas o revisen sus fotos personales.
 
-💡 Lo que SÍ debes hacer:
-1. Apágalo de inmediato y NO intentes cargarlo.
-2. Sécalo por fuera con un paño limpio.
-3. Escríbenos para aplicarle limpieza por tina de ultrasonido antes de que la corrosión toque el procesador.
+💡 Lo que hacemos en Volt Repair Studio:
+1. Llevamos nuestro laboratorio móvil hasta tu casa u oficina.
+2. Cambiamos tu pantalla frente a tus propios ojos en 25 minutos.
+3. Conservamos tu TrueTone original, respuesta táctil y te entregamos garantía por escrito.
 
-Tu información es lo más valioso. En Volt Repair Studio te ayudamos a salvarla. ⚡
+📱 Todos los iPhone (de cualquier año), Samsung, Motorola y Android.
+Mano de obra certificada $700 (+ refacción). Escríbenos por WhatsApp y agendamos hoy. ⚡
 ```
 
 ### Plantilla 3: Desmitificador de Costos (Comparativa de Ahorro)

@@ -43,13 +43,13 @@ No necesitas un camarógrafo. Solo pon tu teléfono apoyado en una taza o en un 
 
 ---
 
-### Formato 3: Desmintiendo el Mito del Arroz
+### Formato 3: Cambio de Pantalla Express en 25 Minutos
 * **Tomas:**
-  1. *Segundo 0 a 3:* Tomas un teléfono y lo metes a un plato con arroz, luego lo sacas y haces una seña de "NO" con el dedo.
-  2. *Segundo 4 a 9:* Muestras una placa con sarro o humedad bajo el microscopio o con la luz de tu mesa.
-  3. *Segundo 10 a 15:* Muestras cómo limpias con el cepillo antiestático y alcohol isopropílico.
+  1. *Segundo 0 a 3:* Muestras una pantalla estrellada con manchas negras o touch trabado.
+  2. *Segundo 4 a 9:* Tomas rápidas retirando la pantalla rota con ventosa y conectando la pantalla nueva en el tapete de trabajo.
+  3. *Segundo 10 a 15:* Muestras la pantalla encendiendo con TrueTone activo y respuesta táctil perfecta.
 * **Texto en Pantalla:**
-  > *"¡El arroz no absorbe el agua interna, suelta almidón y pudre tu placa! Apágalo y tráelo a una limpieza técnica antes de que muera."*
+  > *"¿Pantalla rota en tu iPhone, Samsung o Motorola? No compres otro celular. Mano de obra oficial $700 y lo dejamos como nuevo en 25 minutos en tu sala."*
 
 ---
 
