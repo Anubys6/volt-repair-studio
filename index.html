@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Volt Repair Studio | Micro-Cirugía de Smartphones & Taller a Domicilio</title>
-  <meta name="description" content="Reparación profesional de iPhone y celulares en tu propia sala u oficina en 25 minutos. Laboratorio móvil, diagnóstico anatómico digital y garantía por escrito.">
+  <meta name="description" content="Reparación profesional y cambio de pantalla para iPhone (todos los años), Samsung, Motorola y cualquier Android en 25 min en tu sala u oficina. Mano de obra certificada transparente.">
   
   <!-- PWA & Mobile Meta Tags -->
   <meta name="theme-color" content="#060911">
@@ -19,21 +19,24 @@
   <link rel="apple-touch-icon" href="assets/logo-volt-studio.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #060911;
-      --bg-surface: rgba(13, 20, 36, 0.75);
-      --bg-card: rgba(18, 27, 49, 0.65);
-      --border: rgba(0, 240, 255, 0.16);
-      --border-hover: rgba(0, 240, 255, 0.5);
+      --bg-surface: rgba(13, 20, 36, 0.78);
+      --bg-card: rgba(18, 27, 49, 0.72);
+      --border: rgba(0, 240, 255, 0.18);
+      --border-hover: rgba(0, 240, 255, 0.6);
       --cyan: #00f0ff;
-      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --cyan-glow: rgba(0, 240, 255, 0.45);
       --blue: #0066ff;
+      --blue-glow: rgba(0, 102, 255, 0.4);
       --green-wa: #25d366;
-      --green-glow: rgba(37, 211, 102, 0.4);
-      --purple-accent: #a855f7;
+      --green-glow: rgba(37, 211, 102, 0.45);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.45);
+      --gold: #f59e0b;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -65,7 +68,7 @@
       touch-action: manipulation;
     }
 
-    /* CANVAS DE PARTÍCULAS ELÉCTRICAS OPTIMIZADO */
+    /* CANVAS DE PARTÍCULAS ELÉCTRICAS & RAYOS */
     #electricCanvas {
       position: fixed;
       top: 0;
@@ -74,44 +77,157 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.65;
+      opacity: 0.75;
     }
 
-    /* AMBIENT LIGHTING */
+    /* AMBIENT LIGHTING GLOWS */
     .ambient-glow-1 {
       position: fixed;
       top: -120px;
       right: -100px;
-      width: clamp(300px, 45vw, 550px);
-      height: clamp(300px, 45vw, 550px);
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.12), transparent 70%);
+      width: clamp(320px, 50vw, 600px);
+      height: clamp(320px, 50vw, 600px);
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.16), transparent 70%);
       pointer-events: none;
       z-index: 1;
-      filter: blur(50px);
+      filter: blur(55px);
+      animation: pulseGlow1 8s ease-in-out infinite alternate;
     }
 
     .ambient-glow-2 {
       position: fixed;
       bottom: -150px;
       left: -100px;
-      width: clamp(300px, 45vw, 550px);
-      height: clamp(300px, 45vw, 550px);
-      background: radial-gradient(circle, rgba(0, 102, 255, 0.1), transparent 70%);
+      width: clamp(320px, 50vw, 600px);
+      height: clamp(320px, 50vw, 600px);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.14), transparent 70%);
       pointer-events: none;
       z-index: 1;
-      filter: blur(50px);
+      filter: blur(55px);
+      animation: pulseGlow2 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow1 {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+      100% { transform: scale(1.15) translate(-20px, 30px); opacity: 1; }
+    }
+
+    @keyframes pulseGlow2 {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+      100% { transform: scale(1.2) translate(30px, -20px); opacity: 1; }
+    }
+
+    /* BORDER BEAM ANIMADO LÁSER (CYBERPUNK NEON) */
+    .laser-border-box {
+      position: relative;
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.15);
+    }
+
+    .laser-border-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, transparent, var(--cyan), var(--purple), transparent 40%);
+      animation: rotateLaser 5s linear infinite;
+      z-index: 0;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .laser-border-box::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: #090e1a;
+      border-radius: 22px;
+      z-index: 1;
+    }
+
+    .laser-border-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes rotateLaser {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* MARQUEE CONTINUO DE MARCAS SOPORTADAS (ESTILO iFixit / uBreakiFix) */
+    .brand-marquee-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      overflow: hidden;
+      padding: 14px 0;
+      background: rgba(6, 9, 17, 0.9);
+      border-top: 1px solid rgba(0, 240, 255, 0.15);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-marquee-track {
+      display: flex;
+      gap: 36px;
+      width: max-content;
+      animation: marqueeScroll 26s linear infinite;
+    }
+
+    .brand-marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 30px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .marquee-pill span.icon {
+      color: var(--cyan);
+      font-size: 1.05rem;
+    }
+
+    .marquee-pill:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     /* HEADER */
     header {
-      background: rgba(6, 9, 17, 0.85);
+      background: rgba(6, 9, 17, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: clamp(10px, 2.5vw, 16px) clamp(16px, 4vw, 36px);
+      padding: clamp(10px, 2.5vw, 15px) clamp(16px, 4vw, 36px);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -127,11 +243,11 @@
     }
 
     .brand img {
-      width: clamp(36px, 8vw, 44px);
-      height: clamp(36px, 8vw, 44px);
+      width: clamp(38px, 8vw, 46px);
+      height: clamp(38px, 8vw, 46px);
       border-radius: 12px;
       border: 1px solid var(--border-hover);
-      box-shadow: 0 0 16px var(--cyan-glow);
+      box-shadow: 0 0 18px var(--cyan-glow);
       object-fit: cover;
       transition: transform 0.3s var(--ease-spring);
     }
@@ -142,7 +258,7 @@
 
     .brand-text h1 {
       font-size: clamp(0.95rem, 3.2vw, 1.15rem);
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
@@ -154,14 +270,14 @@
       font-size: clamp(0.62rem, 2vw, 0.72rem);
       color: var(--cyan);
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.8px;
       display: block;
     }
 
     .nav-links {
       display: flex;
-      gap: 22px;
+      gap: 20px;
       align-items: center;
     }
 
@@ -210,7 +326,7 @@
       transition: all 0.25s var(--ease-spring);
       position: relative;
       overflow: hidden;
-      min-height: 48px; /* Touch friendly standard */
+      min-height: 48px;
     }
 
     .btn:active {
@@ -221,7 +337,7 @@
       content: '';
       position: absolute;
       top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
       transition: left 0.6s ease;
     }
 
@@ -254,7 +370,7 @@
     .btn-secondary {
       background: rgba(255, 255, 255, 0.06);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       backdrop-filter: blur(8px);
     }
 
@@ -310,11 +426,11 @@
       border: 1px solid var(--border-hover);
       color: var(--cyan);
       font-size: clamp(0.74rem, 2.2vw, 0.82rem);
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       margin-bottom: 16px;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
       animation: floatBadge 3.2s ease-in-out infinite;
     }
 
@@ -324,18 +440,18 @@
     }
 
     .hero h2 {
-      font-size: clamp(1.85rem, 6.2vw, 3.2rem);
+      font-size: clamp(1.9rem, 6.2vw, 3.3rem);
       font-weight: 900;
-      line-height: 1.14;
+      line-height: 1.12;
       margin-bottom: 18px;
       letter-spacing: -0.6px;
     }
 
     .hero h2 span.gradient-text {
-      background: linear-gradient(135deg, var(--cyan) 0%, #38bdf8 50%, #818cf8 100%);
+      background: linear-gradient(135deg, var(--cyan) 0%, #38bdf8 50%, #c084fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.3));
+      filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.35));
     }
 
     .hero p {
@@ -354,7 +470,7 @@
 
     .hero-badges-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       margin-top: 32px;
       flex-wrap: wrap;
     }
@@ -363,9 +479,9 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      font-size: clamp(0.74rem, 2vw, 0.82rem);
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       background: rgba(255, 255, 255, 0.04);
       padding: 8px 12px;
       border-radius: 10px;
@@ -419,52 +535,445 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
 
-    /* STATS COUNTER STRIP */
-    .stats-strip {
-      position: relative;
-      z-index: 2;
-      max-width: 1200px;
-      margin: clamp(24px, 5vw, 40px) auto clamp(40px, 7vw, 70px);
-      padding: 0 clamp(16px, 4vw, 24px);
+    /* ================================================= */
+    /* SECCIÓN DE PRECIOS & MANO DE OBRA TRANSPARENTE    */
+    /* REGLA: TAPA $500, PANTALLA $700, BATERÍA $500    */
+    /* ================================================= */
+    .pricing-transparency-banner {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(168, 85, 247, 0.12));
+      border: 1px solid var(--border-hover);
+      border-radius: 20px;
+      padding: 18px 24px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
     }
 
-    .stats-grid {
+    .transparency-icon {
+      font-size: 2.2rem;
+      flex-shrink: 0;
+    }
+
+    .transparency-text h4 {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .transparency-text p {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      margin-top: 4px;
+    }
+
+    /* TARJETAS DE SERVICIO CON BORDES LÁSER GLOW */
+    .pricing-cards-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      background: rgba(15, 23, 42, 0.65);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .price-card {
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: clamp(16px, 3.5vw, 28px);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.35s var(--ease-spring);
+      position: relative;
+      overflow: hidden;
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
-    .stat-item {
-      text-align: center;
+    .price-card.featured {
+      border-color: var(--cyan);
+      box-shadow: 0 15px 40px rgba(0, 240, 255, 0.22);
     }
 
-    .stat-num {
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
-      font-weight: 900;
+    .price-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(0, 240, 255, 0.25);
+    }
+
+    .price-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .price-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--border-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      transition: transform 0.3s ease;
+    }
+
+    .price-card:hover .price-card-icon {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    .price-badge-labor {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
       color: var(--cyan);
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 2px;
-      letter-spacing: -1px;
-      line-height: 1.1;
-    }
-
-    .stat-label {
-      font-size: clamp(0.68rem, 1.8vw, 0.8rem);
-      font-weight: 700;
-      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
+    .price-amount {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin: 10px 0 4px;
+    }
+
+    .price-amount span.currency {
+      color: var(--cyan);
+      font-size: 1.4rem;
+      margin-right: 2px;
+    }
+
+    .price-sublabel {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .price-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+      font-size: 0.86rem;
+      color: #cbd5e1;
+    }
+
+    .price-feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .price-feature-list li span.check {
+      color: #34d399;
+      font-size: 1rem;
+    }
+
+    /* =================================================== */
+    /* NOVEDAD 1: COTIZADOR INTERACTIVO 3 PASOS EN VIVO    */
+    /* (FUNCIONALIDAD INSPIRADA EN uBreakiFix & Puls)       */
+    /* =================================================== */
+    .calculator-section {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 40px auto 70px;
+      padding: 0 clamp(16px, 4vw, 24px);
+    }
+
+    .calc-box {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(6, 9, 17, 0.95));
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      padding: clamp(22px, 4vw, 36px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(20px);
+    }
+
+    .calc-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .calc-header h3 {
+      font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .calc-header p {
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 2.2vw, 0.98rem);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .calc-step {
+      margin-bottom: 22px;
+    }
+
+    .calc-step-label {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calc-chips-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .calc-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-spring);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-chip:hover, .calc-chip.active {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
+      transform: scale(1.02);
+    }
+
+    .calc-ticket-card {
+      background: rgba(8, 12, 22, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(20px, 3.5vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 90px;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .ticket-header h4 {
+      font-size: 1rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .ticket-row strong {
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .ticket-total-box {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 2px dashed rgba(0, 240, 255, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ticket-total-label {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .ticket-total-price {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--cyan);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* =================================================== */
+    /* NOVEDAD 2: SLIDER ANTES / DESPUÉS (BEFORE & AFTER)  */
+    /* (FUNCIONALIDAD INSPIRADA EN iFixit / Puls)          */
+    /* =================================================== */
+    .comparison-section {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 40px auto 70px;
+      padding: 0 clamp(16px, 4vw, 24px);
+    }
+
+    .comparison-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: clamp(20px, 4vw, 36px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px);
+    }
+
+    .comparison-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      height: clamp(260px, 50vw, 440px);
+      margin: 24px auto 14px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid var(--border-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
+      user-select: none;
+    }
+
+    .comparison-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .comparison-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      border-right: 3px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+      z-index: 2;
+    }
+
+    .comparison-overlay img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 780px;
+      max-width: calc(100vw - 40px);
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.2) brightness(0.85);
+    }
+
+    .glitch-cracked-overlay {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, rgba(255, 0, 85, 0.15) 0, rgba(255, 0, 85, 0.15) 2px, transparent 2px, transparent 10px),
+                  radial-gradient(circle at 40% 45%, rgba(0,0,0,0.7) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .comparison-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 25px var(--cyan), 0 0 10px #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #040914;
+      font-weight: 900;
+      font-size: 1.1rem;
+      z-index: 5;
+      pointer-events: none;
+      transition: transform 0.1s;
+    }
+
+    .comparison-label-before, .comparison-label-after {
+      position: absolute;
+      top: 16px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      z-index: 4;
+      backdrop-filter: blur(8px);
+    }
+
+    .comparison-label-before {
+      left: 16px;
+      background: rgba(255, 0, 85, 0.75);
+      color: #fff;
+    }
+
+    .comparison-label-after {
+      right: 16px;
+      background: rgba(16, 185, 129, 0.75);
+      color: #fff;
+    }
+
+    .comparison-range {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: ew-resize;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+    }
+
     /* ================================================= */
-    /* NOVEDAD POCO USUAL: SELECTOR ANATÓMICO TÁCTIL     */
-    /* (DIAGNÓSTICO TOUCHSCREEN ESTILO ODONTOGRAMA)      */
+    /* SELECTOR ANATÓMICO TÁCTIL (DISPOSITIVOGRAMA EN VIVO)
     /* ================================================= */
     .anatomy-section {
       position: relative;
@@ -481,26 +990,6 @@
       padding: clamp(20px, 4vw, 36px);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.15);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .anatomy-header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .anatomy-header h3 {
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .anatomy-header p {
-      color: var(--text-muted);
-      font-size: clamp(0.85rem, 2.2vw, 0.98rem);
-      max-width: 600px;
-      margin: 0 auto;
     }
 
     .anatomy-interactive-container {
@@ -614,7 +1103,7 @@
       background: rgba(0, 240, 255, 0.12);
       color: var(--cyan);
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 800;
       width: fit-content;
     }
 
@@ -643,12 +1132,12 @@
       border-radius: 10px;
       padding: 8px 12px;
       flex: 1;
-      min-width: 120px;
+      min-width: 110px;
     }
 
     .meta-box span {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       text-transform: uppercase;
       font-weight: 700;
@@ -660,7 +1149,49 @@
       font-weight: 800;
     }
 
-    /* SERVICES SECTION */
+    /* STATS COUNTER STRIP */
+    .stats-strip {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: clamp(24px, 5vw, 40px) auto clamp(40px, 7vw, 70px);
+      padding: 0 clamp(16px, 4vw, 24px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(16px, 3.5vw, 28px);
+      backdrop-filter: blur(14px);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 900;
+      color: var(--cyan);
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 2px;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: clamp(0.68rem, 1.8vw, 0.8rem);
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* SECTION HEADERS */
     .section {
       position: relative;
       z-index: 2;
@@ -684,90 +1215,8 @@
     .section-header p {
       color: var(--text-muted);
       font-size: clamp(0.88rem, 2.5vw, 1rem);
-      max-width: 550px;
+      max-width: 650px;
       margin: 0 auto;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: clamp(16px, 3vw, 24px);
-    }
-
-    .service-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: clamp(20px, 4vw, 28px);
-      transition: all 0.35s var(--ease-spring);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .service-card:hover {
-      border-color: var(--cyan);
-      transform: translateY(-6px);
-      box-shadow: 0 15px 40px rgba(0, 240, 255, 0.18);
-    }
-
-    .service-icon-box {
-      width: clamp(48px, 10vw, 56px);
-      height: clamp(48px, 10vw, 56px);
-      border-radius: 14px;
-      background: rgba(0, 240, 255, 0.1);
-      border: 1px solid var(--border-hover);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 16px;
-      transition: transform 0.3s ease;
-    }
-
-    .service-card:hover .service-icon-box {
-      transform: scale(1.08) rotate(6deg);
-    }
-
-    .service-card h4 {
-      font-size: clamp(1.1rem, 3vw, 1.25rem);
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: #fff;
-    }
-
-    .service-card p {
-      font-size: clamp(0.84rem, 2vw, 0.9rem);
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      line-height: 1.5;
-    }
-
-    .service-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .service-price {
-      font-size: clamp(1.1rem, 3vw, 1.25rem);
-      font-weight: 900;
-      color: var(--cyan);
-      font-family: 'Montserrat', monospace;
-    }
-
-    .service-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.15);
-      padding: 4px 8px;
-      border-radius: 6px;
     }
 
     /* EL DISPOSITIVOGRAMA BANNER */
@@ -782,7 +1231,6 @@
       align-items: center;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
     /* FAQ ACCORDION */
@@ -803,7 +1251,8 @@
 
     .faq-item:hover {
       border-color: var(--cyan);
-      background: rgba(18, 27, 49, 0.8);
+      background: rgba(18, 27, 49, 0.85);
+      transform: translateY(-2px);
     }
 
     .faq-item h5 {
@@ -862,10 +1311,7 @@
       color: var(--cyan);
     }
 
-    /* ================================================= */
-    /* DOCK MÓVIL GLASSMORPHISM (BARRA INFERIOR FLOTANTE)*/
-    /* (EXPERIENCIA ERGONÓMICA DE APP NATIVA EN TELÉFONO)*/
-    /* ================================================= */
+    /* DOCK MÓVIL GLASSMORPHISM (BARRA INFERIOR FLOTANTE) */
     .mobile-bottom-dock {
       display: none;
       position: fixed;
@@ -915,12 +1361,6 @@
       color: var(--cyan);
     }
 
-    .dock-item.active .dock-icon {
-      color: var(--cyan);
-      transform: translateY(-2px);
-      filter: drop-shadow(0 0 8px var(--cyan-glow));
-    }
-
     .dock-icon {
       font-size: 1.25rem;
       line-height: 1;
@@ -936,10 +1376,6 @@
       box-shadow: 0 4px 16px rgba(16, 185, 129, 0.5);
     }
 
-    .dock-bot-btn .dock-icon {
-      color: #fff !important;
-    }
-
     .dock-badge-pulse {
       position: absolute;
       top: -3px;
@@ -952,9 +1388,7 @@
       animation: pulseAlert 1.5s infinite;
     }
 
-    /* ================================================= */
     /* BOT WHATSAPP DESKTOP & NATIVE MOBILE BOTTOM SHEET */
-    /* ================================================= */
     .wa-widget-button {
       position: fixed;
       bottom: 26px;
@@ -1054,7 +1488,6 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* BARRA PARA ARRASTRAR EN MÓVIL (DRAG HANDLE) */
     .sheet-drag-handle {
       display: none;
       width: 44px;
@@ -1125,11 +1558,6 @@
       transition: background 0.2s;
     }
 
-    .wa-chat-close:hover {
-      background: rgba(255,255,255,0.25);
-    }
-
-    /* Chat Messages Body */
     .wa-chat-body {
       flex: 1;
       padding: 18px;
@@ -1198,7 +1626,6 @@
       transform: translateX(4px);
     }
 
-    /* Typing Dots Animation */
     .typing-indicator {
       display: none;
       align-items: center;
@@ -1225,7 +1652,6 @@
       40% { transform: scale(1); opacity: 1; }
     }
 
-    /* Chat Footer */
     .wa-chat-footer {
       padding: 12px 16px;
       background: #0f172a;
@@ -1263,13 +1689,7 @@
       min-height: 44px;
     }
 
-    .wa-chat-send:active {
-      transform: scale(0.95);
-    }
-
-    /* ================================================= */
     /* RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS (<820px) */
-    /* ================================================= */
     @media (max-width: 950px) {
       .hero {
         grid-template-columns: 1fr;
@@ -1281,19 +1701,13 @@
       .hero-badges-row { justify-content: center; }
       .odontograma-banner { grid-template-columns: 1fr; }
       .anatomy-interactive-container { grid-template-columns: 1fr; }
+      .calc-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 820px) {
-      /* MOSTRAR DOCK MÓVIL EN CELULARES */
-      .mobile-bottom-dock {
-        display: flex;
-      }
-      /* Ocultar botón circular estándar en favor del dock */
-      .wa-widget-button {
-        display: none;
-      }
+      .mobile-bottom-dock { display: flex; }
+      .wa-widget-button { display: none; }
 
-      /* CONVERTIR CHAT EN NATIVE BOTTOM SHEET */
       .wa-chat-window {
         bottom: 0 !important;
         left: 0 !important;
@@ -1313,58 +1727,48 @@
         to { transform: translateY(0); }
       }
 
-      .sheet-drag-handle {
-        display: block;
-      }
+      .sheet-drag-handle { display: block; }
 
-      /* Stats 2x2 grid */
       .stats-grid {
         grid-template-columns: 1fr 1fr;
         gap: 14px;
         padding: 18px 14px;
       }
 
-      .faq-grid {
-        grid-template-columns: 1fr;
-      }
+      .faq-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
-      .hero-actions .btn {
-        width: 100%;
-      }
-      .stat-item {
-        padding: 6px 4px;
-      }
-      .anatomy-touch-pill {
-        padding: 10px 12px;
-      }
+      .hero-actions .btn { width: 100%; }
+      .stat-item { padding: 6px 4px; }
+      .anatomy-touch-pill { padding: 10px 12px; }
+      .pricing-transparency-banner { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- PARTÍCULAS ELÉCTRICAS EN VIVO (CANVAS ANIMADO Y OPTIMIZADO) -->
+  <!-- PARTÍCULAS ELÉCTRICAS EN VIVO (CANVAS ANIMADO) -->
   <canvas id="electricCanvas"></canvas>
 
   <div class="ambient-glow-1"></div>
   <div class="ambient-glow-2"></div>
 
-  <!-- HEADER NATIVO -->
+  <!-- HEADER -->
   <header>
     <a href="#" class="brand" onclick="hapticFeedback()">
       <img src="assets/logo-volt-studio.jpg" alt="Logo Volt Repair">
       <div class="brand-text">
         <h1>VOLT REPAIR STUDIO</h1>
-        <span>Micro-Cirugía de Smartphones & Taller a Domicilio</span>
+        <span>iPhone (Todos los años) & Todos los Android</span>
       </div>
     </a>
 
     <div class="nav-links">
-      <a href="#servicios" onclick="hapticFeedback()">Servicios</a>
+      <a href="#cotizador" onclick="hapticFeedback()">⚡ Cotizador en Vivo</a>
+      <a href="#precios" onclick="hapticFeedback()">💰 Tarifas Mano de Obra</a>
+      <a href="#comparador" onclick="hapticFeedback()">👁️ Antes / Después</a>
       <a href="#anatomia" onclick="hapticFeedback()">🩺 Selector Anatómico</a>
-      <a href="#expediente" onclick="hapticFeedback()">Expediente Digital</a>
-      <a href="#faq" onclick="hapticFeedback()">Preguntas</a>
       <a href="taller.html" style="color: var(--cyan);" onclick="hapticFeedback()">🔬 Suite Taller</a>
       <a href="videos/reels-promocionales.html" style="color: #ff0055;" onclick="hapticFeedback()">🎬 Reels</a>
     </div>
@@ -1374,33 +1778,57 @@
     </a>
   </header>
 
+  <!-- MARQUEE DE MARCAS Y MODELOS SOPORTADOS (ESTILO iFixit) -->
+  <div class="brand-marquee-container">
+    <div class="brand-marquee-track">
+      <div class="marquee-pill"><span class="icon">🍎</span> iPhone (Todos los Años: 6 al 16 Pro Max)</div>
+      <div class="marquee-pill"><span class="icon">📱</span> Samsung Galaxy (Serie S24/S23, Serie A, Serie Z Fold/Flip)</div>
+      <div class="marquee-pill"><span class="icon">⚡</span> Motorola (Moto G, Moto Edge, Moto E, Razr)</div>
+      <div class="marquee-pill"><span class="icon">🔥</span> Xiaomi, Redmi & POCO (Todas las gamas)</div>
+      <div class="marquee-pill"><span class="icon">🎯</span> Google Pixel (Serie 6, 7, 8, 9 Pro)</div>
+      <div class="marquee-pill"><span class="icon">💎</span> Huawei & Honor (Todas las series)</div>
+      <div class="marquee-pill"><span class="icon">🚀</span> OnePlus, OPPO, ZTE & Vivo</div>
+      <div class="marquee-pill"><span class="icon">🛠️</span> Cambios de Pantalla en General para CUALQUIER Celular</div>
+      <!-- Duplicado para loop infinito -->
+      <div class="marquee-pill"><span class="icon">🍎</span> iPhone (Todos los Años: 6 al 16 Pro Max)</div>
+      <div class="marquee-pill"><span class="icon">📱</span> Samsung Galaxy (Serie S24/S23, Serie A, Serie Z Fold/Flip)</div>
+      <div class="marquee-pill"><span class="icon">⚡</span> Motorola (Moto G, Moto Edge, Moto E, Razr)</div>
+      <div class="marquee-pill"><span class="icon">🔥</span> Xiaomi, Redmi & POCO (Todas las gamas)</div>
+      <div class="marquee-pill"><span class="icon">🎯</span> Google Pixel (Serie 6, 7, 8, 9 Pro)</div>
+      <div class="marquee-pill"><span class="icon">💎</span> Huawei & Honor (Todas las series)</div>
+      <div class="marquee-pill"><span class="icon">🚀</span> OnePlus, OPPO, ZTE & Vivo</div>
+      <div class="marquee-pill"><span class="icon">🛠️</span> Cambios de Pantalla en General para CUALQUIER Celular</div>
+    </div>
+  </div>
+
   <!-- HERO SECTION -->
   <section class="hero">
     <div class="reveal">
       <div class="badge-animated">
-        <span>⚡</span> Taller en tu Sala u Oficina
+        <span>⚡</span> Taller en tu Sala u Oficina • En 25 Minutos
       </div>
       <h2>
-        Reparación de iPhone y Celulares <span class="gradient-text">en tu propia sala</span>
+        Reparación de iPhone y Celulares <span class="gradient-text">frente a tus ojos</span>
       </h2>
       <p>
-        Olvídate del tráfico y de dejar tu teléfono días enteros con extraños. Llevamos nuestro laboratorio móvil hasta tu hogar: <b>reparamos frente a tus ojos en 25 minutos</b>, con total privacidad, refacciones de grado cirujano y garantía por escrito.
+        Olvídate de quedarte sin teléfono días enteros con extraños. Llevamos nuestro laboratorio móvil hasta tu hogar u oficina: <b>reparamos cambios de pantalla de todos los Samsung, Motorola, iPhone de cualquier año y Android</b> con total transparencia y garantía por escrito.
       </p>
 
       <div class="hero-actions">
-        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="font-size: 0.98rem; padding: 14px 26px;">
-          💬 Iniciar Diagnóstico por WhatsApp
+        <a href="#cotizador" class="btn btn-primary" onclick="hapticFeedback()" style="font-size: 0.98rem; padding: 14px 26px;">
+          ⚡ Cotizador de Reparación en Vivo
         </a>
-        <a href="#anatomia" class="btn btn-secondary" onclick="hapticFeedback()" style="font-size: 0.98rem; padding: 14px 22px;">
-          🩺 Elegir Falla en tu Celular
+        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="font-size: 0.98rem; padding: 14px 22px;">
+          💬 WhatsApp Directo con Manuel
         </a>
       </div>
 
       <div class="hero-badges-row">
+        <div class="micro-badge"><span>🍎</span> iPhone (Cualquier Año)</div>
+        <div class="micro-badge"><span>📱</span> Samsung & Motorola</div>
         <div class="micro-badge"><span>🛡️</span> Garantía por Escrito</div>
-        <div class="micro-badge"><span>💳</span> Terminal para Tarjetas</div>
-        <div class="micro-badge"><span>🔒</span> 100% Privacidad (No pido contraseñas)</div>
-        <div class="micro-badge"><span>🩺</span> Dispositivograma Clínico</div>
+        <div class="micro-badge"><span>💳</span> Cobro con Tarjeta</div>
+        <div class="micro-badge"><span>🔒</span> Cero Acceso a tus Fotos</div>
       </div>
     </div>
 
@@ -1409,15 +1837,15 @@
       <img src="assets/foto-real-domicilio.jpg" alt="Servicio a Domicilio Volt Repair">
       <div class="tilt-floating-tag">
         <div>
-          <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Trabajo 100% Transparente</div>
-          <div style="font-size: 0.76rem; color: #34d399;">En tu comedor mientras tomas un café ☕</div>
+          <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Laboratorio Móvil Certificado</div>
+          <div style="font-size: 0.76rem; color: #34d399;">Reparación en tu comedor en 25 min ☕</div>
         </div>
         <div style="color: var(--cyan); font-weight: 900; font-size: 1.15rem; font-family: monospace;">⚡ 25 MIN</div>
       </div>
     </div>
   </section>
 
-  <!-- CONTADOR DE ESTADÍSTICAS (ANIMADO AL SCROLL) -->
+  <!-- CONTADOR DE ESTADÍSTICAS -->
   <section class="stats-strip reveal">
     <div class="stats-grid">
       <div class="stat-item">
@@ -1426,7 +1854,7 @@
       </div>
       <div class="stat-item">
         <div class="stat-num" data-target="25">0</div>
-        <div class="stat-label">Minutos Promedio</div>
+        <div class="stat-label">Minutos por Reparación</div>
       </div>
       <div class="stat-item">
         <div class="stat-num" data-target="100">0</div>
@@ -1434,23 +1862,296 @@
       </div>
       <div class="stat-item">
         <div class="stat-num" data-target="0">0</div>
-        <div class="stat-label">Costo por Traslado</div>
+        <div class="stat-label">Costo Traslado a Domicilio</div>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================== -->
-  <!-- SELECTOR ANATÓMICO TÁCTIL (DISPOSITIVOGRAMA EN VIVO)  -->
-  <!-- EXPERIENCIA INTERACTIVA POCO USUAL Y ADICTIVA EN MÓVIL-->
-  <!-- ===================================================== -->
+  <!-- ========================================================== -->
+  <!-- SECCIÓN DE TARIFAS OFICIALES & TRANSPARENCIA TOTAL          -->
+  <!-- REGLA ESTRICTA: PANTALLA $700 | TAPA $500 | BATERÍA $500   -->
+  <!-- ========================================================== -->
+  <section class="section" id="precios">
+    <div class="section-header reveal">
+      <div class="badge-animated" style="background: rgba(0, 240, 255, 0.12); color: var(--cyan);">
+        <span>💎</span> Política de Transparencia Total
+      </div>
+      <h3>Tarifas Oficiales de Mano de Obra</h3>
+      <p>Sabes exactamente cuánto pagas por el trabajo técnico profesional sin sorpresas ni letras chiquitas.</p>
+    </div>
+
+    <!-- BANNER DE ACLARACIÓN DE MANO DE OBRA VS REFACCIÓN -->
+    <div class="pricing-transparency-banner reveal">
+      <div class="transparency-icon">ℹ️</div>
+      <div class="transparency-text">
+        <h4>Aviso de Transparencia Quirúrgica</h4>
+        <p>
+          Las tarifas que ves abajo (<strong>$700 en pantalla, $500 en tapa trasera y $500 en batería</strong>) corresponden a la <strong>mano de obra profesional especializada</strong>, instalación en tu domicilio con instrumental quirúrgico y garantía. <strong>El costo de la refacción es por separado</strong> según la calidad y modelo que elijas (puedes comprar tu propia pieza y solo pagar mano de obra, o nosotros te suministramos refacciones de grado certificado A+ u originales).
+        </p>
+      </div>
+    </div>
+
+    <!-- TARJETAS DE SERVICIOS CON MANO DE OBRA OFICIAL -->
+    <div class="pricing-cards-grid">
+      <!-- Tarjeta 1: Pantallas -->
+      <div class="price-card featured reveal" onclick="hapticFeedback()">
+        <div>
+          <div class="price-card-header">
+            <div class="price-card-icon">📱</div>
+            <span class="price-badge-labor">Mano de Obra</span>
+          </div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Cambio de Pantalla</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+            Todos los Samsung, Motorola, iPhone de cualquier año, Xiaomi y Android en general.
+          </p>
+          <div class="price-amount">
+            <span class="currency">$</span>700
+          </div>
+          <div class="price-sublabel">⚡ Mano de Obra (+ refacción)</div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> Todos los iPhone (del 6 al 16 Pro Max)</li>
+            <li><span class="check">✓</span> Todos los Samsung (Galaxy S, A, Z)</li>
+            <li><span class="check">✓</span> Todos los Motorola (Moto G, Edge, E)</li>
+            <li><span class="check">✓</span> Calibración TrueTone y touch a 120Hz</li>
+            <li><span class="check">✓</span> Instalación en 25 min en tu sala</li>
+          </ul>
+        </div>
+        <button onclick="quoteSpecificService('Cambio de Pantalla (Mano de obra $700)')" class="btn btn-primary" style="width: 100%;">
+          Cotizar con Pantalla
+        </button>
+      </div>
+
+      <!-- Tarjeta 2: Tapa Trasera -->
+      <div class="price-card reveal" onclick="hapticFeedback()">
+        <div>
+          <div class="price-card-header">
+            <div class="price-card-icon">✨</div>
+            <span class="price-badge-labor">Mano de Obra</span>
+          </div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Reemplazo Tapa Trasera</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+            Cristales traseros estrellados en iPhone y celulares de cristal templado.
+          </p>
+          <div class="price-amount">
+            <span class="currency">$</span>500
+          </div>
+          <div class="price-sublabel">⚡ Mano de Obra (+ refacción)</div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> Protección total bobina inalámbrica MagSafe</li>
+            <li><span class="check">✓</span> Retiro limpio de cristal estallado</li>
+            <li><span class="check">✓</span> Pegado térmico con sellador industrial</li>
+            <li><span class="check">✓</span> Acabado idéntico al de fábrica</li>
+          </ul>
+        </div>
+        <button onclick="quoteSpecificService('Reemplazo Tapa Trasera (Mano de obra $500)')" class="btn btn-secondary" style="width: 100%;">
+          Cotizar Tapa Trasera
+        </button>
+      </div>
+
+      <!-- Tarjeta 3: Batería -->
+      <div class="price-card reveal" onclick="hapticFeedback()">
+        <div>
+          <div class="price-card-header">
+            <div class="price-card-icon">🔋</div>
+            <span class="price-badge-labor">Mano de Obra</span>
+          </div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Reemplazo de Batería</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+            Batería inflada, salud degradada o celular que se apaga repentinamente.
+          </p>
+          <div class="price-amount">
+            <span class="currency">$</span>500
+          </div>
+          <div class="price-sublabel">⚡ Mano de Obra (+ refacción)</div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> Salud al 100% de fábrica</li>
+            <li><span class="check">✓</span> Celdas Li-Ion grado A+ con microchip</li>
+            <li><span class="check">✓</span> Sin mensajes molestos de batería</li>
+            <li><span class="check">✓</span> En 20 min en tu propio domicilio</li>
+          </ul>
+        </div>
+        <button onclick="quoteSpecificService('Reemplazo de Batería (Mano de obra $500)')" class="btn btn-secondary" style="width: 100%;">
+          Cotizar Batería Nueva
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- NOVEDAD: COTIZADOR INTERACTIVO 3 PASOS EN VIVO             -->
+  <!-- (INSPIRADO EN LAS MEJORES WEBS: uBreakiFix & Puls)         -->
+  <!-- ========================================================== -->
+  <section class="calculator-section reveal" id="cotizador">
+    <div class="calc-box">
+      <div class="calc-header">
+        <div class="badge-animated" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #34d399;">
+          <span>⚡</span> Calculadora de Presupuesto en Vivo
+        </div>
+        <h3>Simula tu Reparación en 3 Clics</h3>
+        <p>Selecciona tu marca, el tipo de reparación y la opción de refacción para ver el desglose en tiempo real.</p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Controles del cotizador -->
+        <div class="calc-controls">
+          <!-- Paso 1: Marca -->
+          <div class="calc-step">
+            <div class="calc-step-label">Paso 1: ¿Qué marca es tu celular?</div>
+            <div class="calc-chips-row" id="brandChips">
+              <div class="calc-chip active" onclick="setCalcBrand('Apple iPhone (Todos los años)')">🍎 iPhone (Cualquier año)</div>
+              <div class="calc-chip" onclick="setCalcBrand('Samsung Galaxy (Serie S, A, Z)')">📱 Samsung Galaxy</div>
+              <div class="calc-chip" onclick="setCalcBrand('Motorola (Moto G, Edge, E)')">⚡ Motorola</div>
+              <div class="calc-chip" onclick="setCalcBrand('Xiaomi / POCO / Redmi')">🔥 Xiaomi / POCO</div>
+              <div class="calc-chip" onclick="setCalcBrand('Otra marca Android')">🤖 Otra marca Android</div>
+            </div>
+          </div>
+
+          <!-- Paso 2: Reparación -->
+          <div class="calc-step">
+            <div class="calc-step-label">Paso 2: ¿Qué reparación necesitas?</div>
+            <div class="calc-chips-row" id="repairChips">
+              <div class="calc-chip active" onclick="setCalcRepair('pantalla', 700, 'Cambio de Pantalla')">
+                📱 Pantalla ($700 m.o.)
+              </div>
+              <div class="calc-chip" onclick="setCalcRepair('tapa', 500, 'Reemplazo Tapa Trasera')">
+                ✨ Tapa Trasera ($500 m.o.)
+              </div>
+              <div class="calc-chip" onclick="setCalcRepair('bateria', 500, 'Reemplazo de Batería')">
+                🔋 Batería ($500 m.o.)
+              </div>
+              <div class="calc-chip" onclick="setCalcRepair('puerto', 400, 'Centro de Carga')">
+                ⚡ Centro de Carga ($400 m.o.)
+              </div>
+              <div class="calc-chip" onclick="setCalcRepair('mojado', 450, 'Desulfatado por Tina Ultrasonido')">
+                💧 Mojado / Desulfatado ($450)
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3: Opción de Refacción -->
+          <div class="calc-step">
+            <div class="calc-step-label">Paso 3: ¿Tienes la refacción o la suministramos nosotros?</div>
+            <div class="calc-chips-row" id="partChips">
+              <div class="calc-chip active" onclick="setCalcPartOption('tengo_pieza', 0, 'Yo tengo mi propia pieza')">
+                🙋 Tengo mi refacción (Solo mano de obra $0 pieza)
+              </div>
+              <div class="calc-chip" onclick="setCalcPartOption('volt_premium', 650, 'Volt suministra Grado A+ / OLED')">
+                ✨ Volt suministra pieza Grado A+ / OLED (Promedio $650)
+              </div>
+              <div class="calc-chip" onclick="setCalcPartOption('volt_original', 1100, 'Volt suministra Original Service Pack')">
+                💎 Volt suministra 100% Original Service Pack (Promedio $1100)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket de presupuesto dinámico -->
+        <div class="calc-ticket-card">
+          <div class="ticket-header">
+            <h4>📋 Ticket de Cotización Volt</h4>
+            <span style="font-size: 0.72rem; color: #34d399; font-weight: 800;">EN TIEMPO REAL</span>
+          </div>
+
+          <div class="ticket-row">
+            <span>Dispositivo:</span>
+            <strong id="ticketBrand">Apple iPhone</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Servicio Técnico:</span>
+            <strong id="ticketRepair">Cambio de Pantalla</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Mano de Obra Certificada:</span>
+            <strong id="ticketLabor" style="color: var(--cyan);">$700 MXN</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Refacción Seleccionada:</span>
+            <strong id="ticketPart">$0 MXN (Pieza del cliente)</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Servicio a Domicilio:</span>
+            <strong style="color: #34d399;">$0 GRATIS</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Garantía:</span>
+            <strong>Por Escrito</strong>
+          </div>
+
+          <div class="ticket-total-box">
+            <div>
+              <div class="ticket-total-label">Total Estimado:</div>
+              <div style="font-size: 0.72rem; color: var(--gold); font-weight: 700;">Mano de obra + Refacción</div>
+            </div>
+            <div class="ticket-total-price" id="ticketTotal">$700 MXN</div>
+          </div>
+
+          <button onclick="sendCalculatedQuoteToWa()" class="btn btn-wa" style="width: 100%; margin-top: 18px; font-size: 0.95rem;">
+            👉 Agendar esta Reparación por WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- NOVEDAD: COMPARADOR INTERACTIVO ANTES / DESPUÉS            -->
+  <!-- (SLIDER TÁCTIL ESTILO iFixit / Puls)                       -->
+  <!-- ========================================================== -->
+  <section class="comparison-section reveal" id="comparador">
+    <div class="comparison-card">
+      <div class="section-header" style="margin-bottom: 20px;">
+        <div class="badge-animated" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);">
+          <span>👁️</span> Calidad Quirúrgica Visible
+        </div>
+        <h3>Desliza para Ver el Resultado</h3>
+        <p>Arrastra la barra en la pantalla para contrastar el daño estrellado con la pantalla nueva 100% calibrada.</p>
+      </div>
+
+      <div class="comparison-wrapper" id="comparisonWrapper">
+        <span class="comparison-label-before">Antes: Pantalla Rota</span>
+        <span class="comparison-label-after">Después: Calibrada TrueTone</span>
+
+        <!-- Imagen de después (abajo) -->
+        <img src="assets/foto-real-computadora.jpg" class="comparison-img" alt="Pantalla Nueva Reparada">
+
+        <!-- Capa de antes (arriba, cortada con ancho dinámico) -->
+        <div class="comparison-overlay" id="comparisonOverlay">
+          <img src="assets/foto-real-computadora.jpg" alt="Pantalla Rota">
+          <div class="glitch-cracked-overlay"></div>
+        </div>
+
+        <!-- Manija central de arrastre -->
+        <div class="comparison-handle" id="comparisonHandle">
+          ⮜ ⮞
+        </div>
+
+        <!-- Input invisible para arrastrar con dedo o ratón -->
+        <input type="range" min="0" max="100" value="50" class="comparison-range" id="comparisonRange" oninput="updateComparisonSlider(this.value)">
+      </div>
+      <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">
+        👆 Toca y arrastra hacia los lados en cualquier dispositivo.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SELECTOR ANATÓMICO TÁCTIL (DISPOSITIVOGRAMA EN VIVO)        -->
+  <!-- ========================================================== -->
   <section class="anatomy-section reveal" id="anatomia">
     <div class="anatomy-card">
-      <div class="anatomy-header">
+      <div class="anatomy-header" style="text-align: center; margin-bottom: 24px;">
         <div class="badge-animated" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);">
           <span>🩺</span> Diagnóstico Táctil Inmediato
         </div>
-        <h3>Toca la Parte Afectada de tu Teléfono</h3>
-        <p>Selecciona el componente en el celular interactivo para ver tiempo de reparación, solución recomendada y cotización directa.</p>
+        <h3 style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; color: #fff; margin-bottom: 8px;">
+          Toca la Parte Afectada de tu Teléfono
+        </h3>
+        <p style="color: var(--text-muted); font-size: clamp(0.85rem, 2.2vw, 0.98rem); max-width: 600px; margin: 0 auto;">
+          Selecciona el componente en el celular interactivo para ver costo de mano de obra oficial, tiempo en tu sala y solución recomendada.
+        </p>
       </div>
 
       <div class="anatomy-interactive-container">
@@ -1464,7 +2165,15 @@
             <div class="pill-icon">📱</div>
             <div class="pill-text">
               <div class="pill-title">Pantalla / Cristal OLED</div>
-              <div class="pill-status">Estrellada, líneas o manchas</div>
+              <div class="pill-status">Mano de Obra: $700 (+ refacción)</div>
+            </div>
+          </div>
+
+          <div class="anatomy-touch-pill" id="part-backglass" onclick="selectAnatomyPart('backglass')">
+            <div class="pill-icon">✨</div>
+            <div class="pill-text">
+              <div class="pill-title">Tapa Trasera / Chasis</div>
+              <div class="pill-status">Mano de Obra: $500 (+ refacción)</div>
             </div>
           </div>
 
@@ -1472,23 +2181,15 @@
             <div class="pill-icon">🔋</div>
             <div class="pill-text">
               <div class="pill-title">Batería Li-Ion</div>
-              <div class="pill-status">Salud baja, se descarga rápido</div>
+              <div class="pill-status">Mano de Obra: $500 (+ refacción)</div>
             </div>
           </div>
 
           <div class="anatomy-touch-pill" id="part-camera" onclick="selectAnatomyPart('camera')">
             <div class="pill-icon">📷</div>
             <div class="pill-text">
-              <div class="pill-title">Cámaras & Face ID</div>
-              <div class="pill-status">Cristal roto, vibra o borrosa</div>
-            </div>
-          </div>
-
-          <div class="anatomy-touch-pill" id="part-port" onclick="selectAnatomyPart('port')">
-            <div class="pill-icon">⚡</div>
-            <div class="pill-text">
-              <div class="pill-title">Centro de Carga</div>
-              <div class="pill-status">Falso contacto, no entra cable</div>
+              <div class="pill-title">Cámaras & Cristal Lente</div>
+              <div class="pill-status">Cristal roto o cámara vibra</div>
             </div>
           </div>
 
@@ -1496,7 +2197,7 @@
             <div class="pill-icon">💧</div>
             <div class="pill-text">
               <div class="pill-title">Mojado / Placa Lógica</div>
-              <div class="pill-status">Caído al agua o no enciende</div>
+              <div class="pill-status">Tina Ultrasonido $450</div>
             </div>
           </div>
         </div>
@@ -1504,25 +2205,25 @@
         <!-- Panel de Resultados del Diagnóstico Dinámico -->
         <div class="anatomy-result-panel" id="anatomyResultPanel">
           <div class="anatomy-result-badge" id="anatomyBadge">
-            <span>⚡</span> MICRO-CIRUGÍA EXPRESS
+            <span>⚡</span> MANO DE OBRA OFICIAL: $700
           </div>
           <h4 class="anatomy-result-title" id="anatomyTitle">Reemplazo de Pantalla Certificada</h4>
           <p class="anatomy-result-desc" id="anatomyDesc">
-            Instalación en 25 minutos frente a ti. Conservamos la calibración TrueTone, sensibilidad táctil de alta respuesta y sellado de resistencia al polvo.
+            Instalación en 25 minutos frente a ti. Cubre todos los iPhone (cualquier año), Samsung, Motorola y cualquier marca Android. Calibramos TrueTone y respuesta táctil.
           </p>
 
           <div class="anatomy-result-meta">
+            <div class="meta-box">
+              <span>Mano de Obra</span>
+              <strong id="anatomyLabor" style="color: var(--cyan);">$700 MXN</strong>
+            </div>
             <div class="meta-box">
               <span>Tiempo Estimado</span>
               <strong id="anatomyTime">25 minutos</strong>
             </div>
             <div class="meta-box">
-              <span>Modalidad</span>
-              <strong>En tu sala u oficina</strong>
-            </div>
-            <div class="meta-box">
-              <span>Garantía</span>
-              <strong>Por escrito</strong>
+              <span>Refacción</span>
+              <strong>Aparte / A tu elección</strong>
             </div>
           </div>
 
@@ -1534,77 +2235,15 @@
     </div>
   </section>
 
-  <!-- SERVICIOS ESTRELLA -->
-  <section class="section" id="servicios">
-    <div class="section-header reveal">
-      <h3>Servicios Más Solicitados</h3>
-      <p>Repuestos de grado certificado instalados en tu sala con instrumental quirúrgico.</p>
-    </div>
-
-    <div class="services-grid">
-      <!-- Servicio 1 -->
-      <div class="service-card reveal" onclick="hapticFeedback()">
-        <div>
-          <div class="service-icon-box">📱</div>
-          <h4>Cambio de Pantalla Express</h4>
-          <p>Solucionamos cristales rotos, líneas de colores, manchas negras y fallas de touch en 25 minutos con TrueTone calibrado.</p>
-        </div>
-        <div class="service-bottom">
-          <div class="service-price">Desde $600</div>
-          <div class="service-badge">25 min a domicilio</div>
-        </div>
-      </div>
-
-      <!-- Servicio 2 -->
-      <div class="service-card reveal" onclick="hapticFeedback()">
-        <div>
-          <div class="service-icon-box">🔋</div>
-          <h4>Batería Nueva Grado A+</h4>
-          <p>Recupera la autonomía de tu día completo. Instalamos celdas Li-Ion certificadas sin avisos molestos y con salud al 100%.</p>
-        </div>
-        <div class="service-bottom">
-          <div class="service-price">Desde $550</div>
-          <div class="service-badge">Salud al 100%</div>
-        </div>
-      </div>
-
-      <!-- Servicio 3 -->
-      <div class="service-card reveal" onclick="hapticFeedback()">
-        <div>
-          <div class="service-icon-box">💧</div>
-          <h4>Rescate de Equipos Mojados</h4>
-          <p>¿Se cayó al agua? ¡Nunca uses arroz! Realizamos lavado químico por ultrasonido y descontaminación de sulfato en microcircuitos.</p>
-        </div>
-        <div class="service-bottom">
-          <div class="service-price">Diagnóstico</div>
-          <div class="service-badge">Tina Ultrasonido</div>
-        </div>
-      </div>
-
-      <!-- Servicio 4 -->
-      <div class="service-card reveal" onclick="hapticFeedback()">
-        <div>
-          <div class="service-icon-box">✨</div>
-          <h4>Cristal Trasero & Chasis</h4>
-          <p>Reemplazamos tapas traseras fracturadas conservando intacta la bobina de carga inalámbrica MagSafe original de tu iPhone.</p>
-        </div>
-        <div class="service-bottom">
-          <div class="service-price">Desde $650</div>
-          <div class="service-badge">MagSafe Protegido</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- EL ODONTOGRAMA DE CELULARES -->
   <section class="section" id="expediente">
     <div class="odontograma-banner reveal">
       <div>
         <div class="badge-animated" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #34d399;">
-          <span>🩺</span> Innovación Única en tu Ciudad
+          <span>🩺</span> Expediente Clínico Digital
         </div>
         <h3 style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; color: #fff; margin-bottom: 14px;">
-          Cada Dispositivo recibe un Expediente Clínico Digital
+          Cada Dispositivo recibe un Dispositivograma
         </h3>
         <p style="font-size: clamp(0.88rem, 2vw, 0.98rem); color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
           Igual que los dentistas con su odontograma dental, nosotros inspeccionamos visualmente cada órgano de tu celular: Face ID, batería, estanqueidad, TrueTone y cámaras. Sabes con certeza qué piezas están sanas antes de que toquemos un solo tornillo.
@@ -1623,28 +2262,28 @@
   <section class="section" id="faq">
     <div class="section-header reveal">
       <h3>Preguntas Frecuentes</h3>
-      <p>Resolvemos tus dudas antes de agendar tu reparación.</p>
+      <p>Transparencia absoluta en precios, refacciones y cobertura a domicilio.</p>
     </div>
 
     <div class="faq-grid">
       <div class="faq-item reveal" onclick="hapticFeedback()">
+        <h5><span>💰</span> ¿El precio de $700 o $500 incluye la pantalla o refacción?</h5>
+        <p>No. Esos montos corresponden estrictamente a la <strong>mano de obra técnica calificada</strong> en tu domicilio. La refacción se cotiza aparte según el modelo exacto y la calidad que elijas (Original, OLED o Grado A+). O si gustas, ¡tú puedes comprar tu propia refacción y solo cobramos la mano de obra!</p>
+      </div>
+
+      <div class="faq-item reveal" onclick="hapticFeedback()">
+        <h5><span>📱</span> ¿Qué marcas y modelos reparan?</h5>
+        <p>Reparamos <strong>absolutamente todos los iPhone de cualquier año</strong> (desde iPhone 6 hasta iPhone 16 Pro Max), así como <strong>cambios de pantalla para todos los Samsung, Motorola, Xiaomi, POCO, Google Pixel, Huawei</strong> y cualquier celular Android del mercado.</p>
+      </div>
+
+      <div class="faq-item reveal" onclick="hapticFeedback()">
         <h5><span>❓</span> ¿Cobran extra por venir a mi domicilio?</h5>
-        <p>No. El precio cotizado incluye el traslado del especialista hasta tu casa u oficina dentro de nuestra zona de cobertura habitual.</p>
+        <p>No. El traslado del especialista hasta tu casa u oficina está totalmente incluido dentro de nuestra zona de cobertura habitual.</p>
       </div>
 
       <div class="faq-item reveal" onclick="hapticFeedback()">
         <h5><span>🔒</span> ¿Tienen acceso a mis fotos o contraseñas?</h5>
         <p>Cero acceso. Tú estás presente viendo el trabajo sobre tu mesa y para cambios de pantalla o batería NO requerimos tu contraseña de desbloqueo.</p>
-      </div>
-
-      <div class="faq-item reveal" onclick="hapticFeedback()">
-        <h5><span>💳</span> ¿Qué métodos de pago aceptan?</h5>
-        <p>Llevamos terminal bancaria para cobro con tarjeta de crédito o débito, además de transferencias bancarias SPEI o efectivo.</p>
-      </div>
-
-      <div class="faq-item reveal" onclick="hapticFeedback()">
-        <h5><span>⏱️</span> ¿Cuánto tardan en realizar la reparación?</h5>
-        <p>Un cambio de pantalla o batería promedio toma entre 20 y 30 minutos directamente frente a ti.</p>
       </div>
     </div>
   </section>
@@ -1655,12 +2294,15 @@
       <img src="assets/logo-volt-studio.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 8px;">
       <span>VOLT REPAIR STUDIO</span>
     </div>
-    <p style="font-size: 0.88rem; color: #94a3b8;">Micro-Cirugía de Smartphones & Taller a Domicilio</p>
+    <p style="font-size: 0.88rem; color: #94a3b8;">
+      Mano de Obra Certificada: Pantallas $700 | Baterías $500 | Tapas Traseras $500 (+ refacción)
+    </p>
     
     <div class="footer-links">
-      <a href="#servicios" onclick="hapticFeedback()">Servicios</a>
+      <a href="#cotizador" onclick="hapticFeedback()">Cotizador en Vivo</a>
+      <a href="#precios" onclick="hapticFeedback()">Tarifas Mano de Obra</a>
+      <a href="#comparador" onclick="hapticFeedback()">Antes / Después</a>
       <a href="#anatomia" onclick="hapticFeedback()">Selector Anatómico</a>
-      <a href="#expediente" onclick="hapticFeedback()">Dispositivograma</a>
       <a href="taller.html" onclick="hapticFeedback()">Panel de Taller</a>
       <a href="videos/reels-promocionales.html" onclick="hapticFeedback()">Estudio Reels</a>
       <a href="javascript:void(0)" onclick="openWaBot()">WhatsApp Oficial</a>
@@ -1671,21 +2313,19 @@
     </p>
   </footer>
 
-  <!-- ==================================================== -->
-  <!-- BARRA DE NAVEGACIÓN MÓVIL DE CRISTAL (DOCK HÁPTICO)  -->
-  <!-- ==================================================== -->
+  <!-- DOCK MÓVIL GLASSMORPHISM -->
   <nav class="mobile-bottom-dock" id="mobileBottomDock">
     <a href="#" class="dock-item active" onclick="smoothScrollToTop(event)">
       <span class="dock-icon">🏠</span>
       <span>Inicio</span>
     </a>
-    <a href="#servicios" class="dock-item" onclick="handleDockNav(event, '#servicios')">
+    <a href="#cotizador" class="dock-item" onclick="handleDockNav(event, '#cotizador')">
       <span class="dock-icon">⚡</span>
-      <span>Servicios</span>
+      <span>Cotizador</span>
     </a>
-    <a href="#anatomia" class="dock-item" onclick="handleDockNav(event, '#anatomia')">
-      <span class="dock-icon">🩺</span>
-      <span>Anatomía</span>
+    <a href="#precios" class="dock-item" onclick="handleDockNav(event, '#precios')">
+      <span class="dock-icon">💰</span>
+      <span>Precios</span>
     </a>
     <a href="taller.html" class="dock-item" onclick="hapticFeedback()">
       <span class="dock-icon">🔬</span>
@@ -1698,9 +2338,7 @@
     </button>
   </nav>
 
-  <!-- ============================================== -->
-  <!-- BOT FLOTANTE DESKTOP (SOLO PANTALLAS GRANDES)  -->
-  <!-- ============================================== -->
+  <!-- BOT FLOTANTE DESKTOP -->
   <div class="wa-widget-button" onclick="toggleWaChat()" title="Hablar con un Especialista Volt">
     <div class="wa-badge-pulse"></div>
     <svg viewBox="0 0 32 32">
@@ -1708,19 +2346,18 @@
     </svg>
   </div>
 
-  <!-- BACKDROP OVERLAY PARA EL BOTTOM SHEET MÓVIL -->
+  <!-- BACKDROP BOTTOM SHEET -->
   <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeWaChat()"></div>
 
-  <!-- VENTANA DEL ASISTENTE VIRTUAL DE WHATSAPP / BOTTOM SHEET -->
+  <!-- VENTANA BOT DE WHATSAPP / BOTTOM SHEET -->
   <div class="wa-chat-window" id="waChatWindow">
-    <!-- Drag Handle para deslizar en móviles -->
     <div class="sheet-drag-handle" id="sheetDragHandle"></div>
 
     <div class="wa-chat-header">
       <div class="wa-chat-header-user">
         <img src="assets/logo-volt-studio.jpg" alt="Manuel Volt">
         <div>
-          <h5>Volt Studio ⚡ Soporte</h5>
+          <h5>Volt Studio ⚡ Soporte Oficial</h5>
           <span><span class="online-dot"></span> En línea | Responde al instante</span>
         </div>
       </div>
@@ -1731,17 +2368,21 @@
     <div class="wa-chat-body" id="waChatBody">
       <div class="chat-bubble chat-bubble-bot">
         ¡Hola! 👋 Bienvenido a <b>Volt Repair Studio</b>.<br>
-        Soy el asistente técnico de Manuel. ¿Qué problema presenta tu teléfono hoy?
+        Soy el asistente técnico de Manuel. Reparamos <b>todos los iPhone de cualquier año, Samsung, Motorola y cualquier Android</b>.<br><br>
+        Tarifas oficiales de mano de obra:<br>
+        📱 Pantalla: <b>$700</b> (+ refacción)<br>
+        ✨ Tapa Trasera: <b>$500</b> (+ refacción)<br>
+        🔋 Batería: <b>$500</b> (+ refacción)<br><br>
+        ¿Qué servicio necesitas hoy?
       </div>
 
       <div class="chat-options-container" id="botStep1Options">
-        <button class="chat-option-btn" onclick="selectBotOption('Pantalla rota o estrellada')">📱 Pantalla rota o estrellada</button>
-        <button class="chat-option-btn" onclick="selectBotOption('Batería degradada / No dura')">🔋 Batería dura muy poco</button>
-        <button class="chat-option-btn" onclick="selectBotOption('Teléfono mojado con agua')">💧 Se cayó al agua / No enciende</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Cambio de Pantalla (Mano de obra $700)')">📱 Cambio de Pantalla ($700 m.o.)</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Reemplazo Tapa Trasera (Mano de obra $500)')">✨ Tapa Trasera ($500 m.o.)</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Reemplazo de Batería (Mano de obra $500)')">🔋 Batería Nueva ($500 m.o.)</button>
         <button class="chat-option-btn" onclick="selectBotOption('Otro problema / Hablar con Manuel')">💬 Hablar directamente con Manuel</button>
       </div>
 
-      <!-- Indicador de tipeo animado -->
       <div class="typing-indicator" id="typingIndicator">
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
@@ -1751,25 +2392,21 @@
 
     <!-- Input Footer -->
     <div class="wa-chat-footer">
-      <input type="text" id="waChatInput" class="wa-chat-input" placeholder="Escribe tu modelo (ej. iPhone 13)..." onkeypress="handleKeyPress(event)">
+      <input type="text" id="waChatInput" class="wa-chat-input" placeholder="Escribe tu modelo (ej. Galaxy S23, iPhone 13)..." onkeypress="handleKeyPress(event)">
       <button class="wa-chat-send" onclick="sendUserCustomMessage()">Enviar</button>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- JAVASCRIPT: LÓGICA MÓVIL, HÁPTICA & BOT        -->
-  <!-- ============================================== -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     // ==========================================
     // 1. MOTOR HÁPTICO WEB AUDIO & VIBRACIÓN
     // ==========================================
     let audioCtx = null;
     function hapticFeedback() {
-      // 1. Vibración nativa en Android/Chrome
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         try { navigator.vibrate(12); } catch (e) {}
       }
-      // 2. Micro-clic acústico de alta frecuencia (Taptic Engine feel)
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -1788,28 +2425,27 @@
     }
 
     // ==========================================
-    // 2. ANIMACIÓN CANVAS OPTIMIZADA PARA BATERÍA
+    // 2. CANVAS DE PARTÍCULAS ELÉCTRICAS
     // ==========================================
     const canvas = document.getElementById('electricCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles = [];
-    let mouse = { x: null, y: null, radius: 110 };
+    let mouse = { x: null, y: null, radius: 120 };
     const isMobile = window.innerWidth <= 820 || ('ontouchstart' in window);
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       particles = [];
-      // Reducción drástica de partículas en teléfonos para preservar 60-120fps y batería
-      const count = isMobile ? Math.floor((width * height) / 38000) : Math.floor((width * height) / 16000);
-      const safeCount = Math.max(16, Math.min(count, 70));
+      const count = isMobile ? Math.floor((width * height) / 36000) : Math.floor((width * height) / 15000);
+      const safeCount = Math.max(18, Math.min(count, 75));
       for (let i = 0; i < safeCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * (isMobile ? 0.45 : 0.75),
-          vy: (Math.random() - 0.5) * (isMobile ? 0.45 : 0.75),
-          size: Math.random() * 1.8 + 1
+          vx: (Math.random() - 0.5) * (isMobile ? 0.5 : 0.8),
+          vy: (Math.random() - 0.5) * (isMobile ? 0.5 : 0.8),
+          size: Math.random() * 2 + 1
         });
       }
     }
@@ -1820,20 +2456,16 @@
     });
 
     window.addEventListener('resize', initCanvas);
-    
-    // Mouse y Touch reactivo
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     });
-
     window.addEventListener('touchmove', (e) => {
       if (e.touches && e.touches[0]) {
         mouse.x = e.touches[0].clientX;
         mouse.y = e.touches[0].clientY;
       }
     }, { passive: true });
-
     window.addEventListener('touchend', () => {
       mouse.x = null;
       mouse.y = null;
@@ -1846,7 +2478,7 @@
       }
 
       ctx.clearRect(0, 0, width, height);
-      const maxDist = isMobile ? 85 : 110;
+      const maxDist = isMobile ? 85 : 115;
       
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -1856,7 +2488,7 @@
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.55)';
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -1868,8 +2500,8 @@
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < maxDist) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.18 * (1 - dist / maxDist)})`;
-            ctx.lineWidth = 0.7;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 * (1 - dist / maxDist)})`;
+            ctx.lineWidth = 0.8;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
@@ -1882,8 +2514,8 @@
           const mdy = p.y - mouse.y;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
           if (mDist < mouse.radius) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.45 * (1 - mDist / mouse.radius)})`;
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.5 * (1 - mDist / mouse.radius)})`;
+            ctx.lineWidth = 1.2;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -1898,41 +2530,131 @@
     renderElectricNetwork();
 
     // ==========================================
-    // 3. SELECTOR ANATÓMICO TÁCTIL (DINÁMICA)
+    // 3. COTIZADOR INTERACTIVO 3 PASOS EN VIVO
+    // ==========================================
+    let calcState = {
+      brand: 'Apple iPhone (Todos los años)',
+      repairName: 'Cambio de Pantalla',
+      laborCost: 700,
+      partCost: 0,
+      partName: 'Pieza del cliente ($0)'
+    };
+
+    function setCalcBrand(brandName) {
+      hapticFeedback();
+      calcState.brand = brandName;
+      updateChipsActive('brandChips', event.currentTarget);
+      updateCalcTicket();
+    }
+
+    function setCalcRepair(key, labor, repairName) {
+      hapticFeedback();
+      calcState.laborCost = labor;
+      calcState.repairName = repairName;
+      updateChipsActive('repairChips', event.currentTarget);
+      updateCalcTicket();
+    }
+
+    function setCalcPartOption(key, partPrice, partName) {
+      hapticFeedback();
+      calcState.partCost = partPrice;
+      calcState.partName = partName;
+      updateChipsActive('partChips', event.currentTarget);
+      updateCalcTicket();
+    }
+
+    function updateChipsActive(containerId, activeElement) {
+      const container = document.getElementById(containerId);
+      if (container && activeElement) {
+        container.querySelectorAll('.calc-chip').forEach(el => el.classList.remove('active'));
+        activeElement.classList.add('active');
+      }
+    }
+
+    function updateCalcTicket() {
+      document.getElementById('ticketBrand').innerText = calcState.brand;
+      document.getElementById('ticketRepair').innerText = calcState.repairName;
+      document.getElementById('ticketLabor').innerText = `$${calcState.laborCost} MXN`;
+      document.getElementById('ticketPart').innerText = (calcState.partCost === 0) ? '$0 MXN (Pieza del cliente)' : `$${calcState.partCost} MXN aprox.`;
+      
+      const total = calcState.laborCost + calcState.partCost;
+      const totalEl = document.getElementById('ticketTotal');
+      totalEl.innerText = `$${total} MXN`;
+      totalEl.style.transform = 'scale(1.1)';
+      setTimeout(() => totalEl.style.transform = 'scale(1)', 200);
+    }
+
+    function sendCalculatedQuoteToWa() {
+      hapticFeedback();
+      const total = calcState.laborCost + calcState.partCost;
+      const msg = `Hola Manuel, estuve en el cotizador de Volt Repair Studio. Me interesa agendar:\n` +
+                  `📱 Dispositivo: ${calcState.brand}\n` +
+                  `🛠️ Reparación: ${calcState.repairName} (Mano de obra: $${calcState.laborCost})\n` +
+                  `📦 Refacción: ${calcState.partName}\n` +
+                  `💵 Total Estimado: $${total} MXN\n` +
+                  `¿Tendrás espacio disponible a domicilio hoy?`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function quoteSpecificService(serviceName) {
+      hapticFeedback();
+      selectBotOption(serviceName);
+      openWaBot();
+    }
+
+    // ==========================================
+    // 4. SLIDER COMPARADOR ANTES / DESPUÉS
+    // ==========================================
+    function updateComparisonSlider(val) {
+      const overlay = document.getElementById('comparisonOverlay');
+      const handle = document.getElementById('comparisonHandle');
+      if (overlay && handle) {
+        overlay.style.width = val + '%';
+        handle.style.left = val + '%';
+      }
+    }
+
+    // ==========================================
+    // 5. SELECTOR ANATÓMICO TÁCTIL
     // ==========================================
     const anatomyData = {
       screen: {
-        badge: '⚡ REEMPLAZO EN 25 MIN',
-        title: 'Reemplazo de Pantalla Certificada',
-        desc: 'Instalación express frente a tus ojos en tu comedor. Conservamos calibración TrueTone original, respuesta háptica al 100% y colocamos sello contra polvo y salpicaduras.',
+        badge: '⚡ MANO DE OBRA: $700',
+        title: 'Cambio de Pantalla Certificada',
+        labor: '$700 MXN',
+        desc: 'Mano de obra oficial para cambio de pantalla en cualquier iPhone (todos los años), Samsung Galaxy, Motorola y Android. Conservamos TrueTone y alta sensibilidad.',
         time: '25 minutos',
-        issue: 'Cambio de Pantalla'
+        issue: 'Cambio de Pantalla (Mano de obra $700)'
+      },
+      backglass: {
+        badge: '✨ MANO DE OBRA: $500',
+        title: 'Reemplazo Tapa Trasera de Cristal',
+        labor: '$500 MXN',
+        desc: 'Retiro limpio de cristal estallado protegiendo bobina MagSafe de carga inalámbrica. Sellado térmico industrial idéntico a fábrica.',
+        time: '30 minutos',
+        issue: 'Reemplazo Tapa Trasera (Mano de obra $500)'
       },
       battery: {
-        badge: '🔋 SALUD AL 100%',
-        title: 'Batería Nueva Grado A+ (Sin Advertencias)',
-        desc: 'Recupera la duración de todo el día. Celdas Li-Ion grado A+ con microchip de gestión térmica. Sin calentamiento y con garantía total por escrito.',
+        badge: '🔋 MANO DE OBRA: $500',
+        title: 'Batería Nueva Grado A+ (100% Salud)',
+        labor: '$500 MXN',
+        desc: 'Celdas Li-Ion grado A+ con microchip de gestión térmica. Recupera autonomía completa de tu día sin mensajes de advertencia.',
         time: '20 minutos',
-        issue: 'Batería Nueva Grado A+'
+        issue: 'Reemplazo de Batería (Mano de obra $500)'
       },
       camera: {
         badge: '📷 ÓPTICA CIRUJANA',
-        title: 'Módulo de Cámara 4K & Lentes de Cristal',
-        desc: 'Reemplazo de cristal protector estrellado sin abrir el lente óptico, o cambio completo de sensor estabilizado OIS para que tus fotos y videos vuelvan a ser nítidos.',
-        time: '30 minutos',
+        title: 'Módulo de Cámara & Cristal Protector',
+        labor: '$400 MXN',
+        desc: 'Reemplazo de cristal protector estrellado o sensor de cámara estabilizado OIS para fotos 100% nítidas.',
+        time: '25 minutos',
         issue: 'Cámara o Cristal de Cámara'
-      },
-      port: {
-        badge: '⚡ CARGA ULTRARÁPIDA',
-        title: 'Limpieza Quirúrgica o Centro de Carga',
-        desc: '¿El cable se sale solo o no entra? El 80% de las veces es compactación de pelusa profunda que retiramos con microscopio en 10 min. Si está roto, cambiamos el flexor.',
-        time: '15 - 25 minutos',
-        issue: 'Centro de Carga / Falso Contacto'
       },
       water: {
         badge: '💧 RECUPERACIÓN CRÍTICA',
-        title: 'Desoxigenación por Tina de Ultrasonido',
-        desc: '¡Nunca uses arroz! Desarmamos de inmediato, aislamos la placa base y la introducimos en solvente desoxidante con ondas ultrasónicas para salvar tus fotos y memorias.',
+        title: 'Desulfatado por Tina de Ultrasonido',
+        labor: '$450 MXN',
+        desc: '¡Nunca uses arroz! Desarmamos de inmediato, aislamos la placa lógica y la introducimos en solvente desoxidante con ondas ultrasónicas para salvar tus memorias.',
         time: 'Diagnóstico en taller',
         issue: 'Equipo Mojado / No enciende'
       }
@@ -1944,12 +2666,10 @@
       hapticFeedback();
       selectedAnatomy = partKey;
       
-      // Update pills
       document.querySelectorAll('.anatomy-touch-pill').forEach(el => el.classList.remove('active'));
       const activePill = document.getElementById('part-' + partKey);
       if (activePill) activePill.classList.add('active');
 
-      // Update Panel with smooth fade
       const panel = document.getElementById('anatomyResultPanel');
       panel.style.opacity = '0.4';
       panel.style.transform = 'translateY(6px)';
@@ -1960,6 +2680,7 @@
         document.getElementById('anatomyBadge').innerHTML = `<span>⚡</span> ${data.badge}`;
         document.getElementById('anatomyTitle').innerText = data.title;
         document.getElementById('anatomyDesc').innerText = data.desc;
+        document.getElementById('anatomyLabor').innerText = data.labor;
         document.getElementById('anatomyTime').innerText = data.time;
         panel.style.opacity = '1';
         panel.style.transform = 'translateY(0)';
@@ -1974,7 +2695,7 @@
     }
 
     // ==========================================
-    // 4. SCROLL REVEAL OBSERVER
+    // 6. SCROLL REVEAL & NUMBERS
     // ==========================================
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1987,9 +2708,6 @@
 
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObserver.observe(el));
 
-    // ==========================================
-    // 5. STATS NUMBER COUNTER ANIMATION
-    // ==========================================
     const statsObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -2020,7 +2738,7 @@
     if (statsElem) statsObserver.observe(statsElem);
 
     // ==========================================
-    // 6. 3D TILT EFFECT & GYROSCOPE
+    // 7. 3D TILT EFFECT
     // ==========================================
     function setupTilt(cardId) {
       const card = document.getElementById(cardId);
@@ -2040,7 +2758,7 @@
     setupTilt('bannerTiltCard');
 
     // ==========================================
-    // 7. GESTOS DE BOTTOM SHEET MÓVIL (SWIPE TO CLOSE)
+    // 8. BOTTOM SHEET & WHATSAPP BOT
     // ==========================================
     const chatWin = document.getElementById('waChatWindow');
     const dragHandle = document.getElementById('sheetDragHandle');
@@ -2073,9 +2791,6 @@
       });
     }
 
-    // ==========================================
-    // 8. INTERACTIVE WHATSAPP BOT LOGIC
-    // ==========================================
     let chatStep = 1;
     let userIssue = '';
     let userModel = '';
@@ -2083,7 +2798,6 @@
     function toggleWaChat() {
       hapticFeedback();
       const win = document.getElementById('waChatWindow');
-      const backdrop = document.getElementById('sheetBackdrop');
       if (win.style.display === 'flex') {
         closeWaChat();
       } else {
@@ -2128,7 +2842,7 @@
       document.getElementById('botStep1Options').style.display = 'none';
 
       showTyping(() => {
-        addMessage('Excelente elección. Para cotizarte con servicio a domicilio incluido en tu sala, ¿cuál es el <b>modelo de tu celular</b>? (Ej. iPhone 12, iPhone 14 Pro, Galaxy S23...)', 'bot');
+        addMessage('Excelente. Para cotizarte la refacción exacta y agendar a domicilio, ¿cuál es el <b>modelo y marca de tu teléfono</b>? (Ej. iPhone 13, Samsung Galaxy S22, Moto G54...)', 'bot');
         chatStep = 2;
       });
     }
@@ -2145,7 +2859,7 @@
       if (chatStep === 1) {
         userIssue = val;
         showTyping(() => {
-          addMessage('Enterado. ¿Cuál es el <b>modelo exacto</b> y en qué <b>colonia o zona</b> necesitas el servicio a domicilio?', 'bot');
+          addMessage('Enterado. ¿Cuál es el <b>modelo exacto</b> y en qué <b>colonia o zona</b> necesitas el servicio?', 'bot');
           chatStep = 2;
         });
       } else if (chatStep === 2) {
@@ -2207,16 +2921,15 @@
       });
     }
 
-    // ScrollSpy para el Dock
     window.addEventListener('scroll', () => {
       const scrollPos = window.scrollY + 200;
-      const anatomia = document.getElementById('anatomia');
-      const servicios = document.getElementById('servicios');
+      const cotizador = document.getElementById('cotizador');
+      const precios = document.getElementById('precios');
 
-      if (anatomia && scrollPos >= anatomia.offsetTop && servicios && scrollPos < servicios.offsetTop) {
-        setActiveDockItem(2);
-      } else if (servicios && scrollPos >= servicios.offsetTop) {
+      if (cotizador && scrollPos >= cotizador.offsetTop && precios && scrollPos < precios.offsetTop) {
         setActiveDockItem(1);
+      } else if (precios && scrollPos >= precios.offsetTop) {
+        setActiveDockItem(2);
       } else {
         setActiveDockItem(0);
       }
