@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Volt Repair Studio | Panel de Control Online & Automatizer</title>
+  <meta name="description" content="Panel de Control operativo y suite de automatización inteligente (Automatizer) para el taller online de Volt Repair Studio.">
+  
+  <!-- Favicon & Fonts -->
+  <link rel="icon" type="image/jpeg" href="assets/logo-volt-studio.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #060911;
+      --bg-surface: rgba(13, 20, 36, 0.85);
+      --bg-card: rgba(18, 27, 49, 0.75);
+      --border: rgba(0, 240, 255, 0.2);
+      --border-hover: rgba(0, 240, 255, 0.6);
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.4);
+      --blue: #0066ff;
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.4);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.4);
+      --gold: #f59e0b;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* HEADER SUPERIOR */
+    header {
+      background: rgba(6, 9, 17, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 15px var(--cyan-glow);
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* NAVIGATION TABS */
+    .nav-bar {
+      background: rgba(13, 20, 36, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 24px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s var(--ease);
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-btn.active {
+      background: rgba(0, 240, 255, 0.14);
+      border-color: var(--border-hover);
+      color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .container {
+      max-width: 1350px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    /* KPI METRICS STRIP */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s var(--ease);
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi-val {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      margin: 8px 0 4px;
+      line-height: 1.1;
+    }
+
+    .kpi-sub {
+      font-size: 0.74rem;
+      color: #34d399;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* GRID OPERATIVO */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1050px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* CARDS */
+    .panel-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      margin-bottom: 24px;
+    }
+
+    .panel-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-card-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* AUTOMATIZER MODULE (MOTOR DE AUTOMATIZACIÓN) */
+    .automatizer-card {
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      background: linear-gradient(145deg, rgba(18, 27, 49, 0.85), rgba(28, 18, 48, 0.75));
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(168, 85, 247, 0.2);
+    }
+
+    .auto-badge {
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid var(--purple);
+      color: #c084fc;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .automation-rule-item {
+      background: rgba(10, 16, 32, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .automation-rule-item:hover {
+      border-color: var(--purple);
+      background: rgba(22, 18, 40, 0.8);
+    }
+
+    .rule-info h5 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .rule-info p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* SWITCH TOGGLE */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--purple);
+      box-shadow: 0 0 10px var(--purple-glow);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* TABLA OPERATIVA DE REPARACIONES (EN VIVO) */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.repair-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    table.repair-table th {
+      text-align: left;
+      padding: 12px 14px;
+      color: var(--text-muted);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    table.repair-table td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    table.repair-table tr:hover td {
+      background: rgba(0, 240, 255, 0.04);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .badge-route {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--gold);
+      color: #fbbf24;
+    }
+
+    .badge-bench {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+    }
+
+    .badge-done {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--green);
+      color: #34d399;
+    }
+
+    /* BOTONES DE ACCIÓN RÁPIDA */
+    .btn-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: var(--cyan);
+      color: #050b14;
+      border-color: var(--cyan);
+    }
+
+    .btn-action.wa {
+      background: rgba(37, 211, 102, 0.15);
+      border-color: rgba(37, 211, 102, 0.4);
+      color: #4ade80;
+    }
+
+    .btn-action.wa:hover {
+      background: #25d366;
+      color: #042410;
+    }
+
+    /* INVENTARIO DE REFACCIONES */
+    .stock-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .stock-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .stock-qty {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .stock-qty.low {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    /* NUEVA ORDEN MODAL / FORM */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(10, 16, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--cyan);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #040914;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 4px 18px var(--cyan-glow);
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand" onclick="hapticFeedback()">
+      <img src="assets/logo-volt-studio.jpg" alt="Logo Volt">
+      <div>
+        <div class="brand-title">VOLT REPAIR STUDIO <span style="font-size: 0.7rem; background: rgba(0, 240, 255, 0.15); color: var(--cyan); padding: 2px 6px; border-radius: 6px;">PANEL 2.0</span></div>
+        <div class="brand-subtitle">Centro de Control Online & Automatizer Engine</div>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <div class="status-pill">
+        <span class="pulse-dot"></span>
+        <span>AUTOMATIZER ACTIVO</span>
+      </div>
+      <a href="index.html" target="_blank" class="btn-action" style="padding: 8px 14px;">
+        🌐 Ver Sitio Web
+      </a>
+      <a href="taller.html" class="btn-action" style="padding: 8px 14px;">
+        🩺 Dispositivograma
+      </a>
+    </div>
+  </header>
+
+  <!-- NAVEGACIÓN RÁPIDA -->
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="switchSection('dashboard', this)">
+      📊 Dashboard en Vivo
+    </button>
+    <button class="nav-btn" onclick="switchSection('automatizer', this)">
+      🤖 Automatizer (5 Reglas Activas)
+    </button>
+    <button class="nav-btn" onclick="switchSection('reparaciones', this)">
+      🛠️ Órdenes de Reparación
+    </button>
+    <button class="nav-btn" onclick="switchSection('inventario', this)">
+      📦 Inventario de Refacciones
+    </button>
+    <button class="nav-btn" onclick="switchSection('nueva-orden', this)">
+      ➕ Registrar Nueva Orden
+    </button>
+  </div>
+
+  <div class="container">
+
+    <!-- KPI STRIP -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Ingresos Mano de Obra</span>
+          <span>💰</span>
+        </div>
+        <div class="kpi-val" id="kpiRevenue">$8,400</div>
+        <div class="kpi-sub">
+          <span>↑ 100% Ganancia Neta</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Órdenes de Hoy</span>
+          <span>⚡</span>
+        </div>
+        <div class="kpi-val" id="kpiOrders">12</div>
+        <div class="kpi-sub">
+          <span>8 en sala • 4 en taller</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Tiempo Promedio</span>
+          <span>⏱️</span>
+        </div>
+        <div class="kpi-val">24 min</div>
+        <div class="kpi-sub">
+          <span>Por cambio de pantalla</span>
+        </div>
+      </div>
+
+      <div class="kpi-card" style="border-color: rgba(168, 85, 247, 0.4);">
+        <div class="kpi-label">
+          <span style="color: #c084fc;">Automatizaciones Disparadas</span>
+          <span>🤖</span>
+        </div>
+        <div class="kpi-val" style="color: #c084fc;" id="kpiAutoCount">48</div>
+        <div class="kpi-sub" style="color: #c084fc;">
+          <span>WhatsApp & Leads sincronizados</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: DASHBOARD & AUTOMATIZER -->
+    <div class="dashboard-layout" id="sec-dashboard">
+      
+      <!-- COLUMNA IZQUIERDA: TABLA DE ÓRDENES EN CURSO -->
+      <div>
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-title">
+              <span>🛠️</span> Reparaciones Activas en Tiempo Real
+            </div>
+            <button class="btn-action" onclick="refreshOrders()">↻ Actualizar</button>
+          </div>
+
+          <div class="table-container">
+            <table class="repair-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>Folio</th>
+                  <th>Cliente</th>
+                  <th>Equipo</th>
+                  <th>Servicio</th>
+                  <th>Mano de Obra</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <!-- Rellenado dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: MOTOR AUTOMATIZER & INVENTARIO RÁPIDO -->
+      <div>
+        <!-- AUTOMATIZER CARD -->
+        <div class="panel-card automatizer-card" id="sec-automatizer">
+          <div class="panel-card-header">
+            <div class="panel-card-title">
+              <span>🤖</span> Automatizer Engine
+              <span class="auto-badge">MOTOR V2.4</span>
+            </div>
+            <span style="font-size: 0.72rem; color: #a855f7; font-weight: 800;">AUTO-DISPATCH ON</span>
+          </div>
+
+          <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 16px;">
+            Reglas activas de automatización para contestar, agendar en WhatsApp y notificar avances sin que dejes de reparar con las manos ocupadas:
+          </p>
+
+          <!-- Regla 1 -->
+          <div class="automation-rule-item">
+            <div class="rule-info">
+              <h5>⚡ Auto-Cotización WhatsApp Instantánea</h5>
+              <p>Envía desglose oficial ($700 pantalla / $500 tapa / $500 batería) a todo lead entrante.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked onchange="toggleRule('Auto-Cotización', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Regla 2 -->
+          <div class="automation-rule-item">
+            <div class="rule-info">
+              <h5>📍 Despacho Técnico "Voy en Camino"</h5>
+              <p>Dispara aviso automático con tiempo de llegada estimado a la sala del cliente.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked onchange="toggleRule('Despacho Técnico', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Regla 3 -->
+          <div class="automation-rule-item">
+            <div class="rule-info">
+              <h5>✅ Auto-Emisión de Garantía Digital</h5>
+              <p>Genera póliza de 90 días por escrito y la envía por PDF/WhatsApp al terminar.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked onchange="toggleRule('Garantía Digital', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Regla 4 -->
+          <div class="automation-rule-item">
+            <div class="rule-info">
+              <h5>🔔 Alerta de Stock de Refacciones</h5>
+              <p>Avisa cuando queden menos de 2 pantallas OLED de un modelo frecuente.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked onchange="toggleRule('Alerta de Stock', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- STOCK CARD -->
+        <div class="panel-card" id="sec-inventario">
+          <div class="panel-card-header">
+            <div class="panel-card-title">
+              <span>📦</span> Stock Crítico de Refacciones
+            </div>
+            <span style="font-size: 0.72rem; color: var(--cyan); font-weight: 800;">AL DÍA</span>
+          </div>
+
+          <div class="stock-item">
+            <div class="stock-name">Pantalla OLED iPhone 13 / 13 Pro</div>
+            <div class="stock-qty">4 pzas</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-name">Pantalla Samsung Galaxy A54 (In-Cell/OLED)</div>
+            <div class="stock-qty low">1 pza (Pedir)</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-name">Pantalla Moto G54 / G84</div>
+            <div class="stock-qty">3 pzas</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-name">Baterías Grado A+ iPhone 11 / 12 / 13</div>
+            <div class="stock-qty">6 pzas</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-name">Tapa Trasera Cristal iPhone 14 Pro MagSafe</div>
+            <div class="stock-qty low">1 pza (Pedir)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECCIÓN FORMULARIO NUEVA ORDEN -->
+    <div class="panel-card" id="sec-nueva-orden" style="display: none;">
+      <div class="panel-card-header">
+        <div class="panel-card-title">
+          <span>➕</span> Registrar Nueva Orden de Reparación
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label>Nombre del Cliente</label>
+          <input type="text" id="newClient" class="form-control" placeholder="Ej. Roberto Garza">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp / Teléfono</label>
+          <input type="text" id="newPhone" class="form-control" placeholder="Ej. 8112345678">
+        </div>
+        <div class="form-group">
+          <label>Dispositivo y Modelo</label>
+          <input type="text" id="newDevice" class="form-control" placeholder="Ej. Samsung S23 Ultra o iPhone 14">
+        </div>
+        <div class="form-group">
+          <label>Tipo de Reparación</label>
+          <select id="newService" class="form-control" onchange="updateLaborInput()">
+            <option value="Pantalla">Cambio de Pantalla (Mano de obra $700)</option>
+            <option value="Tapa Trasera">Reemplazo Tapa Trasera (Mano de obra $500)</option>
+            <option value="Batería">Reemplazo de Batería (Mano de obra $500)</option>
+            <option value="Centro de Carga">Centro de Carga (Mano de obra $400)</option>
+            <option value="Auricular">Auricular / Bocina (Mano de obra $350)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mano de Obra Oficial</label>
+          <input type="number" id="newLabor" class="form-control" value="700" readonly style="color: var(--cyan); font-weight: 800;">
+        </div>
+        <div class="form-group">
+          <label>Modalidad de Atención</label>
+          <select id="newType" class="form-control">
+            <option value="Domicilio (En Sala)">A Domicilio (En su sala/oficina)</option>
+            <option value="Taller Volt">En Taller Volt</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="createOrder()" style="margin-top: 14px;">
+        ⚡ Guardar Orden y Notificar Cliente por WhatsApp vía Automatizer
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    // MOTOR HÁPTICO
+    let audioCtx = null;
+    function hapticFeedback() {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(12); } catch (e) {}
+      }
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.02);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.03);
+      } catch (err) {}
+    }
+
+    // BASE DE DATOS LOCAL DE REPARACIONES
+    let orders = JSON.parse(localStorage.getItem('volt_orders_db')) || [
+      { id: 'VOLT-101', client: 'Carlos Mendoza', device: 'iPhone 13 Pro', service: 'Cambio de Pantalla', labor: 700, status: 'bench', phone: '8119876543' },
+      { id: 'VOLT-102', client: 'Sofía Villarreal', device: 'Samsung Galaxy S22', service: 'Cambio de Pantalla', labor: 700, status: 'route', phone: '8123456789' },
+      { id: 'VOLT-103', client: 'Alejandro Ruiz', device: 'iPhone 14', service: 'Tapa Trasera', labor: 500, status: 'done', phone: '8187654321' },
+      { id: 'VOLT-104', client: 'Mariana Cantú', device: 'Moto G54', service: 'Reemplazo Batería', labor: 500, status: 'bench', phone: '8111223344' },
+      { id: 'VOLT-105', client: 'David Lozano', device: 'iPhone 12 Pro', service: 'Cambio de Pantalla', labor: 700, status: 'done', phone: '8199887766' }
+    ];
+
+    function saveOrders() {
+      localStorage.setItem('volt_orders_db', JSON.stringify(orders));
+      renderOrders();
+      updateKPIs();
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById('ordersTableBody');
+      tbody.innerHTML = '';
+
+      orders.forEach(o => {
+        const tr = document.createElement('tr');
+        
+        let statusBadge = '';
+        if (o.status === 'route') statusBadge = '<span class="status-badge badge-route">🚗 En Ruta</span>';
+        else if (o.status === 'bench') statusBadge = '<span class="status-badge badge-bench">🔬 En Mesa</span>';
+        else if (o.status === 'done') statusBadge = '<span class="status-badge badge-done">✅ Entregado</span>';
+
+        tr.innerHTML = `
+          <td><strong style="color:var(--cyan); font-family:'JetBrains Mono'">${o.id}</strong></td>
+          <td><b>${o.client}</b></td>
+          <td>${o.device}</td>
+          <td>${o.service}</td>
+          <td><b style="color:#fff">$${o.labor} MXN</b></td>
+          <td>${statusBadge}</td>
+          <td>
+            <button class="btn-action wa" onclick="sendAutomatedStatus('${o.id}')" title="Notificar por WhatsApp">💬 Avisar</button>
+            <button class="btn-action" onclick="advanceOrderStatus('${o.id}')" title="Avanzar etapa">▶ Avanzar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateKPIs() {
+      const totalRevenue = orders.reduce((acc, curr) => acc + curr.labor, 0);
+      document.getElementById('kpiRevenue').innerText = `$${totalRevenue.toLocaleString()} MXN`;
+      document.getElementById('kpiOrders').innerText = orders.length;
+    }
+
+    function advanceOrderStatus(id) {
+      hapticFeedback();
+      const ord = orders.find(x => x.id === id);
+      if (!ord) return;
+      if (ord.status === 'route') ord.status = 'bench';
+      else if (ord.status === 'bench') ord.status = 'done';
+      else if (ord.status === 'done') ord.status = 'route';
+      saveOrders();
+    }
+
+    // DISPARO AUTOMATIZADO DE WHATSAPP (AUTOMATIZER)
+    function sendAutomatedStatus(id) {
+      hapticFeedback();
+      const ord = orders.find(x => x.id === id);
+      if (!ord) return;
+
+      let msg = '';
+      if (ord.status === 'route') {
+        msg = `Hola ${ord.client}, soy Manuel de Volt Repair Studio ⚡ Voy en camino a tu domicilio para la reparación de tu ${ord.device} (${ord.service}). Estaré llegando en aproximadamente 15 a 20 minutos. ¡Nos vemos en breve!`;
+      } else if (ord.status === 'bench') {
+        msg = `Hola ${ord.client}, tu ${ord.device} ya está sobre el tapete de micro-cirugía en proceso de ${ord.service}. Estamos trabajando frente a ti con calibración TrueTone. Tiempo estimado restante: 15 minutos.`;
+      } else {
+        msg = `Hola ${ord.client}, ¡reparación finalizada con éxito! 🎉 Tu ${ord.device} quedó impecable. Mano de obra oficial: $${ord.labor} MXN. Te entregamos tu póliza de garantía por escrito de 90 días. Muchas gracias por confiar en Volt Repair Studio ⚡`;
+      }
+
+      window.open(`https://api.whatsapp.com/send?phone=${ord.phone}&text=${encodeURIComponent(msg)}`, '_blank');
+      
+      // Contar automatización
+      let count = +document.getElementById('kpiAutoCount').innerText;
+      document.getElementById('kpiAutoCount').innerText = count + 1;
+    }
+
+    function updateLaborInput() {
+      const s = document.getElementById('newService').value;
+      const inp = document.getElementById('newLabor');
+      if (s === 'Pantalla') inp.value = 700;
+      else if (s === 'Tapa Trasera') inp.value = 500;
+      else if (s === 'Batería') inp.value = 500;
+      else if (s === 'Centro de Carga') inp.value = 400;
+      else inp.value = 350;
+    }
+
+    function createOrder() {
+      hapticFeedback();
+      const client = document.getElementById('newClient').value.trim();
+      const phone = document.getElementById('newPhone').value.trim();
+      const device = document.getElementById('newDevice').value.trim();
+      const service = document.getElementById('newService').value;
+      const labor = +document.getElementById('newLabor').value;
+
+      if (!client || !device) {
+        alert('Por favor completa el nombre del cliente y el modelo del celular.');
+        return;
+      }
+
+      const newId = 'VOLT-' + (100 + orders.length + 1);
+      orders.unshift({
+        id: newId,
+        client: client,
+        device: device,
+        service: service,
+        labor: labor,
+        status: 'route',
+        phone: phone || '8100000000'
+      });
+
+      saveOrders();
+      alert(`¡Orden ${newId} registrada con éxito! Despachando Automatizer...`);
+      sendAutomatedStatus(newId);
+
+      // Limpiar formulario y volver al dashboard
+      document.getElementById('newClient').value = '';
+      document.getElementById('newPhone').value = '';
+      document.getElementById('newDevice').value = '';
+      switchSection('dashboard', document.querySelector('.nav-btn'));
+    }
+
+    function toggleRule(name, status) {
+      hapticFeedback();
+      console.log(`Automatizer: Regla ${name} ahora está ${status ? 'ACTIVADA' : 'DESACTIVADA'}`);
+    }
+
+    function switchSection(sec, btn) {
+      hapticFeedback();
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const dashSec = document.getElementById('sec-dashboard');
+      const formSec = document.getElementById('sec-nueva-orden');
+
+      if (sec === 'nueva-orden') {
+        dashSec.style.display = 'none';
+        formSec.style.display = 'block';
+      } else {
+        dashSec.style.display = 'grid';
+        formSec.style.display = 'none';
+        
+        if (sec === 'automatizer') {
+          document.getElementById('sec-automatizer').scrollIntoView({ behavior: 'smooth' });
+        } else if (sec === 'inventario') {
+          document.getElementById('sec-inventario').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+
+    function refreshOrders() {
+      hapticFeedback();
+      renderOrders();
+      updateKPIs();
+    }
+
+    // Inicializar
+    renderOrders();
+    updateKPIs();
+  </script>
+</body>
+</html>
