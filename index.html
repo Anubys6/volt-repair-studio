@@ -2,12 +2,21 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Volt Repair Studio | Micro-Cirugía de Smartphones & Servicio a Domicilio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Volt Repair Studio | Micro-Cirugía de Smartphones & Taller a Domicilio</title>
   <meta name="description" content="Reparación profesional de iPhone y celulares en tu propia sala u oficina en 25 minutos. Laboratorio móvil, diagnóstico anatómico digital y garantía por escrito.">
   
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="theme-color" content="#060911">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Volt Repair">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+
   <!-- Favicon & Fonts -->
   <link rel="icon" type="image/jpeg" href="assets/logo-volt-studio.jpg">
+  <link rel="apple-touch-icon" href="assets/logo-volt-studio.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
@@ -15,12 +24,12 @@
   <style>
     :root {
       --bg: #060911;
-      --bg-surface: rgba(13, 20, 36, 0.7);
+      --bg-surface: rgba(13, 20, 36, 0.75);
       --bg-card: rgba(18, 27, 49, 0.65);
       --border: rgba(0, 240, 255, 0.16);
       --border-hover: rgba(0, 240, 255, 0.5);
       --cyan: #00f0ff;
-      --cyan-glow: rgba(0, 240, 255, 0.4);
+      --cyan-glow: rgba(0, 240, 255, 0.35);
       --blue: #0066ff;
       --green-wa: #25d366;
       --green-glow: rgba(37, 211, 102, 0.4);
@@ -28,24 +37,35 @@
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     html {
       scroll-behavior: smooth;
+      background-color: var(--bg);
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
       line-height: 1.6;
       position: relative;
+      padding-bottom: calc(90px + var(--safe-bottom));
+      touch-action: manipulation;
     }
 
-    /* CANVAS DE PARTÍCULAS ELÉCTRICAS DE FONDO */
+    /* CANVAS DE PARTÍCULAS ELÉCTRICAS OPTIMIZADO */
     #electricCanvas {
       position: fixed;
       top: 0;
@@ -54,29 +74,29 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.75;
+      opacity: 0.65;
     }
 
     /* AMBIENT LIGHTING */
     .ambient-glow-1 {
       position: fixed;
-      top: -100px;
+      top: -120px;
       right: -100px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.14), transparent 70%);
+      width: clamp(300px, 45vw, 550px);
+      height: clamp(300px, 45vw, 550px);
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.12), transparent 70%);
       pointer-events: none;
       z-index: 1;
-      filter: blur(40px);
+      filter: blur(50px);
     }
 
     .ambient-glow-2 {
       position: fixed;
       bottom: -150px;
       left: -100px;
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle, rgba(0, 102, 255, 0.12), transparent 70%);
+      width: clamp(300px, 45vw, 550px);
+      height: clamp(300px, 45vw, 550px);
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.1), transparent 70%);
       pointer-events: none;
       z-index: 1;
       filter: blur(50px);
@@ -84,14 +104,14 @@
 
     /* HEADER */
     header {
-      background: rgba(6, 9, 17, 0.8);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(6, 9, 17, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 14px 32px;
+      padding: clamp(10px, 2.5vw, 16px) clamp(16px, 4vw, 36px);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -107,8 +127,8 @@
     }
 
     .brand img {
-      width: 42px;
-      height: 42px;
+      width: clamp(36px, 8vw, 44px);
+      height: clamp(36px, 8vw, 44px);
       border-radius: 12px;
       border: 1px solid var(--border-hover);
       box-shadow: 0 0 16px var(--cyan-glow);
@@ -121,20 +141,22 @@
     }
 
     .brand-text h1 {
-      font-size: 1.12rem;
+      font-size: clamp(0.95rem, 3.2vw, 1.15rem);
       font-weight: 800;
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
       gap: 6px;
+      line-height: 1.2;
     }
 
     .brand-text span {
-      font-size: 0.7rem;
+      font-size: clamp(0.62rem, 2vw, 0.72rem);
       color: var(--cyan);
       text-transform: uppercase;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
+      display: block;
     }
 
     .nav-links {
@@ -179,22 +201,27 @@
       justify-content: center;
       gap: 8px;
       padding: 12px 24px;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 800;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       text-decoration: none;
       cursor: pointer;
       border: none;
       transition: all 0.25s var(--ease-spring);
       position: relative;
       overflow: hidden;
+      min-height: 48px; /* Touch friendly standard */
+    }
+
+    .btn:active {
+      transform: scale(0.96) !important;
     }
 
     .btn::before {
       content: '';
       position: absolute;
       top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
       transition: left 0.6s ease;
     }
 
@@ -240,8 +267,8 @@
     /* SCROLL REVEAL ANIMATIONS */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+      transform: translateY(24px);
+      transition: opacity 0.65s var(--ease-spring), transform 0.65s var(--ease-spring);
     }
 
     .reveal.active {
@@ -251,8 +278,8 @@
 
     .reveal-scale {
       opacity: 0;
-      transform: scale(0.92);
-      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+      transform: scale(0.94);
+      transition: opacity 0.65s var(--ease-spring), transform 0.65s var(--ease-spring);
     }
 
     .reveal-scale.active {
@@ -265,19 +292,12 @@
       position: relative;
       z-index: 2;
       max-width: 1250px;
-      margin: 60px auto 40px;
-      padding: 0 24px;
+      margin: clamp(24px, 5vw, 60px) auto clamp(30px, 6vw, 50px);
+      padding: 0 clamp(16px, 4vw, 28px);
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 48px;
+      gap: clamp(28px, 5vw, 50px);
       align-items: center;
-    }
-
-    @media (max-width: 950px) {
-      .hero { grid-template-columns: 1fr; text-align: center; margin-top: 30px; }
-      .nav-links { display: none; }
-      .hero-actions { justify-content: center; }
-      .hero-badges-row { justify-content: center; }
     }
 
     .badge-animated {
@@ -289,13 +309,13 @@
       background: rgba(0, 240, 255, 0.08);
       border: 1px solid var(--border-hover);
       color: var(--cyan);
-      font-size: 0.8rem;
+      font-size: clamp(0.74rem, 2.2vw, 0.82rem);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-      animation: floatBadge 3s ease-in-out infinite;
+      animation: floatBadge 3.2s ease-in-out infinite;
     }
 
     @keyframes floatBadge {
@@ -304,11 +324,11 @@
     }
 
     .hero h2 {
-      font-size: 3.1rem;
+      font-size: clamp(1.85rem, 6.2vw, 3.2rem);
       font-weight: 900;
-      line-height: 1.12;
-      margin-bottom: 20px;
-      letter-spacing: -0.8px;
+      line-height: 1.14;
+      margin-bottom: 18px;
+      letter-spacing: -0.6px;
     }
 
     .hero h2 span.gradient-text {
@@ -319,22 +339,23 @@
     }
 
     .hero p {
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.8vw, 1.12rem);
       color: #cbd5e1;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       max-width: 620px;
+      line-height: 1.55;
     }
 
     .hero-actions {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
 
     .hero-badges-row {
       display: flex;
-      gap: 18px;
-      margin-top: 40px;
+      gap: 12px;
+      margin-top: 32px;
       flex-wrap: wrap;
     }
 
@@ -342,13 +363,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
       color: var(--text-muted);
       font-weight: 600;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(6px);
     }
 
     .micro-badge span {
@@ -359,10 +381,10 @@
     /* 3D TILT PHOTO HERO CARD */
     .tilt-card {
       position: relative;
-      border-radius: 24px;
+      border-radius: clamp(18px, 4vw, 24px);
       overflow: hidden;
       border: 1px solid var(--border-hover);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.18);
       transform-style: preserve-3d;
       transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
       cursor: pointer;
@@ -370,7 +392,7 @@
 
     .tilt-card img {
       width: 100%;
-      height: 420px;
+      height: clamp(240px, 48vw, 420px);
       object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
@@ -382,13 +404,14 @@
 
     .tilt-floating-tag {
       position: absolute;
-      bottom: 18px;
-      left: 18px;
-      right: 18px;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
       background: rgba(13, 20, 36, 0.92);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-radius: 14px;
       display: flex;
       justify-content: space-between;
@@ -401,19 +424,20 @@
       position: relative;
       z-index: 2;
       max-width: 1200px;
-      margin: 40px auto 70px;
-      padding: 0 24px;
+      margin: clamp(24px, 5vw, 40px) auto clamp(40px, 7vw, 70px);
+      padding: 0 clamp(16px, 4vw, 24px);
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 24px 32px;
-      backdrop-filter: blur(12px);
+      padding: clamp(16px, 3.5vw, 28px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .stat-item {
@@ -421,20 +445,219 @@
     }
 
     .stat-num {
-      font-size: 2.2rem;
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
       font-weight: 900;
       color: var(--cyan);
       font-family: 'Montserrat', sans-serif;
       margin-bottom: 2px;
       letter-spacing: -1px;
+      line-height: 1.1;
     }
 
     .stat-label {
-      font-size: 0.8rem;
+      font-size: clamp(0.68rem, 1.8vw, 0.8rem);
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    /* ================================================= */
+    /* NOVEDAD POCO USUAL: SELECTOR ANATÓMICO TÁCTIL     */
+    /* (DIAGNÓSTICO TOUCHSCREEN ESTILO ODONTOGRAMA)      */
+    /* ================================================= */
+    .anatomy-section {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 40px auto 70px;
+      padding: 0 clamp(16px, 4vw, 24px);
+    }
+
+    .anatomy-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(8, 12, 22, 0.95));
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      padding: clamp(20px, 4vw, 36px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .anatomy-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .anatomy-header h3 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .anatomy-header p {
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 2.2vw, 0.98rem);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .anatomy-interactive-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    .phone-anatomy-mockup {
+      position: relative;
+      background: rgba(6, 9, 17, 0.8);
+      border: 2px solid rgba(0, 240, 255, 0.25);
+      border-radius: 36px;
+      padding: 24px 18px;
+      max-width: 320px;
+      margin: 0 auto;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .notch-bar {
+      width: 90px;
+      height: 16px;
+      background: #0f172a;
+      border-radius: 12px;
+      margin: 0 auto 10px auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .notch-camera-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1e293b;
+      box-shadow: inset 0 0 3px #00f0ff;
+    }
+
+    .anatomy-touch-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      user-select: none;
+    }
+
+    .anatomy-touch-pill:hover, .anatomy-touch-pill.active {
+      background: rgba(0, 240, 255, 0.14);
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      transform: scale(1.02);
+    }
+
+    .anatomy-touch-pill .pill-icon {
+      font-size: 1.4rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .anatomy-touch-pill .pill-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .anatomy-touch-pill .pill-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .anatomy-touch-pill .pill-status {
+      font-size: 0.72rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .anatomy-result-panel {
+      background: rgba(10, 16, 30, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(18px, 3.5vw, 26px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .anatomy-result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: fit-content;
+    }
+
+    .anatomy-result-title {
+      font-size: clamp(1.15rem, 3vw, 1.4rem);
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .anatomy-result-desc {
+      font-size: clamp(0.85rem, 2vw, 0.92rem);
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .anatomy-result-meta {
+      display: flex;
+      gap: 12px;
+      margin: 6px 0;
+      flex-wrap: wrap;
+    }
+
+    .meta-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 12px;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .meta-box span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .meta-box strong {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 800;
     }
 
     /* SERVICES SECTION */
@@ -442,84 +665,84 @@
       position: relative;
       z-index: 2;
       max-width: 1200px;
-      margin: 90px auto;
-      padding: 0 24px;
+      margin: clamp(40px, 8vw, 90px) auto;
+      padding: 0 clamp(16px, 4vw, 24px);
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: clamp(28px, 6vw, 48px);
     }
 
     .section-header h3 {
-      font-size: 2.1rem;
+      font-size: clamp(1.5rem, 4.5vw, 2.2rem);
       font-weight: 900;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .section-header p {
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: clamp(0.88rem, 2.5vw, 1rem);
       max-width: 550px;
       margin: 0 auto;
     }
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: clamp(16px, 3vw, 24px);
     }
 
-    /* 3D INTERACTIVE CARDS */
     .service-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 28px;
+      padding: clamp(20px, 4vw, 28px);
       transition: all 0.35s var(--ease-spring);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .service-card:hover {
       border-color: var(--cyan);
-      transform: translateY(-8px);
+      transform: translateY(-6px);
       box-shadow: 0 15px 40px rgba(0, 240, 255, 0.18);
     }
 
     .service-icon-box {
-      width: 56px;
-      height: 56px;
+      width: clamp(48px, 10vw, 56px);
+      height: clamp(48px, 10vw, 56px);
       border-radius: 14px;
       background: rgba(0, 240, 255, 0.1);
       border: 1px solid var(--border-hover);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-      margin-bottom: 18px;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
       transition: transform 0.3s ease;
     }
 
     .service-card:hover .service-icon-box {
-      transform: scale(1.1) rotate(6deg);
+      transform: scale(1.08) rotate(6deg);
     }
 
     .service-card h4 {
-      font-size: 1.25rem;
+      font-size: clamp(1.1rem, 3vw, 1.25rem);
       font-weight: 800;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       color: #fff;
     }
 
     .service-card p {
-      font-size: 0.9rem;
+      font-size: clamp(0.84rem, 2vw, 0.9rem);
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       line-height: 1.5;
     }
 
@@ -527,12 +750,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 16px;
+      padding-top: 14px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .service-price {
-      font-size: 1.25rem;
+      font-size: clamp(1.1rem, 3vw, 1.25rem);
       font-weight: 900;
       color: var(--cyan);
       font-family: 'Montserrat', monospace;
@@ -552,35 +775,28 @@
       background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(0, 102, 255, 0.16));
       border: 1px solid var(--border-hover);
       border-radius: 24px;
-      padding: 40px;
+      padding: clamp(20px, 5vw, 40px);
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
-      gap: 40px;
+      gap: clamp(24px, 5vw, 40px);
       align-items: center;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(14px);
-    }
-
-    @media (max-width: 850px) {
-      .odontograma-banner { grid-template-columns: 1fr; }
+      -webkit-backdrop-filter: blur(14px);
     }
 
     /* FAQ ACCORDION */
     .faq-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    @media (max-width: 800px) {
-      .faq-grid { grid-template-columns: 1fr; }
+      gap: 16px;
     }
 
     .faq-item {
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 22px;
+      padding: clamp(16px, 3.5vw, 22px);
       transition: all 0.3s ease;
       cursor: pointer;
     }
@@ -591,7 +807,7 @@
     }
 
     .faq-item h5 {
-      font-size: 1rem;
+      font-size: clamp(0.92rem, 2.4vw, 1rem);
       font-weight: 800;
       color: #fff;
       margin-bottom: 8px;
@@ -601,7 +817,7 @@
     }
 
     .faq-item p {
-      font-size: 0.88rem;
+      font-size: clamp(0.82rem, 2vw, 0.88rem);
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -610,7 +826,7 @@
     footer {
       background: #03060b;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 50px 24px 30px;
+      padding: clamp(40px, 8vw, 60px) clamp(16px, 4vw, 24px) clamp(30px, 6vw, 40px);
       text-align: center;
       position: relative;
       z-index: 2;
@@ -620,16 +836,16 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.2rem;
+      font-size: clamp(1.05rem, 3vw, 1.25rem);
       font-weight: 900;
       color: #fff;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: clamp(12px, 3vw, 20px);
       margin: 18px 0;
       flex-wrap: wrap;
     }
@@ -637,7 +853,8 @@
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: clamp(0.78rem, 2.2vw, 0.86rem);
+      font-weight: 600;
       transition: color 0.2s;
     }
 
@@ -646,7 +863,97 @@
     }
 
     /* ================================================= */
-    /* INTERACTIVE WHATSAPP BOT WIDGET (HIGH CONVERSION) */
+    /* DOCK MÓVIL GLASSMORPHISM (BARRA INFERIOR FLOTANTE)*/
+    /* (EXPERIENCIA ERGONÓMICA DE APP NATIVA EN TELÉFONO)*/
+    /* ================================================= */
+    .mobile-bottom-dock {
+      display: none;
+      position: fixed;
+      bottom: max(12px, var(--safe-bottom));
+      left: 12px;
+      right: 12px;
+      margin: 0 auto;
+      max-width: 480px;
+      height: 64px;
+      background: rgba(10, 16, 32, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 240, 255, 0.2);
+      z-index: 999;
+      padding: 4px 10px;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .dock-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 16px;
+      transition: all 0.2s var(--ease-spring);
+      position: relative;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      user-select: none;
+    }
+
+    .dock-item:active {
+      transform: scale(0.9);
+    }
+
+    .dock-item.active, .dock-item:hover {
+      color: var(--cyan);
+    }
+
+    .dock-item.active .dock-icon {
+      color: var(--cyan);
+      transform: translateY(-2px);
+      filter: drop-shadow(0 0 8px var(--cyan-glow));
+    }
+
+    .dock-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
+
+    .dock-bot-btn {
+      position: relative;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff !important;
+      border-radius: 20px;
+      padding: 8px 14px;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.5);
+    }
+
+    .dock-bot-btn .dock-icon {
+      color: #fff !important;
+    }
+
+    .dock-badge-pulse {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 11px;
+      height: 11px;
+      background: #ff0055;
+      border: 2px solid #060911;
+      border-radius: 50%;
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    /* ================================================= */
+    /* BOT WHATSAPP DESKTOP & NATIVE MOBILE BOTTOM SHEET */
     /* ================================================= */
     .wa-widget-button {
       position: fixed;
@@ -702,12 +1009,33 @@
       100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 0, 85, 0); }
     }
 
+    /* BACKDROP PARA BOTTOM SHEET MÓVIL */
+    .sheet-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1050;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sheet-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+
     /* BOT CHAT POPUP WINDOW */
     .wa-chat-window {
       position: fixed;
       bottom: 105px;
       right: 26px;
-      width: 375px;
+      width: 380px;
       max-width: calc(100vw - 32px);
       height: 520px;
       background: #0f172a;
@@ -716,7 +1044,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.25);
       display: none;
       flex-direction: column;
-      z-index: 1000;
+      z-index: 1100;
       overflow: hidden;
       animation: slideUpModal 0.35s var(--ease-spring) forwards;
     }
@@ -726,9 +1054,20 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* BARRA PARA ARRASTRAR EN MÓVIL (DRAG HANDLE) */
+    .sheet-drag-handle {
+      display: none;
+      width: 44px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 10px;
+      margin: 10px auto 4px auto;
+      cursor: grab;
+    }
+
     .wa-chat-header {
       background: #064e3b;
-      padding: 16px 20px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -772,7 +1111,7 @@
     }
 
     .wa-chat-close {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       border: none;
       color: #fff;
       font-size: 1.1rem;
@@ -804,7 +1143,7 @@
     }
 
     .chat-bubble {
-      max-width: 86%;
+      max-width: 88%;
       padding: 12px 16px;
       border-radius: 14px;
       font-size: 0.86rem;
@@ -844,16 +1183,16 @@
       background: rgba(0, 240, 255, 0.1);
       border: 1px solid var(--border-hover);
       color: var(--cyan);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 0.8rem;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       text-align: left;
       transition: all 0.2s;
     }
 
-    .chat-option-btn:hover {
+    .chat-option-btn:hover, .chat-option-btn:active {
       background: var(--cyan);
       color: #040914;
       transform: translateX(4px);
@@ -888,21 +1227,22 @@
 
     /* Chat Footer */
     .wa-chat-footer {
-      padding: 14px;
+      padding: 12px 16px;
       background: #0f172a;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       gap: 10px;
+      padding-bottom: max(12px, var(--safe-bottom));
     }
 
     .wa-chat-input {
       flex: 1;
       background: #1e293b;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px 14px;
       color: #fff;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       outline: none;
       transition: border-color 0.2s;
     }
@@ -916,28 +1256,103 @@
       border: none;
       color: #042410;
       padding: 10px 16px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 800;
       cursor: pointer;
       transition: transform 0.2s;
+      min-height: 44px;
     }
 
-    .wa-chat-send:hover {
-      transform: scale(1.05);
+    .wa-chat-send:active {
+      transform: scale(0.95);
+    }
+
+    /* ================================================= */
+    /* RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS (<820px) */
+    /* ================================================= */
+    @media (max-width: 950px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        margin-top: 24px;
+      }
+      .nav-links { display: none; }
+      .hero-actions { justify-content: center; }
+      .hero-badges-row { justify-content: center; }
+      .odontograma-banner { grid-template-columns: 1fr; }
+      .anatomy-interactive-container { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      /* MOSTRAR DOCK MÓVIL EN CELULARES */
+      .mobile-bottom-dock {
+        display: flex;
+      }
+      /* Ocultar botón circular estándar en favor del dock */
+      .wa-widget-button {
+        display: none;
+      }
+
+      /* CONVERTIR CHAT EN NATIVE BOTTOM SHEET */
+      .wa-chat-window {
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 84vh !important;
+        max-height: 84vh !important;
+        border-radius: 28px 28px 0 0 !important;
+        border-bottom: none !important;
+        box-shadow: 0 -15px 40px rgba(0,0,0,0.8) !important;
+        animation: slideUpSheet 0.38s var(--ease-spring) forwards;
+      }
+
+      @keyframes slideUpSheet {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+
+      .sheet-drag-handle {
+        display: block;
+      }
+
+      /* Stats 2x2 grid */
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        padding: 18px 14px;
+      }
+
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions .btn {
+        width: 100%;
+      }
+      .stat-item {
+        padding: 6px 4px;
+      }
+      .anatomy-touch-pill {
+        padding: 10px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- PARTÍCULAS ELÉCTRICAS EN VIVO (CANVAS ANIMADO) -->
+  <!-- PARTÍCULAS ELÉCTRICAS EN VIVO (CANVAS ANIMADO Y OPTIMIZADO) -->
   <canvas id="electricCanvas"></canvas>
 
   <div class="ambient-glow-1"></div>
   <div class="ambient-glow-2"></div>
 
-  <!-- HEADER -->
+  <!-- HEADER NATIVO -->
   <header>
-    <a href="#" class="brand">
+    <a href="#" class="brand" onclick="hapticFeedback()">
       <img src="assets/logo-volt-studio.jpg" alt="Logo Volt Repair">
       <div class="brand-text">
         <h1>VOLT REPAIR STUDIO</h1>
@@ -946,14 +1361,15 @@
     </a>
 
     <div class="nav-links">
-      <a href="#servicios">Servicios</a>
-      <a href="#expediente">Ficha Odontograma</a>
-      <a href="#faq">Preguntas</a>
-      <a href="taller.html" style="color: var(--cyan);">🔬 Suite de Taller</a>
-      <a href="videos/reels-promocionales.html" style="color: #ff0055;">🎬 Reels</a>
+      <a href="#servicios" onclick="hapticFeedback()">Servicios</a>
+      <a href="#anatomia" onclick="hapticFeedback()">🩺 Selector Anatómico</a>
+      <a href="#expediente" onclick="hapticFeedback()">Expediente Digital</a>
+      <a href="#faq" onclick="hapticFeedback()">Preguntas</a>
+      <a href="taller.html" style="color: var(--cyan);" onclick="hapticFeedback()">🔬 Suite Taller</a>
+      <a href="videos/reels-promocionales.html" style="color: #ff0055;" onclick="hapticFeedback()">🎬 Reels</a>
     </div>
 
-    <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa">
+    <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="padding: 10px 20px; font-size: 0.85rem;">
       💬 Cotizar por WhatsApp
     </a>
   </header>
@@ -962,21 +1378,21 @@
   <section class="hero">
     <div class="reveal">
       <div class="badge-animated">
-        <span>⚡</span> Servicio a Domicilio Incluido
+        <span>⚡</span> Taller en tu Sala u Oficina
       </div>
       <h2>
         Reparación de iPhone y Celulares <span class="gradient-text">en tu propia sala</span>
       </h2>
       <p>
-        Olvídate del tráfico y de dejar tu teléfono días enteros con desconocidos. Llevamos nuestro laboratorio móvil hasta tu casa u oficina: <b>reparamos frente a tus ojos en 25 minutos</b>, con total privacidad, refacciones certificadas y garantía por escrito.
+        Olvídate del tráfico y de dejar tu teléfono días enteros con extraños. Llevamos nuestro laboratorio móvil hasta tu hogar: <b>reparamos frente a tus ojos en 25 minutos</b>, con total privacidad, refacciones de grado cirujano y garantía por escrito.
       </p>
 
       <div class="hero-actions">
-        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="font-size: 1rem; padding: 14px 28px;">
+        <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa" style="font-size: 0.98rem; padding: 14px 26px;">
           💬 Iniciar Diagnóstico por WhatsApp
         </a>
-        <a href="#servicios" class="btn btn-secondary" style="font-size: 1rem; padding: 14px 24px;">
-          Ver Tarifas y Modelos
+        <a href="#anatomia" class="btn btn-secondary" onclick="hapticFeedback()" style="font-size: 0.98rem; padding: 14px 22px;">
+          🩺 Elegir Falla en tu Celular
         </a>
       </div>
 
@@ -994,7 +1410,7 @@
       <div class="tilt-floating-tag">
         <div>
           <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Trabajo 100% Transparente</div>
-          <div style="font-size: 0.76rem; color: #34d399;">En tu comedor mientras te tomas un café ☕</div>
+          <div style="font-size: 0.76rem; color: #34d399;">En tu comedor mientras tomas un café ☕</div>
         </div>
         <div style="color: var(--cyan); font-weight: 900; font-size: 1.15rem; font-family: monospace;">⚡ 25 MIN</div>
       </div>
@@ -1010,7 +1426,7 @@
       </div>
       <div class="stat-item">
         <div class="stat-num" data-target="25">0</div>
-        <div class="stat-label">Minutos por Reparación</div>
+        <div class="stat-label">Minutos Promedio</div>
       </div>
       <div class="stat-item">
         <div class="stat-num" data-target="100">0</div>
@@ -1023,20 +1439,115 @@
     </div>
   </section>
 
+  <!-- ===================================================== -->
+  <!-- SELECTOR ANATÓMICO TÁCTIL (DISPOSITIVOGRAMA EN VIVO)  -->
+  <!-- EXPERIENCIA INTERACTIVA POCO USUAL Y ADICTIVA EN MÓVIL-->
+  <!-- ===================================================== -->
+  <section class="anatomy-section reveal" id="anatomia">
+    <div class="anatomy-card">
+      <div class="anatomy-header">
+        <div class="badge-animated" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);">
+          <span>🩺</span> Diagnóstico Táctil Inmediato
+        </div>
+        <h3>Toca la Parte Afectada de tu Teléfono</h3>
+        <p>Selecciona el componente en el celular interactivo para ver tiempo de reparación, solución recomendada y cotización directa.</p>
+      </div>
+
+      <div class="anatomy-interactive-container">
+        <!-- Mockup Smartphone Táctil -->
+        <div class="phone-anatomy-mockup">
+          <div class="notch-bar">
+            <div class="notch-camera-dot"></div>
+          </div>
+
+          <div class="anatomy-touch-pill active" id="part-screen" onclick="selectAnatomyPart('screen')">
+            <div class="pill-icon">📱</div>
+            <div class="pill-text">
+              <div class="pill-title">Pantalla / Cristal OLED</div>
+              <div class="pill-status">Estrellada, líneas o manchas</div>
+            </div>
+          </div>
+
+          <div class="anatomy-touch-pill" id="part-battery" onclick="selectAnatomyPart('battery')">
+            <div class="pill-icon">🔋</div>
+            <div class="pill-text">
+              <div class="pill-title">Batería Li-Ion</div>
+              <div class="pill-status">Salud baja, se descarga rápido</div>
+            </div>
+          </div>
+
+          <div class="anatomy-touch-pill" id="part-camera" onclick="selectAnatomyPart('camera')">
+            <div class="pill-icon">📷</div>
+            <div class="pill-text">
+              <div class="pill-title">Cámaras & Face ID</div>
+              <div class="pill-status">Cristal roto, vibra o borrosa</div>
+            </div>
+          </div>
+
+          <div class="anatomy-touch-pill" id="part-port" onclick="selectAnatomyPart('port')">
+            <div class="pill-icon">⚡</div>
+            <div class="pill-text">
+              <div class="pill-title">Centro de Carga</div>
+              <div class="pill-status">Falso contacto, no entra cable</div>
+            </div>
+          </div>
+
+          <div class="anatomy-touch-pill" id="part-water" onclick="selectAnatomyPart('water')">
+            <div class="pill-icon">💧</div>
+            <div class="pill-text">
+              <div class="pill-title">Mojado / Placa Lógica</div>
+              <div class="pill-status">Caído al agua o no enciende</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel de Resultados del Diagnóstico Dinámico -->
+        <div class="anatomy-result-panel" id="anatomyResultPanel">
+          <div class="anatomy-result-badge" id="anatomyBadge">
+            <span>⚡</span> MICRO-CIRUGÍA EXPRESS
+          </div>
+          <h4 class="anatomy-result-title" id="anatomyTitle">Reemplazo de Pantalla Certificada</h4>
+          <p class="anatomy-result-desc" id="anatomyDesc">
+            Instalación en 25 minutos frente a ti. Conservamos la calibración TrueTone, sensibilidad táctil de alta respuesta y sellado de resistencia al polvo.
+          </p>
+
+          <div class="anatomy-result-meta">
+            <div class="meta-box">
+              <span>Tiempo Estimado</span>
+              <strong id="anatomyTime">25 minutos</strong>
+            </div>
+            <div class="meta-box">
+              <span>Modalidad</span>
+              <strong>En tu sala u oficina</strong>
+            </div>
+            <div class="meta-box">
+              <span>Garantía</span>
+              <strong>Por escrito</strong>
+            </div>
+          </div>
+
+          <button onclick="quoteCurrentAnatomyPart()" class="btn btn-wa" style="width: 100%; margin-top: 6px; font-size: 0.95rem;">
+            💬 Cotizar esta Reparación por WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SERVICIOS ESTRELLA -->
   <section class="section" id="servicios">
     <div class="section-header reveal">
       <h3>Servicios Más Solicitados</h3>
-      <p>Repuestos de grado certificado instalados en tu sala con herramienta quirúrgica.</p>
+      <p>Repuestos de grado certificado instalados en tu sala con instrumental quirúrgico.</p>
     </div>
 
     <div class="services-grid">
       <!-- Servicio 1 -->
-      <div class="service-card reveal">
+      <div class="service-card reveal" onclick="hapticFeedback()">
         <div>
           <div class="service-icon-box">📱</div>
           <h4>Cambio de Pantalla Express</h4>
-          <p>Solucionamos cristales estrellados, líneas de colores, manchas negras y fallas de touch en 25 minutos con TrueTone calibrado.</p>
+          <p>Solucionamos cristales rotos, líneas de colores, manchas negras y fallas de touch en 25 minutos con TrueTone calibrado.</p>
         </div>
         <div class="service-bottom">
           <div class="service-price">Desde $600</div>
@@ -1045,11 +1556,11 @@
       </div>
 
       <!-- Servicio 2 -->
-      <div class="service-card reveal">
+      <div class="service-card reveal" onclick="hapticFeedback()">
         <div>
           <div class="service-icon-box">🔋</div>
           <h4>Batería Nueva Grado A+</h4>
-          <p>Recupera la autonomía de tu día completo. Instalamos celdas Li-Ion certificadas sin mensajes de advertencia y con salud al 100%.</p>
+          <p>Recupera la autonomía de tu día completo. Instalamos celdas Li-Ion certificadas sin avisos molestos y con salud al 100%.</p>
         </div>
         <div class="service-bottom">
           <div class="service-price">Desde $550</div>
@@ -1058,11 +1569,11 @@
       </div>
 
       <!-- Servicio 3 -->
-      <div class="service-card reveal">
+      <div class="service-card reveal" onclick="hapticFeedback()">
         <div>
           <div class="service-icon-box">💧</div>
           <h4>Rescate de Equipos Mojados</h4>
-          <p>¿Se cayó al agua? ¡Nunca uses arroz! Realizamos limpieza por tina de ultrasonido y eliminación de sulfatación en microcircuitos.</p>
+          <p>¿Se cayó al agua? ¡Nunca uses arroz! Realizamos lavado químico por ultrasonido y descontaminación de sulfato en microcircuitos.</p>
         </div>
         <div class="service-bottom">
           <div class="service-price">Diagnóstico</div>
@@ -1071,11 +1582,11 @@
       </div>
 
       <!-- Servicio 4 -->
-      <div class="service-card reveal">
+      <div class="service-card reveal" onclick="hapticFeedback()">
         <div>
           <div class="service-icon-box">✨</div>
           <h4>Cristal Trasero & Chasis</h4>
-          <p>Reemplazamos tapas traseras estalladas conservando intacta la bobina de carga inalámbrica MagSafe original de tu iPhone.</p>
+          <p>Reemplazamos tapas traseras fracturadas conservando intacta la bobina de carga inalámbrica MagSafe original de tu iPhone.</p>
         </div>
         <div class="service-bottom">
           <div class="service-price">Desde $650</div>
@@ -1092,11 +1603,11 @@
         <div class="badge-animated" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #34d399;">
           <span>🩺</span> Innovación Única en tu Ciudad
         </div>
-        <h3 style="font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 14px;">
+        <h3 style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; color: #fff; margin-bottom: 14px;">
           Cada Dispositivo recibe un Expediente Clínico Digital
         </h3>
-        <p style="font-size: 0.98rem; color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
-          Igual que los dentistas con su odontograma, nosotros inspeccionamos visualmente cada órgano de tu teléfono: Face ID, batería, estanqueidad, TrueTone y cámaras. Sabes exactamente qué piezas están sanas antes de que toquemos un solo tornillo.
+        <p style="font-size: clamp(0.88rem, 2vw, 0.98rem); color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
+          Igual que los dentistas con su odontograma dental, nosotros inspeccionamos visualmente cada órgano de tu celular: Face ID, batería, estanqueidad, TrueTone y cámaras. Sabes con certeza qué piezas están sanas antes de que toquemos un solo tornillo.
         </p>
         <a href="javascript:void(0)" onclick="openWaBot()" class="btn btn-wa">
           Pedir Check-up con Dispositivograma
@@ -1116,22 +1627,22 @@
     </div>
 
     <div class="faq-grid">
-      <div class="faq-item reveal">
+      <div class="faq-item reveal" onclick="hapticFeedback()">
         <h5><span>❓</span> ¿Cobran extra por venir a mi domicilio?</h5>
         <p>No. El precio cotizado incluye el traslado del especialista hasta tu casa u oficina dentro de nuestra zona de cobertura habitual.</p>
       </div>
 
-      <div class="faq-item reveal">
-        <h5><span>🔒</span> ¿Tienen acceso a mis fotos o datos personales?</h5>
+      <div class="faq-item reveal" onclick="hapticFeedback()">
+        <h5><span>🔒</span> ¿Tienen acceso a mis fotos o contraseñas?</h5>
         <p>Cero acceso. Tú estás presente viendo el trabajo sobre tu mesa y para cambios de pantalla o batería NO requerimos tu contraseña de desbloqueo.</p>
       </div>
 
-      <div class="faq-item reveal">
+      <div class="faq-item reveal" onclick="hapticFeedback()">
         <h5><span>💳</span> ¿Qué métodos de pago aceptan?</h5>
         <p>Llevamos terminal bancaria para cobro con tarjeta de crédito o débito, además de transferencias bancarias SPEI o efectivo.</p>
       </div>
 
-      <div class="faq-item reveal">
+      <div class="faq-item reveal" onclick="hapticFeedback()">
         <h5><span>⏱️</span> ¿Cuánto tardan en realizar la reparación?</h5>
         <p>Un cambio de pantalla o batería promedio toma entre 20 y 30 minutos directamente frente a ti.</p>
       </div>
@@ -1144,23 +1655,51 @@
       <img src="assets/logo-volt-studio.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 8px;">
       <span>VOLT REPAIR STUDIO</span>
     </div>
-    <p>Micro-Cirugía de Smartphones & Taller a Domicilio</p>
+    <p style="font-size: 0.88rem; color: #94a3b8;">Micro-Cirugía de Smartphones & Taller a Domicilio</p>
     
     <div class="footer-links">
-      <a href="#servicios">Servicios</a>
-      <a href="#expediente">Dispositivograma</a>
-      <a href="taller.html">Panel Interno de Taller</a>
-      <a href="videos/reels-promocionales.html">Estudio de Video Reels</a>
+      <a href="#servicios" onclick="hapticFeedback()">Servicios</a>
+      <a href="#anatomia" onclick="hapticFeedback()">Selector Anatómico</a>
+      <a href="#expediente" onclick="hapticFeedback()">Dispositivograma</a>
+      <a href="taller.html" onclick="hapticFeedback()">Panel de Taller</a>
+      <a href="videos/reels-promocionales.html" onclick="hapticFeedback()">Estudio Reels</a>
       <a href="javascript:void(0)" onclick="openWaBot()">WhatsApp Oficial</a>
     </div>
 
-    <p style="margin-top: 15px; font-size: 0.78rem; color: #64748b;">
+    <p style="margin-top: 15px; font-size: 0.76rem; color: #64748b;">
       Lunes a Sábado: 11:00 AM – 8:00 PM | Todos los derechos reservados &copy; 2026 Volt Repair Studio.
     </p>
   </footer>
 
+  <!-- ==================================================== -->
+  <!-- BARRA DE NAVEGACIÓN MÓVIL DE CRISTAL (DOCK HÁPTICO)  -->
+  <!-- ==================================================== -->
+  <nav class="mobile-bottom-dock" id="mobileBottomDock">
+    <a href="#" class="dock-item active" onclick="smoothScrollToTop(event)">
+      <span class="dock-icon">🏠</span>
+      <span>Inicio</span>
+    </a>
+    <a href="#servicios" class="dock-item" onclick="handleDockNav(event, '#servicios')">
+      <span class="dock-icon">⚡</span>
+      <span>Servicios</span>
+    </a>
+    <a href="#anatomia" class="dock-item" onclick="handleDockNav(event, '#anatomia')">
+      <span class="dock-icon">🩺</span>
+      <span>Anatomía</span>
+    </a>
+    <a href="taller.html" class="dock-item" onclick="hapticFeedback()">
+      <span class="dock-icon">🔬</span>
+      <span>Taller</span>
+    </a>
+    <button class="dock-item dock-bot-btn" onclick="openWaBot()">
+      <div class="dock-badge-pulse"></div>
+      <span class="dock-icon">💬</span>
+      <span>Asistente</span>
+    </button>
+  </nav>
+
   <!-- ============================================== -->
-  <!-- BOT FLOTANTE DE WHATSAPP CON CHAT AUTOMATIZADO -->
+  <!-- BOT FLOTANTE DESKTOP (SOLO PANTALLAS GRANDES)  -->
   <!-- ============================================== -->
   <div class="wa-widget-button" onclick="toggleWaChat()" title="Hablar con un Especialista Volt">
     <div class="wa-badge-pulse"></div>
@@ -1169,8 +1708,14 @@
     </svg>
   </div>
 
-  <!-- VENTANA DEL ASISTENTE VIRTUAL DE WHATSAPP -->
+  <!-- BACKDROP OVERLAY PARA EL BOTTOM SHEET MÓVIL -->
+  <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeWaChat()"></div>
+
+  <!-- VENTANA DEL ASISTENTE VIRTUAL DE WHATSAPP / BOTTOM SHEET -->
   <div class="wa-chat-window" id="waChatWindow">
+    <!-- Drag Handle para deslizar en móviles -->
+    <div class="sheet-drag-handle" id="sheetDragHandle"></div>
+
     <div class="wa-chat-header">
       <div class="wa-chat-header-user">
         <img src="assets/logo-volt-studio.jpg" alt="Manuel Volt">
@@ -1179,24 +1724,24 @@
           <span><span class="online-dot"></span> En línea | Responde al instante</span>
         </div>
       </div>
-      <button class="wa-chat-close" onclick="toggleWaChat()">✕</button>
+      <button class="wa-chat-close" onclick="closeWaChat()">✕</button>
     </div>
 
     <!-- Mensajes del Chat -->
     <div class="wa-chat-body" id="waChatBody">
       <div class="chat-bubble chat-bubble-bot">
         ¡Hola! 👋 Bienvenido a <b>Volt Repair Studio</b>.<br>
-        Soy el asistente técnico de Manuel. ¿Qué problema presenta tu equipo hoy?
+        Soy el asistente técnico de Manuel. ¿Qué problema presenta tu teléfono hoy?
       </div>
 
       <div class="chat-options-container" id="botStep1Options">
         <button class="chat-option-btn" onclick="selectBotOption('Pantalla rota o estrellada')">📱 Pantalla rota o estrellada</button>
         <button class="chat-option-btn" onclick="selectBotOption('Batería degradada / No dura')">🔋 Batería dura muy poco</button>
         <button class="chat-option-btn" onclick="selectBotOption('Teléfono mojado con agua')">💧 Se cayó al agua / No enciende</button>
-        <button class="chat-option-btn" onclick="selectBotOption('Otro problema / Hablar con Manuel')">💬 Hablar con el especialista Manuel</button>
+        <button class="chat-option-btn" onclick="selectBotOption('Otro problema / Hablar con Manuel')">💬 Hablar directamente con Manuel</button>
       </div>
 
-      <!-- Bouncing dots typing indicator -->
+      <!-- Indicador de tipeo animado -->
       <div class="typing-indicator" id="typingIndicator">
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
@@ -1211,42 +1756,98 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT: ANIMACIONES & LÓGICA DE BOT -->
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT: LÓGICA MÓVIL, HÁPTICA & BOT        -->
+  <!-- ============================================== -->
   <script>
     // ==========================================
-    // 1. ANIMACIÓN CANVAS DE PARTÍCULAS ELÉCTRICAS
+    // 1. MOTOR HÁPTICO WEB AUDIO & VIBRACIÓN
+    // ==========================================
+    let audioCtx = null;
+    function hapticFeedback() {
+      // 1. Vibración nativa en Android/Chrome
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(12); } catch (e) {}
+      }
+      // 2. Micro-clic acústico de alta frecuencia (Taptic Engine feel)
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.02);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.03);
+      } catch (err) {}
+    }
+
+    // ==========================================
+    // 2. ANIMACIÓN CANVAS OPTIMIZADA PARA BATERÍA
     // ==========================================
     const canvas = document.getElementById('electricCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles = [];
-    let mouse = { x: null, y: null, radius: 140 };
+    let mouse = { x: null, y: null, radius: 110 };
+    const isMobile = window.innerWidth <= 820 || ('ontouchstart' in window);
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       particles = [];
-      const count = Math.floor((width * height) / 16000);
-      for (let i = 0; i < count; i++) {
+      // Reducción drástica de partículas en teléfonos para preservar 60-120fps y batería
+      const count = isMobile ? Math.floor((width * height) / 38000) : Math.floor((width * height) / 16000);
+      const safeCount = Math.max(16, Math.min(count, 70));
+      for (let i = 0; i < safeCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.8,
-          vy: (Math.random() - 0.5) * 0.8,
-          size: Math.random() * 2 + 1
+          vx: (Math.random() - 0.5) * (isMobile ? 0.45 : 0.75),
+          vy: (Math.random() - 0.5) * (isMobile ? 0.45 : 0.75),
+          size: Math.random() * 1.8 + 1
         });
       }
     }
 
+    let isTabVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      isTabVisible = (document.visibilityState === 'visible');
+    });
+
     window.addEventListener('resize', initCanvas);
+    
+    // Mouse y Touch reactivo
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     });
 
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
     function renderElectricNetwork() {
+      if (!isTabVisible) {
+        requestAnimationFrame(renderElectricNetwork);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
+      const maxDist = isMobile ? 85 : 110;
       
-      // Update & Draw Particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
@@ -1255,21 +1856,20 @@
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.55)';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Connect nearby particles
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 110) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 * (1 - dist / 110)})`;
-            ctx.lineWidth = 0.8;
+          if (dist < maxDist) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.18 * (1 - dist / maxDist)})`;
+            ctx.lineWidth = 0.7;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
@@ -1277,14 +1877,13 @@
           }
         }
 
-        // Mouse reaction
         if (mouse.x !== null) {
           const mdx = p.x - mouse.x;
           const mdy = p.y - mouse.y;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
           if (mDist < mouse.radius) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.5 * (1 - mDist / mouse.radius)})`;
-            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.45 * (1 - mDist / mouse.radius)})`;
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -1299,7 +1898,83 @@
     renderElectricNetwork();
 
     // ==========================================
-    // 2. SCROLL REVEAL OBSERVER
+    // 3. SELECTOR ANATÓMICO TÁCTIL (DINÁMICA)
+    // ==========================================
+    const anatomyData = {
+      screen: {
+        badge: '⚡ REEMPLAZO EN 25 MIN',
+        title: 'Reemplazo de Pantalla Certificada',
+        desc: 'Instalación express frente a tus ojos en tu comedor. Conservamos calibración TrueTone original, respuesta háptica al 100% y colocamos sello contra polvo y salpicaduras.',
+        time: '25 minutos',
+        issue: 'Cambio de Pantalla'
+      },
+      battery: {
+        badge: '🔋 SALUD AL 100%',
+        title: 'Batería Nueva Grado A+ (Sin Advertencias)',
+        desc: 'Recupera la duración de todo el día. Celdas Li-Ion grado A+ con microchip de gestión térmica. Sin calentamiento y con garantía total por escrito.',
+        time: '20 minutos',
+        issue: 'Batería Nueva Grado A+'
+      },
+      camera: {
+        badge: '📷 ÓPTICA CIRUJANA',
+        title: 'Módulo de Cámara 4K & Lentes de Cristal',
+        desc: 'Reemplazo de cristal protector estrellado sin abrir el lente óptico, o cambio completo de sensor estabilizado OIS para que tus fotos y videos vuelvan a ser nítidos.',
+        time: '30 minutos',
+        issue: 'Cámara o Cristal de Cámara'
+      },
+      port: {
+        badge: '⚡ CARGA ULTRARÁPIDA',
+        title: 'Limpieza Quirúrgica o Centro de Carga',
+        desc: '¿El cable se sale solo o no entra? El 80% de las veces es compactación de pelusa profunda que retiramos con microscopio en 10 min. Si está roto, cambiamos el flexor.',
+        time: '15 - 25 minutos',
+        issue: 'Centro de Carga / Falso Contacto'
+      },
+      water: {
+        badge: '💧 RECUPERACIÓN CRÍTICA',
+        title: 'Desoxigenación por Tina de Ultrasonido',
+        desc: '¡Nunca uses arroz! Desarmamos de inmediato, aislamos la placa base y la introducimos en solvente desoxidante con ondas ultrasónicas para salvar tus fotos y memorias.',
+        time: 'Diagnóstico en taller',
+        issue: 'Equipo Mojado / No enciende'
+      }
+    };
+
+    let selectedAnatomy = 'screen';
+
+    function selectAnatomyPart(partKey) {
+      hapticFeedback();
+      selectedAnatomy = partKey;
+      
+      // Update pills
+      document.querySelectorAll('.anatomy-touch-pill').forEach(el => el.classList.remove('active'));
+      const activePill = document.getElementById('part-' + partKey);
+      if (activePill) activePill.classList.add('active');
+
+      // Update Panel with smooth fade
+      const panel = document.getElementById('anatomyResultPanel');
+      panel.style.opacity = '0.4';
+      panel.style.transform = 'translateY(6px)';
+      panel.style.transition = 'all 0.25s ease';
+
+      setTimeout(() => {
+        const data = anatomyData[partKey];
+        document.getElementById('anatomyBadge').innerHTML = `<span>⚡</span> ${data.badge}`;
+        document.getElementById('anatomyTitle').innerText = data.title;
+        document.getElementById('anatomyDesc').innerText = data.desc;
+        document.getElementById('anatomyTime').innerText = data.time;
+        panel.style.opacity = '1';
+        panel.style.transform = 'translateY(0)';
+      }, 150);
+    }
+
+    function quoteCurrentAnatomyPart() {
+      hapticFeedback();
+      const issue = anatomyData[selectedAnatomy].issue;
+      selectBotOption(issue);
+      openWaBot();
+    }
+
+    // ==========================================
+    // 4. SCROLL REVEAL OBSERVER
     // ==========================================
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1308,12 +1983,12 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
 
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObserver.observe(el));
 
     // ==========================================
-    // 3. STATS NUMBER COUNTER ANIMATION
+    // 5. STATS NUMBER COUNTER ANIMATION
     // ==========================================
     const statsObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1325,7 +2000,7 @@
               return;
             }
             let count = 0;
-            const step = Math.ceil(target / 40);
+            const step = Math.ceil(target / 35);
             const interval = setInterval(() => {
               count += step;
               if (count >= target) {
@@ -1339,13 +2014,13 @@
           statsObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.25 });
 
     const statsElem = document.querySelector('.stats-strip');
     if (statsElem) statsObserver.observe(statsElem);
 
     // ==========================================
-    // 4. 3D TILT EFFECT ON CARDS
+    // 6. 3D TILT EFFECT & GYROSCOPE
     // ==========================================
     function setupTilt(cardId) {
       const card = document.getElementById(cardId);
@@ -1365,24 +2040,75 @@
     setupTilt('bannerTiltCard');
 
     // ==========================================
-    // 5. INTERACTIVE WHATSAPP BOT LOGIC
+    // 7. GESTOS DE BOTTOM SHEET MÓVIL (SWIPE TO CLOSE)
+    // ==========================================
+    const chatWin = document.getElementById('waChatWindow');
+    const dragHandle = document.getElementById('sheetDragHandle');
+    let startY = 0, currentY = 0, isDragging = false;
+
+    if (dragHandle) {
+      dragHandle.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+      }, { passive: true });
+
+      dragHandle.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        if (diff > 0) {
+          chatWin.style.transform = `translateY(${diff}px)`;
+        }
+      }, { passive: true });
+
+      dragHandle.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diff = currentY - startY;
+        if (diff > 90) {
+          closeWaChat();
+        } else {
+          chatWin.style.transform = 'translateY(0)';
+        }
+      });
+    }
+
+    // ==========================================
+    // 8. INTERACTIVE WHATSAPP BOT LOGIC
     // ==========================================
     let chatStep = 1;
     let userIssue = '';
     let userModel = '';
 
     function toggleWaChat() {
+      hapticFeedback();
       const win = document.getElementById('waChatWindow');
-      win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+      const backdrop = document.getElementById('sheetBackdrop');
+      if (win.style.display === 'flex') {
+        closeWaChat();
+      } else {
+        openWaBot();
+      }
     }
 
     function openWaBot() {
+      hapticFeedback();
       const win = document.getElementById('waChatWindow');
+      const backdrop = document.getElementById('sheetBackdrop');
       win.style.display = 'flex';
-      win.scrollIntoView({ behavior: 'smooth' });
+      win.style.transform = 'translateY(0)';
+      if (backdrop) backdrop.classList.add('active');
     }
 
-    function showTyping(callback, delay = 800) {
+    function closeWaChat() {
+      hapticFeedback();
+      const win = document.getElementById('waChatWindow');
+      const backdrop = document.getElementById('sheetBackdrop');
+      win.style.display = 'none';
+      if (backdrop) backdrop.classList.remove('active');
+    }
+
+    function showTyping(callback, delay = 750) {
       const typing = document.getElementById('typingIndicator');
       const chatBody = document.getElementById('waChatBody');
       typing.style.display = 'flex';
@@ -1396,17 +2122,19 @@
     }
 
     function selectBotOption(issue) {
+      hapticFeedback();
       userIssue = issue;
       addMessage(issue, 'user');
       document.getElementById('botStep1Options').style.display = 'none';
 
       showTyping(() => {
-        addMessage('Excelente. Para cotizarte con servicio a domicilio incluido, ¿cuál es el <b>modelo de tu celular</b>? (Ej. iPhone 11, iPhone 13 Pro, Samsung S22...)', 'bot');
+        addMessage('Excelente elección. Para cotizarte con servicio a domicilio incluido en tu sala, ¿cuál es el <b>modelo de tu celular</b>? (Ej. iPhone 12, iPhone 14 Pro, Galaxy S23...)', 'bot');
         chatStep = 2;
       });
     }
 
     function sendUserCustomMessage() {
+      hapticFeedback();
       const input = document.getElementById('waChatInput');
       const val = input.value.trim();
       if (!val) return;
@@ -1423,13 +2151,13 @@
       } else if (chatStep === 2) {
         userModel = val;
         showTyping(() => {
-          addMessage('¡Listo! Ya organicé tu reporte técnico. Presiona el botón verde para contactar al especialista Manuel por WhatsApp con tu cotización preparada ⚡', 'bot');
+          addMessage('¡Listo! Ya organicé tu reporte técnico. Presiona el botón verde para contactar al especialista Manuel por WhatsApp con tu cotización lista ⚡', 'bot');
           
           const chatBody = document.getElementById('waChatBody');
           const btnDiv = document.createElement('div');
           btnDiv.style.marginTop = '10px';
           btnDiv.innerHTML = `
-            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Hola Manuel, vi la página web de Volt Repair Studio. Necesito cotizar: ' + userIssue + ' para mi equipo ' + userModel + '. ¿Tendrás turno disponible a domicilio hoy?')}" target="_blank" class="btn btn-wa" style="width:100%; text-align:center; padding:14px; font-size:0.9rem;">
+            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Hola Manuel, vi la página oficial de Volt Repair Studio. Necesito cotizar: ' + userIssue + ' para mi equipo ' + userModel + '. ¿Tendrás turno disponible a domicilio hoy?')}" target="_blank" class="btn btn-wa" style="width:100%; text-align:center; padding:14px; font-size:0.9rem;">
               👉 Abrir Chat Oficial en WhatsApp
             </a>
           `;
@@ -1451,6 +2179,48 @@
       chatBody.appendChild(bubble);
       chatBody.scrollTop = chatBody.scrollHeight;
     }
+
+    // ==========================================
+    // 9. NAVEGACIÓN DOCK MÓVIL SUAVE
+    // ==========================================
+    function smoothScrollToTop(e) {
+      e.preventDefault();
+      hapticFeedback();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveDockItem(0);
+    }
+
+    function handleDockNav(e, targetId) {
+      e.preventDefault();
+      hapticFeedback();
+      const target = document.querySelector(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function setActiveDockItem(index) {
+      const items = document.querySelectorAll('.dock-item:not(.dock-bot-btn)');
+      items.forEach((item, idx) => {
+        if (idx === index) item.classList.add('active');
+        else item.classList.remove('active');
+      });
+    }
+
+    // ScrollSpy para el Dock
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 200;
+      const anatomia = document.getElementById('anatomia');
+      const servicios = document.getElementById('servicios');
+
+      if (anatomia && scrollPos >= anatomia.offsetTop && servicios && scrollPos < servicios.offsetTop) {
+        setActiveDockItem(2);
+      } else if (servicios && scrollPos >= servicios.offsetTop) {
+        setActiveDockItem(1);
+      } else {
+        setActiveDockItem(0);
+      }
+    }, { passive: true });
   </script>
 </body>
 </html>
