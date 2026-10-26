@@ -8,3 +8,12 @@ $RECYCLE.BIN/
 # Temporary files
 *.tmp
 *.log
+
+# Video & Audio binaries (Stored locally in Desktop)
+*.mp4
+*.mp3
+*.webm
+*.mov
+*.wav
+temp_*/
+
