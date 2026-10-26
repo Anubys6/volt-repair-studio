@@ -15,5 +15,9 @@ $RECYCLE.BIN/
 *.webm
 *.mov
 *.wav
+*.mkv
+*.ass
+videos/b_roll/test_*
 temp_*/
+
 

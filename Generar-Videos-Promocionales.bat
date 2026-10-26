@@ -1,15 +1,16 @@
 @echo off
 chcp 65001 > nul
-title Generador Automatizado de Videos y Reels - Volt Repair Studio
+title Generador Profesional de Videos y Reels - Volt Repair Studio
 cls
 echo ======================================================================
-echo    VOLT REPAIR STUDIO - ESTUDIO AUTOMATICO DE VIDEOS Y REELS (9:16)
+echo    VOLT REPAIR STUDIO - ESTUDIO CINEMATOGRAFICO DE REELS (9:16)
+echo       Video Real de Fondo + Subtitulos CapCut + Locucion Neural
 echo ======================================================================
 echo.
-echo Iniciando motor de renderizado con Edge-TTS y FFmpeg...
+echo Iniciando renderizado de alta fidelidad con FFmpeg y Edge-TTS...
 echo.
 
-python "%~dp0videos\reels_generator_volt.py"
+python "%~dp0videos\reels_pro_video_generator.py"
 
 echo.
 echo ======================================================================
