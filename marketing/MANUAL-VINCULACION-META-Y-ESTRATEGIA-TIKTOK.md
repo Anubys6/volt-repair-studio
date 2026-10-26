@@ -37,8 +37,8 @@ TikTok es el motor orgánico de mayor velocidad para construir autoridad y confi
 #### B. Nombre y Nombre de Usuario (@Handle)
 * **Nombre visible (Name):** `Volt Repair Studio ⚡ Celulares a Domicilio`
   *(Incluye palabras clave de búsqueda SEO para que el algoritmo lo muestre cuando alguien busque "reparación celulares domicilio").*
-* **Nombre de usuario oficial (@handle):** `@voltrepairstudio`
-  - Alternativas en caso de no disponibilidad: `@voltrepair.mx` | `@voltrepairstudiomx` | `@voltrepair_oficial`
+* **Nombre de usuario oficial (@handle):** `@voltrepair32`
+  - Alternativas en caso de no disponibilidad: `@voltrepair.mx` | `@voltrepair32mx` | `@voltrepair_oficial`
 
 #### C. Biografía Magnética de Alta Conversión (Límite: 80 caracteres en TikTok)
 TikTok cuenta con un límite estricto de 80 caracteres en la biografía. Debe ser directa, persuasiva y orientada a la acción:
@@ -204,7 +204,7 @@ La vinculación correcta dentro del ecosistema de Meta garantiza tres objetivos 
 
 ### 2.1 Requisitos Previos Indispensables
 * Una **Página de Facebook (Fan Page)** creada para el negocio: *Volt Repair Studio*.
-* Una **Cuenta de Instagram** convertida a perfil **Profesional (Empresa o Creador)**: *@voltrepairstudio*.
+* Una **Cuenta de Instagram** convertida a perfil **Profesional (Empresa o Creador)**: *@voltrepair32*.
 * La aplicación de **WhatsApp Business** instalada y configurada en el número **+52 1 720 815 7790**.
 * Tu perfil personal de Facebook debe ser el **Administrador con acceso total** de la Página de Facebook y de la cuenta de Instagram.
 
@@ -216,7 +216,7 @@ El Centro de Cuentas de Meta gestiona la identidad compartida y el intercambio d
 
 ```mermaid
 flowchart LR
-    A[Instagram Profesional @voltrepairstudio] <-->|Centro de Cuentas Meta| B[Página de Facebook Volt Repair Studio]
+    A[Instagram Profesional @voltrepair32] <-->|Centro de Cuentas Meta| B[Página de Facebook Volt Repair Studio]
     B <-->|Meta Business Suite| C[Bandeja Unificada de Mensajes]
     A -->|Botón de Contacto| D[WhatsApp Business +52 1 720 815 7790]
     B -->|Botón de Acción Principal| D
@@ -243,7 +243,7 @@ flowchart LR
 2. Toca en **Cuentas** y verifica que aparezcan tanto tu perfil/página de Facebook como tu cuenta de Instagram. Si no aparece Facebook, presiona **Añadir cuentas** y autentícate.
 3. Regresa al menú del Centro de Cuentas y toca en **Experiencias conectadas**.
 4. Selecciona **Compartir en varios perfiles** (*Sharing across profiles*).
-5. En la sección **Compartir desde**, selecciona tu cuenta de **Instagram (@voltrepairstudio)**.
+5. En la sección **Compartir desde**, selecciona tu cuenta de **Instagram (@voltrepair32)**.
 6. En la sección **Compartir en**, selecciona tu **Página de Facebook (Volt Repair Studio)**.
 7. En la sección **Compartir automáticamente**, ACTIVA los 3 interruptores:
    - ✅ **Tus historias de Instagram** (*Your Instagram stories*)
@@ -263,7 +263,7 @@ Para gestionar tu taller como un profesional desde la computadora:
 4. Ve al menú **Cuentas** > **Cuentas de Instagram**.
 5. Haz clic en el botón azul **Añadir / Conectar cuenta de Instagram**.
 6. Marca la casilla para permitir el acceso a los mensajes de Instagram en la bandeja de entrada.
-7. Introduce el usuario y contraseña de `@voltrepairstudio`.
+7. Introduce el usuario y contraseña de `@voltrepair32`.
 8. Una vez conectada, verás ambas cuentas (Facebook Page e Instagram) vinculadas con estado: **Activo y Sincronizado**.
 
 ---
@@ -308,6 +308,6 @@ Antes de lanzar la primera campaña o video, completa esta lista de verificació
 
 # 🚀 RESUMEN EJECUTIVO DE ACCIÓN INMEDIATA
 
-1. **Paso 1 (TikTok):** Crear `@voltrepairstudio`, convertir a Cuenta de Empresa, pegar la bio magnética oficial y el enlace a la web `https://anubys6.github.io/volt-repair-studio/`.
+1. **Paso 1 (TikTok):** Crear `@voltrepair32`, convertir a Cuenta de Empresa, pegar la bio magnética oficial y el enlace a la web `https://anubys6.github.io/volt-repair-studio/`.
 2. **Paso 2 (Meta):** Unificar Facebook Page e Instagram en el Centro de Cuentas, activar publicación cruzada simultánea de Reels/Stories y vincular el botón de WhatsApp **+52 1 720 815 7790**.
 3. **Paso 3 (Producción):** Grabar los 5 guiones virales comenzando con el *Guión 1: "Mi cliente pensó que su iPhone estaba muerto"*, respetando las tarifas oficiales de mano de obra ($700 pantalla, $500 tapa, $500 batería) y la regla estricta de CERO mojados.

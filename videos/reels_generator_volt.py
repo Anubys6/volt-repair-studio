@@ -65,7 +65,7 @@ REELS_DATA = [
             "🛡️ 90 días de garantía por escrito\n\n"
             "📲 Agenda tu visita hoy mismo por WhatsApp: +52 1 720 815 7790\n"
             "🌐 Visita: https://anubys6.github.io/volt-repair-studio/\n\n"
-            "#VoltRepair #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente #TikTokTech"
+            "#VoltRepair32 #VoltRepair #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente #TikTokTech"
         )
     },
     {
@@ -87,7 +87,7 @@ REELS_DATA = [
             "🛡️ 90 días de garantía total\n\n"
             "📲 Mándanos mensaje directo al WhatsApp: +52 1 720 815 7790\n"
             "🌐 Web: https://anubys6.github.io/volt-repair-studio/\n\n"
-            "#BateriaiPhone #CambioDeBateria #VoltRepairStudio #Tecnologia #TrucosCelulares #ReparacionExpress"
+            "#BateriaiPhone #CambioDeBateria #VoltRepair32 #VoltRepairStudio #Tecnologia #TrucosCelulares #ReparacionExpress"
         )
     },
     {
@@ -107,7 +107,7 @@ REELS_DATA = [
             "💡 Nuestra filosofía es la honestidad médica total: no te cobramos falsas esperanzas por un equipo sentenciado.\n\n"
             "📲 Si tu equipo tiene falla de pantalla, batería o tapa trasera, agenda con nosotros: +52 1 720 815 7790\n"
             "🌐 https://anubys6.github.io/volt-repair-studio/\n\n"
-            "#CelularesMojados #VerdadTecnica #IngenieriaReal #VoltRepair #Honestidad #Antiestafa"
+            "#CelularesMojados #VerdadTecnica #IngenieriaReal #VoltRepair32 #VoltRepair #Honestidad #Antiestafa"
         )
     },
     {
@@ -128,7 +128,7 @@ REELS_DATA = [
             "🛡️ Acabado original de fábrica y 90 días de garantía\n\n"
             "📲 Cotiza tu modelo por WhatsApp: +52 1 720 815 7790\n"
             "🌐 https://anubys6.github.io/volt-repair-studio/\n\n"
-            "#TapaTrasera #iPhoneCristal #LaserRepair #VoltRepairStudio #TecnologiaMexico #iPhone14ProMax"
+            "#TapaTrasera #iPhoneCristal #LaserRepair #VoltRepair32 #VoltRepairStudio #TecnologiaMexico #iPhone14ProMax"
         )
     }
 ]
