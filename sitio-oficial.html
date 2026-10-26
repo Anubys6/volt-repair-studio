@@ -2589,6 +2589,24 @@
     function sendCalculatedQuoteToWa() {
       hapticFeedback();
       const total = calcState.laborCost + calcState.partCost;
+      
+      // Conexión automática con Reparaciones Activas en el Panel de Control
+      try {
+        const storedOrders = JSON.parse(localStorage.getItem('volt_orders_db')) || [];
+        const nextId = 'VOLT-' + (100 + storedOrders.length + 1);
+        storedOrders.unshift({
+          id: nextId,
+          client: 'Lead Web en Línea',
+          phone: 'Vía WhatsApp Web',
+          device: calcState.brand,
+          service: calcState.repairName,
+          labor: calcState.laborCost,
+          stage: 0,
+          notes: `Refacción: ${calcState.partName} | Presupuesto: $${total} MXN`
+        });
+        localStorage.setItem('volt_orders_db', JSON.stringify(storedOrders));
+      } catch (err) {}
+
       const msg = `Hola Manuel, estuve en el cotizador de Volt Repair Studio. Me interesa agendar:\n` +
                   `📱 Dispositivo: ${calcState.brand}\n` +
                   `🛠️ Reparación: ${calcState.repairName} (Mano de obra: $${calcState.laborCost})\n` +

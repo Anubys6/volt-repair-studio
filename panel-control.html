@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Volt Repair Studio | Panel de Control Online & Automatizer</title>
-  <meta name="description" content="Panel de Control operativo y suite de automatización inteligente (Automatizer) para el taller online de Volt Repair Studio.">
+  <title>Volt Repair Studio | Panel de Control de Taller & Inventario Profesional</title>
+  <meta name="description" content="Centro de Operaciones y Control de Reparaciones Activas, Inventario Profesional y Despacho Automatizado para Volt Repair Studio.">
   
   <!-- Favicon & Fonts -->
   <link rel="icon" type="image/jpeg" href="assets/logo-volt-studio.jpg">
@@ -15,8 +15,8 @@
   <style>
     :root {
       --bg: #060911;
-      --bg-surface: rgba(13, 20, 36, 0.85);
-      --bg-card: rgba(18, 27, 49, 0.75);
+      --bg-surface: rgba(13, 20, 36, 0.88);
+      --bg-card: rgba(18, 27, 49, 0.78);
       --border: rgba(0, 240, 255, 0.2);
       --border-hover: rgba(0, 240, 255, 0.6);
       --cyan: #00f0ff;
@@ -31,6 +31,7 @@
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     * {
@@ -42,17 +43,19 @@
 
     body {
       background-color: var(--bg);
-      background-image: radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 45%);
       color: var(--text);
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     /* HEADER SUPERIOR */
     header {
-      background: rgba(6, 9, 17, 0.9);
+      background: rgba(6, 9, 17, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
@@ -74,16 +77,21 @@
     }
 
     .brand img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       border: 1px solid var(--border);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      box-shadow: 0 0 16px var(--cyan-glow);
       object-fit: cover;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .brand:hover img {
+      transform: scale(1.06) rotate(4deg);
     }
 
     .brand-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 900;
       letter-spacing: 0.5px;
       display: flex;
@@ -102,39 +110,47 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .status-pill {
+    .btn-header {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #34d399;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 800;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s var(--ease);
     }
 
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981;
-      animation: pulse 1.8s infinite;
+    .btn-header:hover {
+      background: var(--cyan);
+      color: #050b14;
+      border-color: var(--cyan);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
+    .btn-header.settings-btn {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+    }
+
+    .btn-header.settings-btn:hover {
+      background: var(--purple);
+      color: #fff;
+      box-shadow: 0 0 16px var(--purple-glow);
     }
 
     /* NAVIGATION TABS */
     .nav-bar {
-      background: rgba(13, 20, 36, 0.7);
+      background: rgba(13, 20, 36, 0.8);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 8px 24px;
       display: flex;
@@ -172,15 +188,15 @@
 
     /* CONTENEDOR PRINCIPAL */
     .container {
-      max-width: 1350px;
-      margin: 24px auto;
+      max-width: 1400px;
+      margin: 22px auto 60px;
       padding: 0 20px;
     }
 
     /* KPI METRICS STRIP */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -194,7 +210,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s var(--ease);
+      transition: transform 0.25s var(--ease), border-color 0.25s;
     }
 
     .kpi-card:hover {
@@ -203,7 +219,7 @@
     }
 
     .kpi-label {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -214,7 +230,7 @@
     }
 
     .kpi-val {
-      font-size: 1.85rem;
+      font-size: 1.9rem;
       font-weight: 900;
       color: #fff;
       font-family: 'Montserrat', sans-serif;
@@ -231,28 +247,21 @@
       gap: 4px;
     }
 
-    /* GRID OPERATIVO */
-    .dashboard-layout {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 1050px) {
-      .dashboard-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
     /* CARDS */
     .panel-card {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
+      border-radius: 22px;
+      padding: 24px;
       backdrop-filter: blur(16px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
       margin-bottom: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .panel-card-header {
@@ -262,108 +271,50 @@
       margin-bottom: 18px;
       padding-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .panel-card-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 900;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    /* AUTOMATIZER MODULE (MOTOR DE AUTOMATIZACIÓN) */
-    .automatizer-card {
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      background: linear-gradient(145deg, rgba(18, 27, 49, 0.85), rgba(28, 18, 48, 0.75));
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(168, 85, 247, 0.2);
-    }
-
-    .auto-badge {
-      background: rgba(168, 85, 247, 0.18);
-      border: 1px solid var(--purple);
-      color: #c084fc;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 12px;
-    }
-
-    .automation-rule-item {
-      background: rgba(10, 16, 32, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
+    /* WHATSAPP LEAD INGESTION BAR (CAPTURA RÁPIDA) */
+    .lead-ingestion-box {
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(0, 240, 255, 0.08));
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
       display: flex;
-      justify-content: space-between;
+      gap: 14px;
       align-items: center;
-      transition: all 0.2s;
+      flex-wrap: wrap;
     }
 
-    .automation-rule-item:hover {
-      border-color: var(--purple);
-      background: rgba(22, 18, 40, 0.8);
-    }
-
-    .rule-info h5 {
-      font-size: 0.9rem;
-      font-weight: 800;
+    .lead-ingestion-box input {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(6, 9, 17, 0.85);
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      border-radius: 10px;
+      padding: 10px 14px;
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 0.88rem;
+      outline: none;
     }
 
-    .rule-info p {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .lead-ingestion-box input:focus {
+      border-color: #25d366;
+      box-shadow: 0 0 12px rgba(37, 211, 102, 0.3);
     }
 
-    /* SWITCH TOGGLE */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 44px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-
-    .switch input { opacity: 0; width: 0; height: 0; }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #334155;
-      transition: .3s;
-      border-radius: 24px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: var(--purple);
-      box-shadow: 0 0 10px var(--purple-glow);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
-
-    /* TABLA OPERATIVA DE REPARACIONES (EN VIVO) */
+    /* TABLA OPERATIVA DE REPARACIONES */
     .table-container {
       width: 100%;
       overflow-x: auto;
@@ -372,168 +323,322 @@
     table.repair-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.84rem;
+      font-size: 0.86rem;
     }
 
     table.repair-table th {
       text-align: left;
-      padding: 12px 14px;
+      padding: 14px;
       color: var(--text-muted);
       font-weight: 800;
       text-transform: uppercase;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       letter-spacing: 0.6px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     table.repair-table td {
-      padding: 14px;
+      padding: 16px 14px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: #cbd5e1;
+      vertical-align: middle;
     }
 
     table.repair-table tr:hover td {
-      background: rgba(0, 240, 255, 0.04);
+      background: rgba(0, 240, 255, 0.03);
     }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.72rem;
+    /* LIFECYCLE PROGRESS BAR */
+    .stage-progress-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 170px;
+    }
+
+    .stage-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .stage-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), #10b981);
+      border-radius: 10px;
+      transition: width 0.4s var(--ease);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .stage-title {
+      font-size: 0.74rem;
       font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .badge-route {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid var(--gold);
-      color: #fbbf24;
-    }
-
-    .badge-bench {
-      background: rgba(0, 240, 255, 0.15);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-    }
-
-    .badge-done {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid var(--green);
-      color: #34d399;
-    }
-
-    /* BOTONES DE ACCIÓN RÁPIDA */
-    .btn-action {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
       color: #fff;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
+    }
+
+    /* BOTÓN ÚNICO DE ACCIÓN (PLAY & AVANCE DIRECTO) */
+    .btn-advance {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      border: none;
+      color: #040914;
+      font-weight: 900;
+      font-size: 0.8rem;
+      padding: 10px 16px;
+      border-radius: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: all 0.2s;
+      gap: 8px;
+      transition: all 0.25s var(--ease-bounce);
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.35);
+      white-space: nowrap;
     }
 
-    .btn-action:hover {
-      background: var(--cyan);
-      color: #050b14;
-      border-color: var(--cyan);
+    .btn-advance:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(0, 240, 255, 0.6);
     }
 
-    .btn-action.wa {
-      background: rgba(37, 211, 102, 0.15);
-      border-color: rgba(37, 211, 102, 0.4);
-      color: #4ade80;
+    .btn-advance:active {
+      transform: scale(0.95);
     }
 
-    .btn-action.wa:hover {
-      background: #25d366;
-      color: #042410;
+    .btn-advance.done-btn {
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid var(--green);
+      color: #34d399;
+      box-shadow: none;
     }
 
-    /* INVENTARIO DE REFACCIONES */
-    .stock-item {
+    /* ================================================== */
+    /* SECCIÓN DE INVENTARIO PROFESIONAL & COMPLETO       */
+    /* ================================================== */
+    .inventory-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    .stock-name {
-      font-size: 0.86rem;
+    .inventory-search {
+      flex: 1;
+      min-width: 260px;
+      background: rgba(6, 9, 17, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .inventory-search:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .category-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .cat-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
       font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .cat-pill.active, .cat-pill:hover {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .stock-badge-low {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #f87171;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .stock-badge-ok {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 3px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .qty-btn:hover {
+      background: var(--cyan);
+      color: #040914;
+    }
+
+    .qty-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      min-width: 24px;
+      text-align: center;
+      font-size: 0.9rem;
       color: #fff;
     }
 
-    .stock-qty {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
+    /* MODAL DE CONFIGURACIÓN & NUEVA REFACCIÓN */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .stock-qty.low {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
+    .modal-backdrop.active {
+      display: flex;
+      animation: modalFadeIn 0.25s var(--ease);
     }
 
-    /* NUEVA ORDEN MODAL / FORM */
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-window {
+      background: #090e1a;
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      padding: 28px;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
       font-size: 0.76rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
     .form-control {
       width: 100%;
-      background: rgba(10, 16, 32, 0.8);
+      background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px 14px;
       color: #fff;
       font-family: inherit;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       outline: none;
       transition: border-color 0.2s;
     }
 
     .form-control:focus {
       border-color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
     }
 
-    .btn-primary {
+    .btn-submit {
       background: linear-gradient(135deg, var(--cyan), var(--blue));
       color: #040914;
-      font-weight: 800;
+      font-weight: 900;
       padding: 12px 20px;
       border-radius: 12px;
       border: none;
       cursor: pointer;
       width: 100%;
-      box-shadow: 0 4px 18px var(--cyan-glow);
+      margin-top: 10px;
+      font-size: 0.92rem;
       transition: transform 0.2s;
     }
 
-    .btn-primary:active {
-      transform: scale(0.97);
+    .btn-submit:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
@@ -544,41 +649,34 @@
     <a href="index.html" class="brand" onclick="hapticFeedback()">
       <img src="assets/logo-volt-studio.jpg" alt="Logo Volt">
       <div>
-        <div class="brand-title">VOLT REPAIR STUDIO <span style="font-size: 0.7rem; background: rgba(0, 240, 255, 0.15); color: var(--cyan); padding: 2px 6px; border-radius: 6px;">PANEL 2.0</span></div>
-        <div class="brand-subtitle">Centro de Control Online & Automatizer Engine</div>
+        <div class="brand-title" id="headerWorkshopTitle">VOLT REPAIR STUDIO</div>
+        <div class="brand-subtitle">Panel de Control & Taller Online</div>
       </div>
     </a>
 
     <div class="header-actions">
-      <div class="status-pill">
-        <span class="pulse-dot"></span>
-        <span>AUTOMATIZER ACTIVO</span>
-      </div>
-      <a href="index.html" target="_blank" class="btn-action" style="padding: 8px 14px;">
-        🌐 Ver Sitio Web
+      <button class="btn-header settings-btn" onclick="openSettingsModal()">
+        ⚙️ Configuración
+      </button>
+      <a href="index.html" target="_blank" class="btn-header">
+        🌐 Web Clientes
       </a>
-      <a href="taller.html" class="btn-action" style="padding: 8px 14px;">
+      <a href="taller.html" class="btn-header">
         🩺 Dispositivograma
       </a>
     </div>
   </header>
 
-  <!-- NAVEGACIÓN RÁPIDA -->
+  <!-- NAVEGACIÓN DE SECCIONES -->
   <div class="nav-bar">
-    <button class="nav-btn active" onclick="switchSection('dashboard', this)">
-      📊 Dashboard en Vivo
+    <button class="nav-btn active" onclick="switchMainTab('tab-reparaciones', this)">
+      ⚡ Reparaciones Activas (<span id="tabCountRepairs">0</span>)
     </button>
-    <button class="nav-btn" onclick="switchSection('automatizer', this)">
-      🤖 Automatizer (5 Reglas Activas)
+    <button class="nav-btn" onclick="switchMainTab('tab-inventario', this)">
+      📦 Inventario Profesional (<span id="tabCountInventory">0</span>)
     </button>
-    <button class="nav-btn" onclick="switchSection('reparaciones', this)">
-      🛠️ Órdenes de Reparación
-    </button>
-    <button class="nav-btn" onclick="switchSection('inventario', this)">
-      📦 Inventario de Refacciones
-    </button>
-    <button class="nav-btn" onclick="switchSection('nueva-orden', this)">
-      ➕ Registrar Nueva Orden
+    <button class="nav-btn" onclick="switchMainTab('tab-leads', this)">
+      💬 Captura Rápida WhatsApp
     </button>
   </div>
 
@@ -591,7 +689,7 @@
           <span>Ingresos Mano de Obra</span>
           <span>💰</span>
         </div>
-        <div class="kpi-val" id="kpiRevenue">$8,400</div>
+        <div class="kpi-val" id="kpiRevenue">$0 MXN</div>
         <div class="kpi-sub">
           <span>↑ 100% Ganancia Neta</span>
         </div>
@@ -599,228 +697,342 @@
 
       <div class="kpi-card">
         <div class="kpi-label">
-          <span>Órdenes de Hoy</span>
+          <span>Reparaciones en Curso</span>
           <span>⚡</span>
         </div>
-        <div class="kpi-val" id="kpiOrders">12</div>
-        <div class="kpi-sub">
-          <span>8 en sala • 4 en taller</span>
+        <div class="kpi-val" id="kpiActiveCount">0</div>
+        <div class="kpi-sub" id="kpiActiveSubtitle">
+          <span>0 en ruta • 0 en mesa</span>
         </div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-label">
-          <span>Tiempo Promedio</span>
-          <span>⏱️</span>
+          <span>Valor de Inventario</span>
+          <span>📦</span>
         </div>
-        <div class="kpi-val">24 min</div>
+        <div class="kpi-val" id="kpiInventoryVal">$0 MXN</div>
         <div class="kpi-sub">
-          <span>Por cambio de pantalla</span>
+          <span id="kpiInventoryTotalCount">0 piezas en almacén</span>
         </div>
       </div>
 
-      <div class="kpi-card" style="border-color: rgba(168, 85, 247, 0.4);">
+      <div class="kpi-card" style="border-color: rgba(239, 68, 68, 0.4);">
         <div class="kpi-label">
-          <span style="color: #c084fc;">Automatizaciones Disparadas</span>
-          <span>🤖</span>
+          <span style="color: #f87171;">Alertas de Stock Bajo</span>
+          <span>⚠️</span>
         </div>
-        <div class="kpi-val" style="color: #c084fc;" id="kpiAutoCount">48</div>
-        <div class="kpi-sub" style="color: #c084fc;">
-          <span>WhatsApp & Leads sincronizados</span>
+        <div class="kpi-val" style="color: #f87171;" id="kpiLowStock">0</div>
+        <div class="kpi-sub" style="color: #f87171;">
+          <span>Refacciones por agotarse</span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 1: DASHBOARD & AUTOMATIZER -->
-    <div class="dashboard-layout" id="sec-dashboard">
+    <!-- =============================================== -->
+    <!-- TAB 1: REPARACIONES ACTIVAS (AUTOMATIZADAS)     -->
+    <!-- =============================================== -->
+    <div id="tab-reparaciones" class="main-tab-content">
       
-      <!-- COLUMNA IZQUIERDA: TABLA DE ÓRDENES EN CURSO -->
-      <div>
-        <div class="panel-card">
-          <div class="panel-card-header">
-            <div class="panel-card-title">
-              <span>🛠️</span> Reparaciones Activas en Tiempo Real
-            </div>
-            <button class="btn-action" onclick="refreshOrders()">↻ Actualizar</button>
-          </div>
-
-          <div class="table-container">
-            <table class="repair-table" id="ordersTable">
-              <thead>
-                <tr>
-                  <th>Folio</th>
-                  <th>Cliente</th>
-                  <th>Equipo</th>
-                  <th>Servicio</th>
-                  <th>Mano de Obra</th>
-                  <th>Estado</th>
-                  <th>Acción</th>
-                </tr>
-              </thead>
-              <tbody id="ordersTableBody">
-                <!-- Rellenado dinámicamente -->
-              </tbody>
-            </table>
-          </div>
+      <!-- BARRA DE CAPTURA RÁPIDA DE WHATSAPP -->
+      <div class="lead-ingestion-box">
+        <span style="font-size: 1.4rem;">💬</span>
+        <div style="flex: 1;">
+          <div style="font-size: 0.85rem; font-weight: 800; color: #fff;">Sincronización Directa con WhatsApp</div>
+          <div style="font-size: 0.72rem; color: #a7f3d0;">Pega cualquier mensaje o solicitud de cliente para incorporarlo a reparaciones activas en 1 clic:</div>
         </div>
+        <input type="text" id="quickLeadInput" placeholder="Ej. Roberto Garza 8112345678 iPhone 13 Pantalla rota" onkeypress="handleQuickLeadKey(event)">
+        <button class="btn-advance" onclick="parseAndAddLead()" style="padding: 10px 18px;">
+          ➕ Agregar a Reparaciones
+        </button>
       </div>
 
-      <!-- COLUMNA DERECHA: MOTOR AUTOMATIZER & INVENTARIO RÁPIDO -->
-      <div>
-        <!-- AUTOMATIZER CARD -->
-        <div class="panel-card automatizer-card" id="sec-automatizer">
-          <div class="panel-card-header">
-            <div class="panel-card-title">
-              <span>🤖</span> Automatizer Engine
-              <span class="auto-badge">MOTOR V2.4</span>
-            </div>
-            <span style="font-size: 0.72rem; color: #a855f7; font-weight: 800;">AUTO-DISPATCH ON</span>
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <div class="panel-card-title">
+            <span>🛠️</span> Reparaciones Activas en el Taller
           </div>
-
-          <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 16px;">
-            Reglas activas de automatización para contestar, agendar en WhatsApp y notificar avances sin que dejes de reparar con las manos ocupadas:
-          </p>
-
-          <!-- Regla 1 -->
-          <div class="automation-rule-item">
-            <div class="rule-info">
-              <h5>⚡ Auto-Cotización WhatsApp Instantánea</h5>
-              <p>Envía desglose oficial ($700 pantalla / $500 tapa / $500 batería) a todo lead entrante.</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked onchange="toggleRule('Auto-Cotización', this.checked)">
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <!-- Regla 2 -->
-          <div class="automation-rule-item">
-            <div class="rule-info">
-              <h5>📍 Despacho Técnico "Voy en Camino"</h5>
-              <p>Dispara aviso automático con tiempo de llegada estimado a la sala del cliente.</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked onchange="toggleRule('Despacho Técnico', this.checked)">
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <!-- Regla 3 -->
-          <div class="automation-rule-item">
-            <div class="rule-info">
-              <h5>✅ Auto-Emisión de Garantía Digital</h5>
-              <p>Genera póliza de 90 días por escrito y la envía por PDF/WhatsApp al terminar.</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked onchange="toggleRule('Garantía Digital', this.checked)">
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <!-- Regla 4 -->
-          <div class="automation-rule-item">
-            <div class="rule-info">
-              <h5>🔔 Alerta de Stock de Refacciones</h5>
-              <p>Avisa cuando queden menos de 2 pantallas OLED de un modelo frecuente.</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked onchange="toggleRule('Alerta de Stock', this.checked)">
-              <span class="slider"></span>
-            </label>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-header" onclick="seedSampleOrders()">🔄 Cargar Ejemplos</button>
+            <button class="btn-header" onclick="openNewOrderModal()">➕ Nueva Orden Manual</button>
           </div>
         </div>
 
-        <!-- STOCK CARD -->
-        <div class="panel-card" id="sec-inventario">
-          <div class="panel-card-header">
-            <div class="panel-card-title">
-              <span>📦</span> Stock Crítico de Refacciones
-            </div>
-            <span style="font-size: 0.72rem; color: var(--cyan); font-weight: 800;">AL DÍA</span>
-          </div>
-
-          <div class="stock-item">
-            <div class="stock-name">Pantalla OLED iPhone 13 / 13 Pro</div>
-            <div class="stock-qty">4 pzas</div>
-          </div>
-          <div class="stock-item">
-            <div class="stock-name">Pantalla Samsung Galaxy A54 (In-Cell/OLED)</div>
-            <div class="stock-qty low">1 pza (Pedir)</div>
-          </div>
-          <div class="stock-item">
-            <div class="stock-name">Pantalla Moto G54 / G84</div>
-            <div class="stock-qty">3 pzas</div>
-          </div>
-          <div class="stock-item">
-            <div class="stock-name">Baterías Grado A+ iPhone 11 / 12 / 13</div>
-            <div class="stock-qty">6 pzas</div>
-          </div>
-          <div class="stock-item">
-            <div class="stock-name">Tapa Trasera Cristal iPhone 14 Pro MagSafe</div>
-            <div class="stock-qty low">1 pza (Pedir)</div>
-          </div>
+        <div class="table-container">
+          <table class="repair-table">
+            <thead>
+              <tr>
+                <th>Folio</th>
+                <th>Cliente / Contacto</th>
+                <th>Dispositivo</th>
+                <th>Servicio Solicitado</th>
+                <th>Mano de Obra</th>
+                <th>Etapa Actual & Progreso</th>
+                <th>Acción de Avance Automático</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
         </div>
       </div>
-
     </div>
 
-    <!-- SECCIÓN FORMULARIO NUEVA ORDEN -->
-    <div class="panel-card" id="sec-nueva-orden" style="display: none;">
-      <div class="panel-card-header">
-        <div class="panel-card-title">
-          <span>➕</span> Registrar Nueva Orden de Reparación
+    <!-- =============================================== -->
+    <!-- TAB 2: INVENTARIO PROFESIONAL DEL TALLER       -->
+    <!-- =============================================== -->
+    <div id="tab-inventario" class="main-tab-content" style="display: none;">
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <div class="panel-card-title">
+            <span>📦</span> Almacén e Inventario de Refacciones
+          </div>
+          <button class="btn-advance" onclick="openNewPartModal()">
+            ➕ Registrar Nueva Refacción
+          </button>
+        </div>
+
+        <!-- TOOLBAR DE BÚSQUEDA Y CATEGORÍAS -->
+        <div class="inventory-toolbar">
+          <input type="text" id="inventorySearchInput" class="inventory-search" placeholder="🔍 Buscar por modelo (ej. iPhone 13, Samsung S22, Moto G54)..." oninput="filterInventory()">
+          
+          <div class="category-pills">
+            <div class="cat-pill active" onclick="setCategoryFilter('all', this)">Todas (<span id="catCountAll">0</span>)</div>
+            <div class="cat-pill" onclick="setCategoryFilter('pantallas', this)">📱 Pantallas</div>
+            <div class="cat-pill" onclick="setCategoryFilter('baterias', this)">🔋 Baterías</div>
+            <div class="cat-pill" onclick="setCategoryFilter('tapas', this)">✨ Tapas Traseras</div>
+            <div class="cat-pill" onclick="setCategoryFilter('flexores', this)">⚡ Flexores / Carga</div>
+            <div class="cat-pill" onclick="setCategoryFilter('camaras', this)">📷 Cámaras</div>
+            <div class="cat-pill" onclick="setCategoryFilter('quimicos', this)">🧪 Insumos & Pegamentos</div>
+          </div>
+        </div>
+
+        <!-- TABLA DE INVENTARIO -->
+        <div class="table-container">
+          <table class="repair-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Descripción del Repuesto</th>
+                <th>Categoría</th>
+                <th>Modelos Compatibles</th>
+                <th>Costo Compra</th>
+                <th>Precio Cliente</th>
+                <th>Stock en Almacén</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <!-- Renderizado dinámico de refacciones -->
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label>Nombre del Cliente</label>
-          <input type="text" id="newClient" class="form-control" placeholder="Ej. Roberto Garza">
+    <!-- =============================================== -->
+    <!-- TAB 3: CAPTURA RÁPIDA DE WHATSAPP              -->
+    <!-- =============================================== -->
+    <div id="tab-leads" class="main-tab-content" style="display: none;">
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <div class="panel-card-title">
+            <span>💬</span> Conector de WhatsApp & Capturador de Solicitudes
+          </div>
         </div>
+
+        <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 20px;">
+          Copia y pega la conversación de WhatsApp con tu cliente. El analizador inteligente detectará automáticamente el nombre, celular, modelo del teléfono y falla técnica para agregarlo de inmediato a tu mesa de reparaciones activas sin escribir todo a mano:
+        </p>
+
         <div class="form-group">
-          <label>WhatsApp / Teléfono</label>
-          <input type="text" id="newPhone" class="form-control" placeholder="Ej. 8112345678">
+          <label>Pegar Mensaje de WhatsApp</label>
+          <textarea id="rawLeadArea" class="form-control" rows="5" placeholder="Ejemplo: Hola Manuel, soy Sofía Garza (8115558899). Quiero cotizar cambio de pantalla para mi Samsung Galaxy A54. Se me estrelló el cristal hoy en la mañana."></textarea>
         </div>
-        <div class="form-group">
-          <label>Dispositivo y Modelo</label>
-          <input type="text" id="newDevice" class="form-control" placeholder="Ej. Samsung S23 Ultra o iPhone 14">
-        </div>
-        <div class="form-group">
-          <label>Tipo de Reparación</label>
-          <select id="newService" class="form-control" onchange="updateLaborInput()">
-            <option value="Pantalla">Cambio de Pantalla (Mano de obra $700)</option>
-            <option value="Tapa Trasera">Reemplazo Tapa Trasera (Mano de obra $500)</option>
-            <option value="Batería">Reemplazo de Batería (Mano de obra $500)</option>
-            <option value="Centro de Carga">Centro de Carga (Mano de obra $400)</option>
-            <option value="Auricular">Auricular / Bocina (Mano de obra $350)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Mano de Obra Oficial</label>
-          <input type="number" id="newLabor" class="form-control" value="700" readonly style="color: var(--cyan); font-weight: 800;">
-        </div>
-        <div class="form-group">
-          <label>Modalidad de Atención</label>
-          <select id="newType" class="form-control">
-            <option value="Domicilio (En Sala)">A Domicilio (En su sala/oficina)</option>
-            <option value="Taller Volt">En Taller Volt</option>
-          </select>
-        </div>
+
+        <button class="btn-advance" onclick="processRawLead()" style="padding: 12px 24px; font-size: 0.92rem;">
+          ⚡ Procesar y Guardar en Reparaciones Activas
+        </button>
       </div>
-
-      <button class="btn-primary" onclick="createOrder()" style="margin-top: 14px;">
-        ⚡ Guardar Orden y Notificar Cliente por WhatsApp vía Automatizer
-      </button>
     </div>
 
   </div>
 
+  <!-- =============================================== -->
+  <!-- MODAL: REGISTRAR NUEVA ORDEN MANUAL            -->
+  <!-- =============================================== -->
+  <div class="modal-backdrop" id="newOrderModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">➕ Nueva Orden de Reparación</div>
+        <button class="modal-close" onclick="closeModal('newOrderModal')">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre del Cliente</label>
+        <input type="text" id="modalOrderClient" class="form-control" placeholder="Ej. Carlos Mendoza">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp / Teléfono</label>
+        <input type="text" id="modalOrderPhone" class="form-control" placeholder="Ej. 8119876543">
+      </div>
+      <div class="form-group">
+        <label>Dispositivo y Modelo</label>
+        <input type="text" id="modalOrderDevice" class="form-control" placeholder="Ej. iPhone 13 Pro o Samsung S23">
+      </div>
+      <div class="form-group">
+        <label>Tipo de Reparación</label>
+        <select id="modalOrderService" class="form-control" onchange="updateModalLaborPrice()">
+          <option value="Cambio de Pantalla">Cambio de Pantalla ($700 mano de obra)</option>
+          <option value="Reemplazo Tapa Trasera">Reemplazo Tapa Trasera ($500 mano de obra)</option>
+          <option value="Reemplazo de Batería">Reemplazo de Batería ($500 mano de obra)</option>
+          <option value="Centro de Carga">Centro de Carga ($400 mano de obra)</option>
+          <option value="Auricular / Bocina">Auricular / Bocina ($350 mano de obra)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mano de Obra Oficial</label>
+        <input type="number" id="modalOrderLabor" class="form-control" value="700" readonly style="color: var(--cyan); font-weight: 800;">
+      </div>
+      <div class="form-group">
+        <label>Notas de Inspección / Domicilio</label>
+        <input type="text" id="modalOrderNotes" class="form-control" placeholder="Ej. Pantalla estrellada sin daño interno. En su sala.">
+      </div>
+
+      <button class="btn-submit" onclick="submitNewOrder()">
+        ⚡ Guardar Orden y Notificar al Cliente
+      </button>
+    </div>
+  </div>
+
+  <!-- =============================================== -->
+  <!-- MODAL: REGISTRAR NUEVA REFACCIÓN EN INVENTARIO  -->
+  <!-- =============================================== -->
+  <div class="modal-backdrop" id="newPartModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">📦 Registrar Nueva Refacción</div>
+        <button class="modal-close" onclick="closeModal('newPartModal')">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción del Repuesto</label>
+        <input type="text" id="modalPartName" class="form-control" placeholder="Ej. Pantalla OLED Super Retina con TrueTone">
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="modalPartCat" class="form-control">
+          <option value="pantallas">📱 Pantallas & Displays</option>
+          <option value="baterias">🔋 Baterías Certificadas</option>
+          <option value="tapas">✨ Tapas Traseras MagSafe</option>
+          <option value="flexores">⚡ Flexores & Conectores</option>
+          <option value="camaras">📷 Cámaras & Cristales</option>
+          <option value="quimicos">🧪 Insumos, Pegamentos & Sellos</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Modelos Compatibles</label>
+        <input type="text" id="modalPartModel" class="form-control" placeholder="Ej. iPhone 13 / 13 Pro">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Costo de Compra ($)</label>
+          <input type="number" id="modalPartCost" class="form-control" placeholder="650">
+        </div>
+        <div class="form-group">
+          <label>Precio Cliente ($)</label>
+          <input type="number" id="modalPartPrice" class="form-control" placeholder="1350">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label>Stock Inicial</label>
+          <input type="number" id="modalPartStock" class="form-control" value="3">
+        </div>
+        <div class="form-group">
+          <label>Stock Mínimo Alerta</label>
+          <input type="number" id="modalPartMin" class="form-control" value="2">
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="submitNewPart()">
+        📦 Guardar en Inventario
+      </button>
+    </div>
+  </div>
+
+  <!-- =============================================== -->
+  <!-- MODAL: CONFIGURACIÓN Y PERSONALIZACIÓN         -->
+  <!-- =============================================== -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Personalización del Taller</div>
+        <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre del Taller</label>
+        <input type="text" id="cfgWorkshopName" class="form-control" value="Volt Repair Studio">
+      </div>
+      <div class="form-group">
+        <label>Nombre del Especialista Principal</label>
+        <input type="text" id="cfgOwnerName" class="form-control" value="Manuel Medrano">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp Oficial de Notificaciones</label>
+        <input type="text" id="cfgWhatsApp" class="form-control" value="5218112345678">
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+        <div class="form-group">
+          <label>M.O. Pantalla</label>
+          <input type="number" id="cfgScreenLabor" class="form-control" value="700">
+        </div>
+        <div class="form-group">
+          <label>M.O. Tapa</label>
+          <input type="number" id="cfgBackLabor" class="form-control" value="500">
+        </div>
+        <div class="form-group">
+          <label>M.O. Batería</label>
+          <input type="number" id="cfgBatteryLabor" class="form-control" value="500">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Días de Garantía por Escrito</label>
+        <input type="number" id="cfgWarrantyDays" class="form-control" value="90">
+      </div>
+
+      <div class="form-group" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <label>Copia de Seguridad de Datos</label>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-header" onclick="exportDataBackup()" style="flex: 1; justify-content: center;">
+            📥 Descargar Backup (JSON)
+          </button>
+          <button class="btn-header" onclick="resetToDefaults()" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+            ⚠️ Restaurar
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="saveSettings()">
+        💾 Guardar Cambios de Configuración
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: LOGICA OPERATIVA & REACTIVA -->
   <script>
-    // MOTOR HÁPTICO
+    // ==============================================
+    // 1. MOTOR HÁPTICO WEB AUDIO
+    // ==============================================
     let audioCtx = null;
-    function hapticFeedback() {
+    function hapticFeedback(tone = 900) {
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        try { navigator.vibrate(12); } catch (e) {}
+        try { navigator.vibrate(14); } catch (e) {}
       }
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -828,182 +1040,540 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.02);
-        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
+        osc.frequency.setValueAtTime(tone, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(tone * 1.5, audioCtx.currentTime + 0.025);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.03);
+        osc.stop(audioCtx.currentTime + 0.04);
       } catch (err) {}
     }
 
-    // BASE DE DATOS LOCAL DE REPARACIONES
+    // ==============================================
+    // 2. CONFIGURACIÓN DEL SISTEMA
+    // ==============================================
+    let config = JSON.parse(localStorage.getItem('volt_settings')) || {
+      workshopName: 'Volt Repair Studio',
+      ownerName: 'Manuel Medrano',
+      whatsappNumber: '5218112345678',
+      screenLabor: 700,
+      backLabor: 500,
+      batteryLabor: 500,
+      warrantyDays: 90
+    };
+
+    function saveSettings() {
+      hapticFeedback(1100);
+      config.workshopName = document.getElementById('cfgWorkshopName').value.trim() || config.workshopName;
+      config.ownerName = document.getElementById('cfgOwnerName').value.trim() || config.ownerName;
+      config.whatsappNumber = document.getElementById('cfgWhatsApp').value.trim() || config.whatsappNumber;
+      config.screenLabor = +document.getElementById('cfgScreenLabor').value || 700;
+      config.backLabor = +document.getElementById('cfgBackLabor').value || 500;
+      config.batteryLabor = +document.getElementById('cfgBatteryLabor').value || 500;
+      config.warrantyDays = +document.getElementById('cfgWarrantyDays').value || 90;
+
+      localStorage.setItem('volt_settings', JSON.stringify(config));
+      document.getElementById('headerWorkshopTitle').innerText = config.workshopName;
+      closeModal('settingsModal');
+      alert('Configuración guardada y actualizada con éxito.');
+    }
+
+    function openSettingsModal() {
+      hapticFeedback();
+      document.getElementById('cfgWorkshopName').value = config.workshopName;
+      document.getElementById('cfgOwnerName').value = config.ownerName;
+      document.getElementById('cfgWhatsApp').value = config.whatsappNumber;
+      document.getElementById('cfgScreenLabor').value = config.screenLabor;
+      document.getElementById('cfgBackLabor').value = config.backLabor;
+      document.getElementById('cfgBatteryLabor').value = config.batteryLabor;
+      document.getElementById('cfgWarrantyDays').value = config.warrantyDays;
+      document.getElementById('settingsModal').classList.add('active');
+    }
+
+    // ==============================================
+    // 3. BASE DE DATOS DE REPARACIONES ACTIVAS
+    // ==============================================
+    const STAGES = [
+      { id: 0, name: '📋 Agendado', action: '▶ Iniciar Ruta', icon: '🚗', pct: 25 },
+      { id: 1, name: '🚗 En Ruta a Sala', action: '▶ Iniciar en Mesa', icon: '🔬', pct: 50 },
+      { id: 2, name: '🔬 En Mesa Quirúrgica', action: '▶ Test TrueTone', icon: '🧪', pct: 75 },
+      { id: 3, name: '🧪 Control de Calidad', action: '▶ Finalizar & Entregar', icon: '✅', pct: 95 },
+      { id: 4, name: '✅ Entregado & Garantizado', action: '🔄 Reabrir Orden', icon: '📋', pct: 100 }
+    ];
+
     let orders = JSON.parse(localStorage.getItem('volt_orders_db')) || [
-      { id: 'VOLT-101', client: 'Carlos Mendoza', device: 'iPhone 13 Pro', service: 'Cambio de Pantalla', labor: 700, status: 'bench', phone: '8119876543' },
-      { id: 'VOLT-102', client: 'Sofía Villarreal', device: 'Samsung Galaxy S22', service: 'Cambio de Pantalla', labor: 700, status: 'route', phone: '8123456789' },
-      { id: 'VOLT-103', client: 'Alejandro Ruiz', device: 'iPhone 14', service: 'Tapa Trasera', labor: 500, status: 'done', phone: '8187654321' },
-      { id: 'VOLT-104', client: 'Mariana Cantú', device: 'Moto G54', service: 'Reemplazo Batería', labor: 500, status: 'bench', phone: '8111223344' },
-      { id: 'VOLT-105', client: 'David Lozano', device: 'iPhone 12 Pro', service: 'Cambio de Pantalla', labor: 700, status: 'done', phone: '8199887766' }
+      {
+        id: 'VOLT-101',
+        client: 'Carlos Mendoza',
+        phone: '8119876543',
+        device: 'iPhone 13 Pro',
+        service: 'Cambio de Pantalla',
+        labor: 700,
+        stage: 1,
+        notes: 'Cliente en San Pedro Garza García. Pantalla OLED verde con TrueTone.'
+      },
+      {
+        id: 'VOLT-102',
+        client: 'Sofía Villarreal',
+        phone: '8123456789',
+        device: 'Samsung Galaxy S22',
+        service: 'Cambio de Pantalla',
+        labor: 700,
+        stage: 2,
+        notes: 'En comedor. Display con líneas rosas sin touch.'
+      },
+      {
+        id: 'VOLT-103',
+        client: 'Alejandro Ruiz',
+        phone: '8187654321',
+        device: 'iPhone 14',
+        service: 'Reemplazo Tapa Trasera',
+        labor: 500,
+        stage: 0,
+        notes: 'Cristal MagSafe estallado. Bobina intacta.'
+      },
+      {
+        id: 'VOLT-104',
+        client: 'Mariana Cantú',
+        phone: '8111223344',
+        device: 'Moto G54 5G',
+        service: 'Reemplazo de Batería',
+        labor: 500,
+        stage: 4,
+        notes: 'Batería inflada. Celda nueva Li-Ion 5000mAh.'
+      }
     ];
 
     function saveOrders() {
       localStorage.setItem('volt_orders_db', JSON.stringify(orders));
       renderOrders();
-      updateKPIs();
+      updateDashboardKPIs();
     }
 
     function renderOrders() {
       const tbody = document.getElementById('ordersTableBody');
       tbody.innerHTML = '';
+      document.getElementById('tabCountRepairs').innerText = orders.filter(o => o.stage < 4).length;
 
       orders.forEach(o => {
-        const tr = document.createElement('tr');
-        
-        let statusBadge = '';
-        if (o.status === 'route') statusBadge = '<span class="status-badge badge-route">🚗 En Ruta</span>';
-        else if (o.status === 'bench') statusBadge = '<span class="status-badge badge-bench">🔬 En Mesa</span>';
-        else if (o.status === 'done') statusBadge = '<span class="status-badge badge-done">✅ Entregado</span>';
+        const stageObj = STAGES[o.stage] || STAGES[0];
+        const isDone = (o.stage === 4);
 
+        const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong style="color:var(--cyan); font-family:'JetBrains Mono'">${o.id}</strong></td>
-          <td><b>${o.client}</b></td>
-          <td>${o.device}</td>
-          <td>${o.service}</td>
-          <td><b style="color:#fff">$${o.labor} MXN</b></td>
-          <td>${statusBadge}</td>
           <td>
-            <button class="btn-action wa" onclick="sendAutomatedStatus('${o.id}')" title="Notificar por WhatsApp">💬 Avisar</button>
-            <button class="btn-action" onclick="advanceOrderStatus('${o.id}')" title="Avanzar etapa">▶ Avanzar</button>
+            <div style="font-weight: 800; color: #fff;">${o.client}</div>
+            <div style="font-size: 0.75rem; color: #34d399;">📱 ${o.phone}</div>
+          </td>
+          <td><b style="color: #fff;">${o.device}</b></td>
+          <td>${o.service}</td>
+          <td><span style="color: var(--cyan); font-weight: 900; font-family:'Montserrat'">$${o.labor} MXN</span></td>
+          <td>
+            <div class="stage-progress-container">
+              <div style="display:flex; justify-content:space-between;">
+                <span class="stage-title">${stageObj.name}</span>
+                <span style="font-size:0.7rem; color:var(--text-muted);">${stageObj.pct}%</span>
+              </div>
+              <div class="stage-progress-bar">
+                <div class="stage-progress-fill" style="width: ${stageObj.pct}%;"></div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <button class="btn-advance ${isDone ? 'done-btn' : ''}" onclick="advanceStageAndNotify('${o.id}')">
+              ${stageObj.action}
+            </button>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function updateKPIs() {
-      const totalRevenue = orders.reduce((acc, curr) => acc + curr.labor, 0);
-      document.getElementById('kpiRevenue').innerText = `$${totalRevenue.toLocaleString()} MXN`;
-      document.getElementById('kpiOrders').innerText = orders.length;
-    }
-
-    function advanceOrderStatus(id) {
-      hapticFeedback();
-      const ord = orders.find(x => x.id === id);
-      if (!ord) return;
-      if (ord.status === 'route') ord.status = 'bench';
-      else if (ord.status === 'bench') ord.status = 'done';
-      else if (ord.status === 'done') ord.status = 'route';
-      saveOrders();
-    }
-
-    // DISPARO AUTOMATIZADO DE WHATSAPP (AUTOMATIZER)
-    function sendAutomatedStatus(id) {
-      hapticFeedback();
-      const ord = orders.find(x => x.id === id);
+    // ==============================================
+    // 4. AVANCE DE ETAPA CON AUTOPLAY & NOTIFICACIÓN
+    // ==============================================
+    function advanceStageAndNotify(orderId) {
+      hapticFeedback(1200);
+      const ord = orders.find(x => x.id === orderId);
       if (!ord) return;
 
-      let msg = '';
-      if (ord.status === 'route') {
-        msg = `Hola ${ord.client}, soy Manuel de Volt Repair Studio ⚡ Voy en camino a tu domicilio para la reparación de tu ${ord.device} (${ord.service}). Estaré llegando en aproximadamente 15 a 20 minutos. ¡Nos vemos en breve!`;
-      } else if (ord.status === 'bench') {
-        msg = `Hola ${ord.client}, tu ${ord.device} ya está sobre el tapete de micro-cirugía en proceso de ${ord.service}. Estamos trabajando frente a ti con calibración TrueTone. Tiempo estimado restante: 15 minutos.`;
+      // Avanzar etapa
+      if (ord.stage < 4) {
+        ord.stage++;
       } else {
-        msg = `Hola ${ord.client}, ¡reparación finalizada con éxito! 🎉 Tu ${ord.device} quedó impecable. Mano de obra oficial: $${ord.labor} MXN. Te entregamos tu póliza de garantía por escrito de 90 días. Muchas gracias por confiar en Volt Repair Studio ⚡`;
+        ord.stage = 0; // Reinicio si el usuario desea reabrir
       }
 
-      window.open(`https://api.whatsapp.com/send?phone=${ord.phone}&text=${encodeURIComponent(msg)}`, '_blank');
+      saveOrders();
+
+      // Construcción del mensaje de WhatsApp automático según la nueva etapa
+      let waMsg = '';
+      if (ord.stage === 1) {
+        waMsg = `Hola ${ord.client}, soy ${config.ownerName} de ${config.workshopName} ⚡ Voy en camino a tu domicilio para la reparación de tu ${ord.device} (${ord.service}). Estaré llegando en aproximadamente 15 a 20 minutos 🚗`;
+      } else if (ord.stage === 2) {
+        waMsg = `Hola ${ord.client}, tu ${ord.device} ya está sobre el tapete de trabajo. Iniciamos la micro-cirugía de ${ord.service} frente a ti con herramienta quirúrgica 🔬`;
+      } else if (ord.stage === 3) {
+        waMsg = `Hola ${ord.client}, acabamos de completar la instalación de tu refacción. Iniciamos el control de calidad: prueba de TrueTone, 120Hz de respuesta táctil y sellado de chasis 🧪`;
+      } else if (ord.stage === 4) {
+        waMsg = `Hola ${ord.client}, ¡reparación finalizada con éxito rotundo! 🎉 Tu ${ord.device} quedó impecable al 100%. Mano de obra oficial: $${ord.labor} MXN. Te entregamos tu póliza de garantía por escrito de ${config.warrantyDays} días. ¡Gracias por confiar en ${config.workshopName}! ⚡`;
+      }
+
+      if (waMsg) {
+        const cleanPhone = ord.phone.replace(/[^0-9]/g, '');
+        const targetPhone = cleanPhone.length === 10 ? '521' + cleanPhone : cleanPhone;
+        window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(waMsg)}`, '_blank');
+      }
+    }
+
+    // ==============================================
+    // 5. INGESTION DE LEADS & WHATSAPP
+    // ==============================================
+    function parseAndAddLead() {
+      const input = document.getElementById('quickLeadInput');
+      const val = input.value.trim();
+      if (!val) return;
+      hapticFeedback(1000);
+
+      // Extracción inteligente
+      const phoneMatch = val.match(/\b\d{10,12}\b/);
+      const phone = phoneMatch ? phoneMatch[0] : '8100000000';
       
-      // Contar automatización
-      let count = +document.getElementById('kpiAutoCount').innerText;
-      document.getElementById('kpiAutoCount').innerText = count + 1;
-    }
-
-    function updateLaborInput() {
-      const s = document.getElementById('newService').value;
-      const inp = document.getElementById('newLabor');
-      if (s === 'Pantalla') inp.value = 700;
-      else if (s === 'Tapa Trasera') inp.value = 500;
-      else if (s === 'Batería') inp.value = 500;
-      else if (s === 'Centro de Carga') inp.value = 400;
-      else inp.value = 350;
-    }
-
-    function createOrder() {
-      hapticFeedback();
-      const client = document.getElementById('newClient').value.trim();
-      const phone = document.getElementById('newPhone').value.trim();
-      const device = document.getElementById('newDevice').value.trim();
-      const service = document.getElementById('newService').value;
-      const labor = +document.getElementById('newLabor').value;
-
-      if (!client || !device) {
-        alert('Por favor completa el nombre del cliente y el modelo del celular.');
-        return;
+      let device = 'Smartphone';
+      if (/iphone/i.test(val)) {
+        const m = val.match(/iphone\s*\w*\s*(pro\s*max|pro|plus|mini)?/i);
+        device = m ? m[0] : 'iPhone';
+      } else if (/samsung|galaxy/i.test(val)) {
+        const m = val.match(/(samsung|galaxy)\s*\w*\s*\w*/i);
+        device = m ? m[0] : 'Samsung Galaxy';
+      } else if (/moto|motorola/i.test(val)) {
+        const m = val.match(/(moto|motorola)\s*\w*\s*\w*/i);
+        device = m ? m[0] : 'Motorola';
       }
+
+      let service = 'Cambio de Pantalla';
+      let labor = config.screenLabor;
+      if (/tapa|cristal trasero/i.test(val)) {
+        service = 'Reemplazo Tapa Trasera';
+        labor = config.backLabor;
+      } else if (/bater/i.test(val)) {
+        service = 'Reemplazo de Batería';
+        labor = config.batteryLabor;
+      }
+
+      // Nombre
+      let client = val.split(/[0-9]/)[0].replace(/hola|manuel|volt|reparaci[oó]n|cotizar/gi, '').trim();
+      if (!client || client.length < 3) client = 'Cliente WhatsApp';
 
       const newId = 'VOLT-' + (100 + orders.length + 1);
       orders.unshift({
         id: newId,
         client: client,
+        phone: phone,
         device: device,
         service: service,
         labor: labor,
-        status: 'route',
-        phone: phone || '8100000000'
+        stage: 0,
+        notes: val
+      });
+
+      input.value = '';
+      saveOrders();
+      alert(`¡Solicitud ${newId} incorporada a Reparaciones Activas!`);
+    }
+
+    function handleQuickLeadKey(e) {
+      if (e.key === 'Enter') parseAndAddLead();
+    }
+
+    function processRawLead() {
+      const area = document.getElementById('rawLeadArea');
+      const text = area.value.trim();
+      if (!text) return;
+      document.getElementById('quickLeadInput').value = text;
+      parseAndAddLead();
+      area.value = '';
+      switchMainTab('tab-reparaciones', document.querySelector('.nav-btn'));
+    }
+
+    // ==============================================
+    // 6. INVENTARIO COMPLETO Y PROFESIONAL
+    // ==============================================
+    let inventory = JSON.parse(localStorage.getItem('volt_inventory_db')) || [
+      { id: 'REF-001', name: 'Pantalla OLED Super Retina', category: 'pantallas', model: 'iPhone 13 / 13 Pro', stock: 4, minStock: 2, costPrice: 650, salePrice: 1350 },
+      { id: 'REF-002', name: 'Pantalla Dynamic AMOLED 2X', category: 'pantallas', model: 'Samsung Galaxy S22 Ultra', stock: 2, minStock: 1, costPrice: 1200, salePrice: 1900 },
+      { id: 'REF-003', name: 'Pantalla IPS LCD 120Hz', category: 'pantallas', model: 'Moto G54 / G84 5G', stock: 5, minStock: 2, costPrice: 450, salePrice: 1150 },
+      { id: 'REF-004', name: 'Pantalla OLED TrueTone', category: 'pantallas', model: 'iPhone 14 / 14 Plus', stock: 3, minStock: 2, costPrice: 750, salePrice: 1450 },
+      { id: 'REF-005', name: 'Batería Li-Ion Grado A+ (Sin Avisos)', category: 'baterias', model: 'iPhone 11 / 11 Pro', stock: 6, minStock: 3, costPrice: 280, salePrice: 780 },
+      { id: 'REF-006', name: 'Batería Alta Densidad 5000mAh', category: 'baterias', model: 'Samsung Galaxy A54 / A34', stock: 4, minStock: 2, costPrice: 260, salePrice: 760 },
+      { id: 'REF-007', name: 'Batería 5000mAh TurboPower', category: 'baterias', model: 'Moto G (G54 / G84)', stock: 4, minStock: 2, costPrice: 250, salePrice: 750 },
+      { id: 'REF-008', name: 'Tapa Trasera Cristal MagSafe', category: 'tapas', model: 'iPhone 14 Pro Max', stock: 1, minStock: 2, costPrice: 220, salePrice: 720 },
+      { id: 'REF-009', name: 'Tapa Trasera Cristal Azul', category: 'tapas', model: 'iPhone 13', stock: 3, minStock: 1, costPrice: 180, salePrice: 680 },
+      { id: 'REF-010', name: 'Flexor Carga USB-C + Micrófono', category: 'flexores', model: 'Samsung Galaxy S21 / S22', stock: 3, minStock: 2, costPrice: 150, salePrice: 550 },
+      { id: 'REF-011', name: 'Flexor Lightning con Puerto', category: 'flexores', model: 'iPhone 12 / 12 Pro', stock: 4, minStock: 2, costPrice: 160, salePrice: 560 },
+      { id: 'REF-012', name: 'Módulo Cámara Trasera 48MP OIS', category: 'camaras', model: 'iPhone 14 Pro', stock: 2, minStock: 1, costPrice: 600, salePrice: 1000 },
+      { id: 'REF-013', name: 'Pegamento B-7000 Negro (110ml)', category: 'quimicos', model: 'Universal', stock: 8, minStock: 3, costPrice: 65, salePrice: 150 },
+      { id: 'REF-014', name: 'Cinta Adhesiva Térmica Batería', category: 'quimicos', model: 'Universal iPhone / Samsung', stock: 15, minStock: 5, costPrice: 20, salePrice: 50 }
+    ];
+
+    let currentCategoryFilter = 'all';
+
+    function saveInventory() {
+      localStorage.setItem('volt_inventory_db', JSON.stringify(inventory));
+      renderInventory();
+      updateDashboardKPIs();
+    }
+
+    function renderInventory() {
+      const tbody = document.getElementById('inventoryTableBody');
+      tbody.innerHTML = '';
+      
+      const search = (document.getElementById('inventorySearchInput')?.value || '').toLowerCase();
+      let totalPieces = 0;
+
+      inventory.forEach(p => {
+        totalPieces += p.stock;
+      });
+
+      document.getElementById('tabCountInventory').innerText = inventory.length;
+      document.getElementById('catCountAll').innerText = inventory.length;
+
+      const filtered = inventory.filter(p => {
+        const matchesCat = (currentCategoryFilter === 'all' || p.category === currentCategoryFilter);
+        const matchesSearch = p.name.toLowerCase().includes(search) || 
+                              p.model.toLowerCase().includes(search) || 
+                              p.id.toLowerCase().includes(search);
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach(p => {
+        const isLow = (p.stock <= p.minStock);
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+          <td><strong style="color:var(--cyan); font-family:'JetBrains Mono'">${p.id}</strong></td>
+          <td><b>${p.name}</b></td>
+          <td><span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted)">${p.category}</span></td>
+          <td><span style="color:#fff;">${p.model}</span></td>
+          <td><span style="color:var(--text-muted);">$${p.costPrice} MXN</span></td>
+          <td><b style="color:var(--cyan);">$${p.salePrice} MXN</b></td>
+          <td>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="adjustStock('${p.id}', -1)">-</button>
+              <span class="qty-display">${p.stock}</span>
+              <button class="qty-btn" onclick="adjustStock('${p.id}', 1)">+</button>
+            </div>
+          </td>
+          <td>
+            ${isLow ? '<span class="stock-badge-low">⚠️ BAJO STOCK</span>' : '<span class="stock-badge-ok">✓ DISPONIBLE</span>'}
+          </td>
+          <td>
+            <button class="btn-advance" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deletePart('${p.id}')">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function adjustStock(partId, delta) {
+      hapticFeedback();
+      const p = inventory.find(x => x.id === partId);
+      if (!p) return;
+      p.stock = Math.max(0, p.stock + delta);
+      saveInventory();
+    }
+
+    function deletePart(partId) {
+      if (!confirm('¿Deseas eliminar este repuesto del inventario?')) return;
+      inventory = inventory.filter(x => x.id !== partId);
+      saveInventory();
+    }
+
+    function setCategoryFilter(cat, btn) {
+      hapticFeedback();
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderInventory();
+    }
+
+    function filterInventory() {
+      renderInventory();
+    }
+
+    function openNewPartModal() {
+      hapticFeedback();
+      document.getElementById('newPartModal').classList.add('active');
+    }
+
+    function submitNewPart() {
+      hapticFeedback(1100);
+      const name = document.getElementById('modalPartName').value.trim();
+      const cat = document.getElementById('modalPartCat').value;
+      const model = document.getElementById('modalPartModel').value.trim();
+      const cost = +document.getElementById('modalPartCost').value || 0;
+      const price = +document.getElementById('modalPartPrice').value || 0;
+      const stock = +document.getElementById('modalPartStock').value || 0;
+      const min = +document.getElementById('modalPartMin').value || 1;
+
+      if (!name || !model) {
+        alert('Por favor completa la descripción y modelos compatibles.');
+        return;
+      }
+
+      const id = 'REF-' + String(inventory.length + 1).padStart(3, '0');
+      inventory.unshift({
+        id: id,
+        name: name,
+        category: cat,
+        model: model,
+        costPrice: cost,
+        salePrice: price,
+        stock: stock,
+        minStock: min
+      });
+
+      saveInventory();
+      closeModal('newPartModal');
+      document.getElementById('modalPartName').value = '';
+      document.getElementById('modalPartModel').value = '';
+      alert(`¡Refacción ${id} agregada al inventario con éxito!`);
+    }
+
+    // ==============================================
+    // 7. KPIs & MÉTRICAS EN VIVO
+    // ==============================================
+    function updateDashboardKPIs() {
+      // Ingresos mano de obra
+      const revenue = orders.reduce((acc, curr) => acc + curr.labor, 0);
+      document.getElementById('kpiRevenue').innerText = `$${revenue.toLocaleString()} MXN`;
+
+      // Reparaciones activas
+      const active = orders.filter(o => o.stage < 4).length;
+      document.getElementById('kpiActiveCount').innerText = active;
+      const inRoute = orders.filter(o => o.stage === 1).length;
+      const inBench = orders.filter(o => o.stage === 2 || o.stage === 3).length;
+      document.getElementById('kpiActiveSubtitle').innerText = `${inRoute} en ruta • ${inBench} en mesa`;
+
+      // Valor de inventario
+      const invValue = inventory.reduce((acc, curr) => acc + (curr.costPrice * curr.stock), 0);
+      document.getElementById('kpiInventoryVal').innerText = `$${invValue.toLocaleString()} MXN`;
+      const totalPzas = inventory.reduce((acc, curr) => acc + curr.stock, 0);
+      document.getElementById('kpiInventoryTotalCount').innerText = `${totalPzas} piezas en almacén`;
+
+      // Alertas de stock bajo
+      const lowStockCount = inventory.filter(p => p.stock <= p.minStock).length;
+      document.getElementById('kpiLowStock').innerText = lowStockCount;
+    }
+
+    // ==============================================
+    // 8. NUEVA ORDEN MODAL
+    // ==============================================
+    function openNewOrderModal() {
+      hapticFeedback();
+      document.getElementById('newOrderModal').classList.add('active');
+    }
+
+    function updateModalLaborPrice() {
+      const s = document.getElementById('modalOrderService').value;
+      const inp = document.getElementById('modalOrderLabor');
+      if (s.includes('Pantalla')) inp.value = config.screenLabor;
+      else if (s.includes('Tapa')) inp.value = config.backLabor;
+      else if (s.includes('Batería')) inp.value = config.batteryLabor;
+      else if (s.includes('Centro')) inp.value = 400;
+      else inp.value = 350;
+    }
+
+    function submitNewOrder() {
+      hapticFeedback(1200);
+      const client = document.getElementById('modalOrderClient').value.trim();
+      const phone = document.getElementById('modalOrderPhone').value.trim();
+      const device = document.getElementById('modalOrderDevice').value.trim();
+      const service = document.getElementById('modalOrderService').value;
+      const labor = +document.getElementById('modalOrderLabor').value;
+      const notes = document.getElementById('modalOrderNotes').value.trim();
+
+      if (!client || !device) {
+        alert('Por favor indica el nombre del cliente y el modelo del celular.');
+        return;
+      }
+
+      const id = 'VOLT-' + (100 + orders.length + 1);
+      orders.unshift({
+        id: id,
+        client: client,
+        phone: phone || '8100000000',
+        device: device,
+        service: service,
+        labor: labor,
+        stage: 0,
+        notes: notes
       });
 
       saveOrders();
-      alert(`¡Orden ${newId} registrada con éxito! Despachando Automatizer...`);
-      sendAutomatedStatus(newId);
-
-      // Limpiar formulario y volver al dashboard
-      document.getElementById('newClient').value = '';
-      document.getElementById('newPhone').value = '';
-      document.getElementById('newDevice').value = '';
-      switchSection('dashboard', document.querySelector('.nav-btn'));
+      closeModal('newOrderModal');
+      document.getElementById('modalOrderClient').value = '';
+      document.getElementById('modalOrderPhone').value = '';
+      document.getElementById('modalOrderDevice').value = '';
+      alert(`Orden ${id} creada con éxito.`);
     }
 
-    function toggleRule(name, status) {
-      hapticFeedback();
-      console.log(`Automatizer: Regla ${name} ahora está ${status ? 'ACTIVADA' : 'DESACTIVADA'}`);
-    }
-
-    function switchSection(sec, btn) {
+    // ==============================================
+    // 9. NAVEGACIÓN Y UTILIDADES
+    // ==============================================
+    function switchMainTab(tabId, btn) {
       hapticFeedback();
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
 
-      const dashSec = document.getElementById('sec-dashboard');
-      const formSec = document.getElementById('sec-nueva-orden');
-
-      if (sec === 'nueva-orden') {
-        dashSec.style.display = 'none';
-        formSec.style.display = 'block';
-      } else {
-        dashSec.style.display = 'grid';
-        formSec.style.display = 'none';
-        
-        if (sec === 'automatizer') {
-          document.getElementById('sec-automatizer').scrollIntoView({ behavior: 'smooth' });
-        } else if (sec === 'inventario') {
-          document.getElementById('sec-inventario').scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }
+      document.querySelectorAll('.main-tab-content').forEach(c => c.style.display = 'none');
+      const target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
     }
 
-    function refreshOrders() {
+    function closeModal(id) {
       hapticFeedback();
-      renderOrders();
-      updateKPIs();
+      const m = document.getElementById(id);
+      if (m) m.classList.remove('active');
     }
 
-    // Inicializar
+    function seedSampleOrders() {
+      hapticFeedback();
+      localStorage.removeItem('volt_orders_db');
+      location.reload();
+    }
+
+    function exportDataBackup() {
+      hapticFeedback();
+      const data = {
+        config: config,
+        orders: orders,
+        inventory: inventory,
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-volt-studio-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+    }
+
+    function resetToDefaults() {
+      if (!confirm('¿Restaurar configuración predeterminada?')) return;
+      localStorage.removeItem('volt_settings');
+      localStorage.removeItem('volt_orders_db');
+      localStorage.removeItem('volt_inventory_db');
+      location.reload();
+    }
+
+    // INICIALIZACIÓN
+    document.getElementById('headerWorkshopTitle').innerText = config.workshopName;
     renderOrders();
-    updateKPIs();
+    renderInventory();
+    updateDashboardKPIs();
   </script>
 </body>
 </html>
