@@ -689,6 +689,140 @@
     }
 
     /* =================================================== */
+    /* =================================================== */
+    /* SECCIÓN DE PROMOCIONES & PAQUETES COMBO DEL MES    */
+    /* =================================================== */
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .promo-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(8, 12, 22, 0.98));
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 22px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s var(--ease-spring);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(251, 191, 36, 0.12);
+    }
+
+    .promo-card.featured-combo {
+      border-color: #fbbf24;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(251, 191, 36, 0.25);
+    }
+
+    .promo-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(251, 191, 36, 0.35);
+    }
+
+    .promo-ribbon {
+      position: absolute;
+      top: 14px;
+      right: -32px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #040914;
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 34px;
+      transform: rotate(45deg);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .promo-savings-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid #34d399;
+      color: #34d399;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .promo-price-block {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 16px 0;
+    }
+
+    .promo-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+      color: #94a3b8;
+    }
+
+    .promo-price-row.total {
+      border-top: 1px dashed rgba(255, 255, 255, 0.15);
+      padding-top: 8px;
+      margin-top: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .promo-price-row.total span.highlight {
+      color: #fbbf24;
+      font-size: 1.35rem;
+    }
+
+    .popular-parts-box {
+      margin-top: 45px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .parts-table-responsive {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    .parts-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: left;
+    }
+
+    .parts-table th {
+      padding: 10px 14px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .parts-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+    }
+
+    .parts-table tr:hover td {
+      background: rgba(0, 240, 255, 0.04);
+    }
+
+    /* =================================================== */
     /* NOVEDAD 1: COTIZADOR INTERACTIVO 3 PASOS EN VIVO    */
     /* (FUNCIONALIDAD INSPIRADA EN uBreakiFix & Puls)       */
     /* =================================================== */
@@ -1765,6 +1899,7 @@
     </a>
 
     <div class="nav-links">
+      <a href="#promociones" style="color: #fbbf24; font-weight: 800;" onclick="hapticFeedback()">🔥 Promociones & Combos</a>
       <a href="#cotizador" onclick="hapticFeedback()">⚡ Cotizador en Vivo</a>
       <a href="#precios" onclick="hapticFeedback()">💰 Tarifas Mano de Obra</a>
       <a href="#comparador" onclick="hapticFeedback()">👁️ Antes / Después</a>
@@ -1977,6 +2112,248 @@
         <button onclick="quoteSpecificService('Reemplazo de Batería (Mano de obra $500)')" class="btn btn-secondary" style="width: 100%;">
           Cotizar Batería Nueva
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SECCIÓN DE PROMOCIONES & PAQUETES COMBO (BASADO EN PRECIOS REALES) -->
+  <!-- ========================================================== -->
+  <section class="section" id="promociones">
+    <div class="section-header reveal">
+      <div class="badge-animated" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24; border-color: #fbbf24;">
+        <span>🔥</span> Promociones de Temporada & Paquetes Combo
+      </div>
+      <h3>Combos Especiales con Ahorro Real en Mano de Obra</h3>
+      <p>Aprovecha nuestros paquetes con descuento directo en mano de obra y refacciones de catálogo mayorista sin sobrecosto.</p>
+    </div>
+
+    <!-- GRID DE TARJETAS DE PROMOCIÓN -->
+    <div class="promo-grid">
+      <!-- COMBO 1: REVIVE TOTAL (PANTALLA + BATERÍA) -->
+      <div class="promo-card featured-combo reveal" onclick="hapticFeedback()">
+        <div class="promo-ribbon">MÁS PEDIDO</div>
+        <div>
+          <div class="promo-savings-pill">
+            <span>⚡ Ahorras $310 en Mano de Obra</span>
+          </div>
+          <h4 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px;">
+            Combo Revive Total
+          </h4>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+            Cambio simultáneo de Pantalla + Batería Grado A+ en la misma visita en tu domicilio.
+          </p>
+
+          <div class="promo-price-block">
+            <div class="promo-price-row">
+              <span>Mano de obra regular ($700 + $500):</span>
+              <span style="text-decoration: line-through; color: #ef4444;">$1,200 MXN</span>
+            </div>
+            <div class="promo-price-row">
+              <span>Mano de obra Combo Volt:</span>
+              <span style="color: #34d399; font-weight: 700;">$890 MXN</span>
+            </div>
+            <div class="promo-price-row">
+              <span>Refacciones de catálogo:</span>
+              <span style="color: #fff;">Desde $490 (Pantalla) + $350 (Batería)</span>
+            </div>
+            <div class="promo-price-row total">
+              <span>Mano de Obra Combo:</span>
+              <span class="highlight">$890 <small style="font-size:0.75rem; color:#cbd5e1;">MXN</small></span>
+            </div>
+          </div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> <strong>GRATIS:</strong> Mica 9D Cristal Templado instalada</li>
+            <li><span class="check">✓</span> <strong>GRATIS:</strong> Calibración TrueTone digital</li>
+            <li><span class="check">✓</span> Batería con salud al 100% (sin alertas molestas)</li>
+            <li><span class="check">✓</span> Servicio en tu domicilio en 45 minutos</li>
+          </ul>
+        </div>
+
+        <button onclick="quotePromoWhatsApp('Combo Revive Total (Pantalla + Batería - Mano de Obra $890 MXN)')" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, #f59e0b, #d97706); color: #040914; font-weight: 800; border: none; box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);">
+          ⚡ Solicitar Combo Revive Total
+        </button>
+      </div>
+
+      <!-- COMBO 2: RESCATE ESTÉTICO 360° (PANTALLA + TAPA TRASERA) -->
+      <div class="promo-card reveal" onclick="hapticFeedback()">
+        <div>
+          <div class="promo-savings-pill">
+            <span>✨ Ahorras $350 en Mano de Obra</span>
+          </div>
+          <h4 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px;">
+            Pack Rescate Estético 360°
+          </h4>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+            Celular como nuevo por frente y vuelta. Cambio de Pantalla + Tapa Trasera de Cristal MagSafe.
+          </p>
+
+          <div class="promo-price-block">
+            <div class="promo-price-row">
+              <span>Mano de obra regular ($700 + $500):</span>
+              <span style="text-decoration: line-through; color: #ef4444;">$1,200 MXN</span>
+            </div>
+            <div class="promo-price-row">
+              <span>Mano de obra Combo 360°:</span>
+              <span style="color: #34d399; font-weight: 700;">$850 MXN</span>
+            </div>
+            <div class="promo-price-row">
+              <span>Refacciones de catálogo:</span>
+              <span style="color: #fff;">Desde $490 (Pantalla) + $220 (Tapa)</span>
+            </div>
+            <div class="promo-price-row total">
+              <span>Mano de Obra Combo:</span>
+              <span class="highlight">$850 <small style="font-size:0.75rem; color:#cbd5e1;">MXN</small></span>
+            </div>
+          </div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> <strong>GRATIS:</strong> Sellado antipolvo de grado industrial</li>
+            <li><span class="check">✓</span> <strong>GRATIS:</strong> Limpieza profunda de bocinas y micrófono</li>
+            <li><span class="check">✓</span> Conservación de bobina de carga inalámbrica MagSafe</li>
+            <li><span class="check">✓</span> Acabado idéntico al de fábrica sin filo</li>
+          </ul>
+        </div>
+
+        <button onclick="quotePromoWhatsApp('Pack Rescate Estético 360 (Pantalla + Tapa Trasera - Mano de Obra $850 MXN)')" class="btn btn-secondary" style="width: 100%; border-color: #fbbf24; color: #fbbf24;">
+          ✨ Solicitar Pack 360°
+        </button>
+      </div>
+
+      <!-- COMBO 3: PLAN DÚO FAMILIAR (2 CELULARES EN EL MISMO DOMICILIO) -->
+      <div class="promo-card reveal" onclick="hapticFeedback()">
+        <div>
+          <div class="promo-savings-pill" style="background: rgba(168, 85, 247, 0.18); border-color: #c084fc; color: #c084fc;">
+            <span>👨‍👩‍👧 35% OFF en 2do Equipo</span>
+          </div>
+          <h4 style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px;">
+            Plan Dúo Familiar
+          </h4>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+            ¿Tienes dos teléfonos en casa que necesitan reparación? Repara ambos en la misma visita y ahorra.
+          </p>
+
+          <div class="promo-price-block">
+            <div class="promo-price-row">
+              <span>1er Celular (ej. Pantalla):</span>
+              <span style="color: #fff;">$700 MXN Mano de Obra</span>
+            </div>
+            <div class="promo-price-row">
+              <span>2do Celular (ej. Batería -35%):</span>
+              <span style="color: #34d399; font-weight: 700;">$325 MXN <small>(Antes $500)</small></span>
+            </div>
+            <div class="promo-price-row">
+              <span>Ahorro directo en visita:</span>
+              <span style="color: #fbbf24; font-weight: 700;">$175 a $245 MXN</span>
+            </div>
+            <div class="promo-price-row total">
+              <span>2da Mano de Obra:</span>
+              <span class="highlight" style="color: #c084fc;">35% OFF</span>
+            </div>
+          </div>
+
+          <ul class="price-feature-list">
+            <li><span class="check">✓</span> Aplica para cualquier marca (iPhone, Samsung, Moto)</li>
+            <li><span class="check">✓</span> Misma visita, doble ahorro y doble garantía</li>
+            <li><span class="check">✓</span> <strong>GRATIS:</strong> 2 Micas templadas de regalo</li>
+            <li><span class="check">✓</span> Ambos equipos listos en menos de 1 hora</li>
+          </ul>
+        </div>
+
+        <button onclick="quotePromoWhatsApp('Plan Dúo Familiar (2 Celulares con 35% OFF en 2da mano de obra)')" class="btn btn-secondary" style="width: 100%; border-color: #c084fc; color: #c084fc;">
+          👨‍👩‍👧 Solicitar Plan Dúo
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA EJEMPLO DE COSTOS LLAVE EN MANO BASADA EN EL INVENTARIO DE 100 REFACCIONES -->
+    <div class="popular-parts-box reveal">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h4 style="font-size: 1.15rem; font-weight: 800; color: #fff;">
+            💡 Ejemplos "Llave en Mano": Refacción Mayorista + Mano de Obra Oficial
+          </h4>
+          <p style="font-size: 0.82rem; color: #94a3b8;">
+            Precios reales calculados con refacción grado A+ y mano de obra a domicilio incluida:
+          </p>
+        </div>
+        <span class="badge-animated" style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); font-size: 0.75rem;">
+          Catálogo Real de 100 Refacciones
+        </span>
+      </div>
+
+      <div class="parts-table-responsive">
+        <table class="parts-table">
+          <thead>
+            <tr>
+              <th>Modelo de Teléfono</th>
+              <th>Reparación</th>
+              <th>Precio Refacción</th>
+              <th>Mano de Obra Oficial</th>
+              <th>Total Llave en Mano</th>
+              <th>Acción Rápida</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>iPhone 11</strong></td>
+              <td>Pantalla Incell HD</td>
+              <td style="color: #94a3b8;">$890 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$700 MXN</td>
+              <td><b style="color: #fbbf24; font-size: 0.95rem;">$1,590 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('iPhone 11', 'Pantalla Incell HD ($1,590 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>iPhone 12 / 12 Pro</strong></td>
+              <td>Pantalla Hard OLED Super Retina</td>
+              <td style="color: #94a3b8;">$1,450 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$700 MXN</td>
+              <td><b style="color: #fbbf24; font-size: 0.95rem;">$2,150 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('iPhone 12 / 12 Pro', 'Pantalla Hard OLED ($2,150 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>iPhone 13</strong></td>
+              <td>Pantalla Soft OLED Super Retina</td>
+              <td style="color: #94a3b8;">$1,550 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$700 MXN</td>
+              <td><b style="color: #fbbf24; font-size: 0.95rem;">$2,250 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('iPhone 13', 'Pantalla Soft OLED ($2,250 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>Samsung Galaxy A54 5G</strong></td>
+              <td>Pantalla Super AMOLED 120Hz</td>
+              <td style="color: #94a3b8;">$1,550 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$700 MXN</td>
+              <td><b style="color: #fbbf24; font-size: 0.95rem;">$2,250 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('Samsung Galaxy A54 5G', 'Pantalla Super AMOLED ($2,250 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>Moto G54 / G84 5G</strong></td>
+              <td>Pantalla IPS LCD 120Hz / pOLED</td>
+              <td style="color: #94a3b8;">$750 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$700 MXN</td>
+              <td><b style="color: #fbbf24; font-size: 0.95rem;">$1,450 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('Moto G54 / G84 5G', 'Pantalla 120Hz ($1,450 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>iPhone 11 / 12</strong></td>
+              <td>Batería Grado A+ (Sin Avisos)</td>
+              <td style="color: #94a3b8;">$490 - $520 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$500 MXN</td>
+              <td><b style="color: #34d399; font-size: 0.95rem;">$990 - $1,020 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('iPhone 11/12', 'Batería Grado A+ ($990 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+            <tr>
+              <td><strong>iPhone 12 / 13 / 14</strong></td>
+              <td>Tapa Trasera Cristal MagSafe</td>
+              <td style="color: #94a3b8;">$340 - $440 MXN</td>
+              <td style="color: var(--cyan); font-weight: 700;">$500 MXN</td>
+              <td><b style="color: #34d399; font-size: 0.95rem;">$840 - $940 MXN</b></td>
+              <td><a href="javascript:void(0)" onclick="quoteQuickModel('iPhone 12/13/14', 'Tapa Trasera MagSafe ($840 total)')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;">Pedir</a></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -2324,6 +2701,10 @@
     <a href="#cotizador" class="dock-item" onclick="handleDockNav(event, '#cotizador')">
       <span class="dock-icon">⚡</span>
       <span>Cotizador</span>
+    </a>
+    <a href="#promociones" class="dock-item" onclick="handleDockNav(event, '#promociones')">
+      <span class="dock-icon">🔥</span>
+      <span>Promos</span>
     </a>
     <a href="#precios" class="dock-item" onclick="handleDockNav(event, '#precios')">
       <span class="dock-icon">💰</span>
@@ -2954,6 +3335,24 @@
         setActiveDockItem(0);
       }
     }, { passive: true });
-  </script>
+  
+    // ==========================================
+    // 10. PROMOCIONES & COTIZACIÓN RÁPIDA WHATSAPP
+    // ==========================================
+    function quotePromoWhatsApp(promoName) {
+      hapticFeedback(1200);
+      const phone = '5217208157790';
+      const msg = `¡Hola Volt Repair Studio! ⚡ Me interesa aprovechar la promoción: *${promoName}*. ¿Tienen espacio hoy en su ruta para atender mi domicilio?`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function quoteQuickModel(model, serviceDetail) {
+      hapticFeedback();
+      const phone = '5217208157790';
+      const msg = `¡Hola Volt Repair Studio! 📱 Quiero reparar mi *${model}* con el paquete *${serviceDetail}*. ¿Podrían agendar mi cita en mi domicilio?`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+</script>
 </body>
 </html>
