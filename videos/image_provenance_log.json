@@ -1,0 +1,57 @@
+[
+  {
+    "provider": "Whole-Web-Search-HD",
+    "source_url": "https://i.ytimg.com/vi/fUYczHBbYT8/maxresdefault.jpg",
+    "original_resolution": "1280x720",
+    "format": "JPEG",
+    "sha256": "15fb425e30e8e1b0da16ec152f737868d06311dd4eb05ee010fc1158fd0ecdab",
+    "timestamp": "2026-10-27T22:31:09Z",
+    "verification": "VERIFIED_HD_OK",
+    "concept_query": "iphone laser back glass machine repair",
+    "destination": "C:\\Users\\SAmue\\Desktop\\Volt-Repair-Studio\\videos\\b_roll\\test_veridico\\test_1_iphone_las.jpg"
+  },
+  {
+    "provider": "Whole-Web-Search-HD",
+    "source_url": "https://www.mobilecellphonerepairing.com/wp-content/uploads/2026/03/best-microsoldering-tools-iphone-logic-board-repair-1024x576.jpg",
+    "original_resolution": "1024x576",
+    "format": "WEBP",
+    "sha256": "4dd2f009ef26b88fae45cc23d73b0c850ca847acafbf0b5277c1840f6c2468bb",
+    "timestamp": "2026-10-27T22:31:10Z",
+    "verification": "VERIFIED_HD_OK",
+    "concept_query": "iphone micro soldering logic board microscope",
+    "destination": "C:\\Users\\SAmue\\Desktop\\Volt-Repair-Studio\\videos\\b_roll\\test_veridico\\test_2_iphone_mic.jpg"
+  },
+  {
+    "provider": "Whole-Web-Search-HD",
+    "source_url": "https://i.ytimg.com/vi/j6uh1Cbvh5Y/maxresdefault.jpg",
+    "original_resolution": "1280x720",
+    "format": "JPEG",
+    "sha256": "c05be37440760a1a4053fd07cba7779805aeed6c950bfd3425d5006e13ff1ec1",
+    "timestamp": "2026-10-27T22:31:15Z",
+    "verification": "VERIFIED_HD_OK",
+    "concept_query": "face id dot projector infrared repair",
+    "destination": "C:\\Users\\SAmue\\Desktop\\Volt-Repair-Studio\\videos\\b_roll\\test_veridico\\test_3_face_id_do.jpg"
+  },
+  {
+    "provider": "Whole-Web-Search-HD",
+    "source_url": "https://pub.mdpi-res.com/sensors/sensors-17-02333/article_deploy/html/images/sensors-17-02333-g001.png?1569599710",
+    "original_resolution": "3680x1448",
+    "format": "PNG",
+    "sha256": "3efb38ad81981607e43f009808ea6bdd19a076b9d8253d0ce7eade581d2a87ef",
+    "timestamp": "2026-10-27T22:31:16Z",
+    "verification": "VERIFIED_HD_OK",
+    "concept_query": "optical image stabilization camera sensor coil",
+    "destination": "C:\\Users\\SAmue\\Desktop\\Volt-Repair-Studio\\videos\\b_roll\\test_veridico\\test_4_optical_im.jpg"
+  },
+  {
+    "provider": "Whole-Web-Search-HD",
+    "source_url": "https://i.ytimg.com/vi/R7xjFCAV0u0/maxresdefault.jpg",
+    "original_resolution": "1280x720",
+    "format": "JPEG",
+    "sha256": "6540fed12d79d69487d1986adbbc26f5bd822ab4836b42cb1ea5a5cf8a75bb87",
+    "timestamp": "2026-10-27T22:31:20Z",
+    "verification": "VERIFIED_HD_OK",
+    "concept_query": "ultrasonic cleaner circuit board electronics",
+    "destination": "C:\\Users\\SAmue\\Desktop\\Volt-Repair-Studio\\videos\\b_roll\\test_veridico\\test_5_ultrasonic.jpg"
+  }
+]
