@@ -21,3 +21,13 @@ videos/b_roll/test_*
 temp_*/
 
 
+
+# Remotion
+node_modules/
+remotion_reels/node_modules/
+remotion_reels/out/
+remotion_reels/public/*.mp4
+remotion_reels/public/*.webm
+remotion_reels/public/*.mp3
+remotion_reels/public/*.mkv
+remotion_reels/.remotion/
