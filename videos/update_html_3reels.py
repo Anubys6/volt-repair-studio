@@ -1,0 +1,441 @@
+from pathlib import Path
+
+html_path = Path(r"C:\Users\SAmue\Desktop\Volt-Repair-Studio\videos\reels-promocionales.html")
+
+content = """<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudio de Videos y Reels Oficiales | Volt Repair Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090e17;
+      --card: #121a29;
+      --card-border: rgba(0, 240, 255, 0.2);
+      --cyan: #00f0ff;
+      --accent: #ff0055;
+      --green: #10b981;
+      --yellow: #ffcc00;
+      --purple: #a855f7;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #111a2f 0%, #080c14 100%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(10, 15, 25, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: 0.5px; }
+    .brand span { font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; font-weight: 700; }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--cyan), #0066ff);
+      color: #040914;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+    .btn-cyan:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 240, 255, 0.7); }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.15); }
+
+    .main-layout {
+      max-width: 1280px;
+      margin: 24px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+      align-items: start;
+      width: 100%;
+    }
+
+    @media (max-width: 950px) {
+      .main-layout { grid-template-columns: 1fr; }
+    }
+
+    /* PHONE FRAME */
+    .phone-mockup {
+      width: 340px;
+      height: 604px; /* 9:16 */
+      background: #000;
+      border-radius: 44px;
+      border: 8px solid #1e293b;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 22px;
+      background: #000;
+      border-radius: 14px;
+      z-index: 30;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    video#mp4Player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    /* CONTROLS & CONTENT CARDS */
+    .controls-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .video-card-item {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .video-card-item:hover {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.06);
+      transform: translateX(4px);
+    }
+
+    .video-card-item.active {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.12);
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.2);
+    }
+
+    .video-card-item h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .video-card-item p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .copy-box {
+      background: #080c14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .copy-box pre {
+      font-family: inherit;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .btn-copy {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy:hover { background: var(--cyan); color: #040914; }
+
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo-volt-studio.jpg" alt="Logo Volt" style="width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--cyan);">
+      <div>
+        <h1>VOLT REPAIR STUDIO</h1>
+        <span>Estudio de Reels Remotion Master (1080x1920)</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="../sitio-oficial.html" class="btn btn-outline">🌐 Ver Sitio Web</a>
+      <a href="../panel-control.html" class="btn btn-outline">📊 Panel de Control</a>
+    </div>
+  </header>
+
+  <div class="main-layout">
+
+    <!-- SIMULADOR SMARTPHONE 9:16 -->
+    <div>
+      <div class="phone-mockup">
+        <div class="notch"></div>
+        <video id="mp4Player" controls autoplay loop playsinline>
+          <source src="reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-outline" onclick="toggleAudio()" style="font-size: 0.8rem;">🔊 Mutear / Desmutear</button>
+        <a id="btnDownloadCurrent" href="reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4" download class="btn btn-cyan" style="font-size: 0.8rem;">
+          ⬇️ Descargar MP4
+        </a>
+      </div>
+    </div>
+
+    <!-- REEL SELECTOR & SOCIAL COPY -->
+    <div class="controls-card">
+      <span class="badge-pill" style="background: rgba(0, 240, 255, 0.2); color: var(--cyan); border: 1px solid var(--cyan);">
+        ⚡ 3 REELS OFICIALES REMOTION MASTER • ALTA RETENCIÓN TIKTOK
+      </span>
+      <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">
+        Videos Oficiales de Volt Repair Studio (Cero Fotos Estáticas)
+      </h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
+        Arquitectura <b>Video-as-Code React Remotion</b>: Voz humana amistosa mexicana (Alonso Neural), cortes rápidos cada 2 segundos sincronizados 1:1 con la locución y movimiento continuo Ken Burns.
+      </p>
+
+      <!-- LISTA DE LOS 3 REELS OFICIALES -->
+      <div class="video-card-item active" id="card1" onclick="loadReel(1)">
+        <h4>
+          <span>🏠 1. Pantalla a Domicilio en tu Comedor</span>
+          <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$700 M.O.</span>
+        </h4>
+        <p>17 cortes rápidos. Acaba con el miedo a los talleres callejeros. El técnico repara frente a ti en 25 minutos sin tocar tus fotos ni borrar datos.</p>
+      </div>
+
+      <div class="video-card-item" id="card2" onclick="loadReel(2)">
+        <h4>
+          <span>🔬 2. Programadora EEPROM True Tone y 120Hz</span>
+          <span style="font-size: 0.8rem; color: var(--purple); font-weight: 900;">$700 M.O.</span>
+        </h4>
+        <p>16 cortes rápidos. Revela por qué en las plazas dejan los iPhone sin True Tone ni brillo automático, y cómo Volt transfiere seriales con la JCID en tu casa.</p>
+      </div>
+
+      <div class="video-card-item" id="card3" onclick="loadReel(3)">
+        <h4>
+          <span>🔋 3. Batería OEM con Tiras Térmicas Pull-Tabs</span>
+          <span style="font-size: 0.8rem; color: var(--green); font-weight: 900;">$500 M.O.</span>
+        </h4>
+        <p>17 cortes rápidos. Alerta contra talleres que pegan baterías con cinta escolar doble cara. Muestra instalación de pull-tabs para restaurar salud al 100%.</p>
+      </div>
+
+      <!-- TEXTO COPIABLE PARA PUBLICAR EN REDES -->
+      <div class="copy-box">
+        <button class="btn-copy" id="btnCopyText" onclick="copyCurrentCopy()">📋 Copiar Texto</button>
+        <span style="font-size: 0.7rem; font-weight: 700; color: var(--cyan); text-transform: uppercase;">Texto y Hashtags para TikTok / Instagram:</span>
+        <pre id="socialCopyBox" style="margin-top: 8px;"></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const reelsData = {
+      1: {
+        video: "reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4",
+        copy: `⚡ ¡Qué onda amigos! ¿Se te estrelló la pantalla de tu celular? 📱💥
+
+¡No lo dejes días enteros en las plazas con miedo a que revisen tus fotos o cambien piezas! En Volt Repair Studio vamos directo a tu domicilio y en 25 minutos cambiamos tu display frente a tus propios ojos en tu propio comedor.
+
+🔧 Desmontaje milimétrico con desarmadores pentalobe
+📱 Apertura con ventosa especial (cero rayones en el marco)
+⚡ Desconexión de batería inmediata para proteger circuitos
+🔬 Programadora JCID de microchips para transferir True Tone y 120Hz
+🛡️ Refacción certificada Grado A+ con colores idénticos de fábrica
+✨ Pruebas de multitouch y sensores en vivo contigo presente
+💵 Mano de obra fija transparente: Solo $700 pesitos
+📝 90 días de garantía total por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y te cotizo de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 Sitio Oficial: https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #VoltRepairStudio #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente #TrueTone`
+      },
+      2: {
+        video: "reels_exportados/reel_02_truetone_eeprom_master_1080x1920.mp4",
+        copy: `🔬 ¿Sabías que si cambias la pantalla de tu iPhone en la calle pierdes el True Tone? 📉📱
+
+¡Y además el brillo automático se vuelve loco! Eso pasa porque los talleres callejeros no transfieren el número de serie de tu pantalla vieja. ¡En Volt Repair Studio lo hacemos con nivel de laboratorio!
+
+⚡ Vamos directo a tu casa con nuestra programadora JCID
+🔑 Conectamos tu pantalla rota y extraemos el serial criptográfico del microchip
+🛡️ Lo transferimos a tu nueva pantalla certificada Grado A Plus
+✨ Conservas tus colores de fábrica, tu True Tone y los 120 Hertz ProMotion
+👀 Calibración y pruebas en vivo frente a ti en 25 minutos
+💵 Mano de obra fija de solo $700 pesitos
+📝 90 días de garantía total por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y te cotizo de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #TrueTone #PantallaiPhone #CambioDePantalla #VoltRepairStudio #MicroElectronica #ReparacionCelulares #JCID`
+      },
+      3: {
+        video: "reels_exportados/reel_03_bateria_oem_master_1080x1920.mp4",
+        copy: `🚨 ¡Mucho cuidado con cómo te cambian la batería de tu celular en la calle! 💥🔋
+
+¿Tu teléfono se descarga en pocas horas o se calienta demasiado? Hemos abierto equipos donde pegaron la batería con cinta escolar doble cara o resistol, lo que deforma la celda, sobrecalienta el procesador y arruina tu equipo.
+
+⚡ En Volt Repair Studio vamos directo a tu domicilio y en 20 minutos cambiamos tu batería frente a ti
+🔧 Retiramos la celda vieja con pinzas de precisión sin doblar componentes
+🛡️ Instalamos celda de alta densidad con sus tiras térmicas elásticas pull-tabs originales
+✨ Disipan el calor y restauran la salud de tu batería al 100%
+💵 Mano de obra garantizada de solo $500 pesitos
+📝 90 días de garantía por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y estrena batería de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #BateriaiPhone #BateriaSamsung #SaludDeBateria #PullTabs #VoltRepairStudio #ReparacionADomicilio #TecnologiaMexico`
+      }
+    };
+
+    let currentReelId = 1;
+
+    function loadReel(id) {
+      currentReelId = id;
+      document.querySelectorAll('.video-card-item').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById('card' + id);
+      if (activeCard) activeCard.classList.add('active');
+
+      const data = reelsData[id];
+      const player = document.getElementById('mp4Player');
+      player.src = data.video;
+      player.load();
+      player.play().catch(() => {});
+
+      document.getElementById('btnDownloadCurrent').href = data.video;
+      document.getElementById('socialCopyBox').textContent = data.copy;
+    }
+
+    function toggleAudio() {
+      const player = document.getElementById('mp4Player');
+      player.muted = !player.muted;
+      if (!player.muted && player.paused) {
+        player.play();
+      }
+    }
+
+    function copyCurrentCopy() {
+      const text = reelsData[currentReelId].copy;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btnCopyText');
+        const old = btn.textContent;
+        btn.textContent = '✅ ¡Copiado!';
+        setTimeout(() => { btn.textContent = old; }, 2000);
+      });
+    }
+
+    // Inicializar con Reel 1
+    loadReel(1);
+  </script>
+</body>
+</html>
+"""
+
+html_path.write_text(content, encoding="utf-8")
+print("reels-promocionales.html written cleanly with exactly the 3 Master Remotion Reels!")

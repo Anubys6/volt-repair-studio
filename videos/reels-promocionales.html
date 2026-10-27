@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estudio de Videos y Reels | Volt Repair Studio</title>
+  <title>Estudio de Videos y Reels Oficiales | Volt Repair Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
@@ -200,11 +200,11 @@
     }
 
     .copy-box {
-      background: rgba(8, 12, 20, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 14px;
-      margin-top: 16px;
+      background: #080c14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
       position: relative;
     }
 
@@ -213,141 +213,103 @@
       font-size: 0.8rem;
       color: #cbd5e1;
       white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 140px;
-      overflow-y: auto;
       line-height: 1.5;
     }
 
     .btn-copy {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 240, 255, 0.2);
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 240, 255, 0.15);
       border: 1px solid var(--cyan);
       color: var(--cyan);
+      padding: 5px 12px;
       border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s;
     }
-    .btn-copy:hover {
-      background: var(--cyan);
-      color: #040914;
-    }
+    .btn-copy:hover { background: var(--cyan); color: #040914; }
 
-    .guide-banner {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(0, 240, 255, 0.15));
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 20px;
+    .action-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+      margin-top: 14px;
+      justify-content: center;
     }
-
-    .guide-banner h5 { font-size: 0.92rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
-    .guide-banner p { font-size: 0.78rem; color: #cbd5e1; }
   </style>
 </head>
 <body>
 
   <header>
     <a href="../index.html" class="brand">
-      <img src="../assets/logo-volt-studio.jpg" alt="Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+      <img src="../assets/logo-volt-studio.jpg" alt="Logo Volt" style="width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--cyan);">
       <div>
         <h1>VOLT REPAIR STUDIO</h1>
-        <span>Estudio de Reels 9:16 Ultra-Realistas (Google Veo / Gemini)</span>
+        <span>Estudio de Reels Remotion Master (1080x1920)</span>
       </div>
     </a>
     <div class="nav-links">
-      <a href="../panel-control.html" class="btn btn-outline">
-        ⚙️ Panel de Control
-      </a>
-      <a href="../index.html" class="btn btn-outline">
-        🌐 Web Cliente
-      </a>
+      <a href="../sitio-oficial.html" class="btn btn-outline">🌐 Ver Sitio Web</a>
+      <a href="../panel-control.html" class="btn btn-outline">📊 Panel de Control</a>
     </div>
   </header>
 
   <div class="main-layout">
 
-    <!-- REEL PLAYER FRAME -->
+    <!-- SIMULADOR SMARTPHONE 9:16 -->
     <div>
       <div class="phone-mockup">
         <div class="notch"></div>
-        <video id="mp4Player" controls playsinline autoplay loop muted>
-          <source src="reels_exportados/reel_01_pantalla_domicilio_1080x1920.mp4" type="video/mp4">
-          Tu navegador no soporta reproducción directa de video.
+        <video id="mp4Player" controls autoplay loop playsinline>
+          <source src="reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4" type="video/mp4">
         </video>
       </div>
 
-      <!-- BOTONES DE ACCIÓN DIRECTA -->
-      <div style="display: flex; flex-direction: column; gap: 8px; max-width: 340px; margin: 16px auto 0;">
-        <a id="btnDownloadCurrent" href="reels_exportados/reel_01_pantalla_domicilio_1080x1920.mp4" download class="btn btn-cyan" style="width: 100%;">
-          📥 Descargar Video MP4 (1080x1920)
+      <div class="action-bar">
+        <button class="btn btn-outline" onclick="toggleAudio()" style="font-size: 0.8rem;">🔊 Mutear / Desmutear</button>
+        <a id="btnDownloadCurrent" href="reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4" download class="btn btn-cyan" style="font-size: 0.8rem;">
+          ⬇️ Descargar MP4
         </a>
-        <button class="btn btn-outline" onclick="toggleAudio()" style="width: 100%;">
-          🔊 Activar / Silenciar Sonido
-        </button>
       </div>
     </div>
 
     <!-- REEL SELECTOR & SOCIAL COPY -->
     <div class="controls-card">
       <span class="badge-pill" style="background: rgba(0, 240, 255, 0.2); color: var(--cyan); border: 1px solid var(--cyan);">
-        ⚡ ARQUITECTURA VIRAL ESTILO PHONE REPAIR GURU & WILTECH
+        ⚡ 3 REELS OFICIALES REMOTION MASTER • ALTA RETENCIÓN TIKTOK
       </span>
       <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">
-        3 Reels con 100% Video Real (Cero Fotos Estáticas)
+        Videos Oficiales de Volt Repair Studio (Cero Fotos Estáticas)
       </h2>
       <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
-        Creados con metodología <b>Google Veo / Gemini Video</b>: Técnico humano creíble en 9:16, cortes de micro-soldadura B-roll en 4K, subtítulos cinemáticos en zona segura y locución mexicana natural.
+        Arquitectura <b>Video-as-Code React Remotion</b>: Voz humana amistosa mexicana (Alonso Neural), cortes rápidos cada 2 segundos sincronizados 1:1 con la locución y movimiento continuo Ken Burns.
       </p>
 
-      <!-- LISTA DE LOS 3 REELS -->
-      <!-- LISTA DE REELS -->
-      <div class="video-card-item active" id="card5" onclick="loadReel(5)" style="border-color: #00f0ff; background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);">
+      <!-- LISTA DE LOS 3 REELS OFICIALES -->
+      <div class="video-card-item active" id="card1" onclick="loadReel(1)">
         <h4>
-          <span>🌟 5. Reel Congruente + Voz Amistosa (17 Escenas)</span>
-          <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">⭐ MASTER OFICIAL</span>
-        </h4>
-        <p>17 cortes visuales rápidos sincronizados palabra por palabra con la locución cálida y amistosa. Zoom continuo Ken Burns en cada segundo y congruencia 1:1 entre audio y video.</p>
-      </div>
-      <div class="video-card-item" id="card1" onclick="loadReel(1)">
-        <h4>
-          <span>🏠 1. Pantalla a Domicilio en tu Sala</span>
+          <span>🏠 1. Pantalla a Domicilio en tu Comedor</span>
           <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$700 M.O.</span>
         </h4>
-        <p>Elimina el miedo a los talleres callejeros. El técnico repara frente a ti en 25 minutos sin tocar tus fotos ni borrar datos.</p>
+        <p>17 cortes rápidos. Acaba con el miedo a los talleres callejeros. El técnico repara frente a ti en 25 minutos sin tocar tus fotos ni borrar datos.</p>
       </div>
 
       <div class="video-card-item" id="card2" onclick="loadReel(2)">
         <h4>
-          <span>🔬 2. Programadora EEPROM True Tone</span>
+          <span>🔬 2. Programadora EEPROM True Tone y 120Hz</span>
           <span style="font-size: 0.8rem; color: var(--purple); font-weight: 900;">$700 M.O.</span>
         </h4>
-        <p>Demuestra por qué las plazas dejan los iPhone sin True Tone ni 120Hz. Muestra instrumental de laboratorio y calibración.</p>
+        <p>16 cortes rápidos. Revela por qué en las plazas dejan los iPhone sin True Tone ni brillo automático, y cómo Volt transfiere seriales con la JCID en tu casa.</p>
       </div>
 
       <div class="video-card-item" id="card3" onclick="loadReel(3)">
         <h4>
-          <span>🔋 3. Batería y Tiras Térmicas OEM</span>
+          <span>🔋 3. Batería OEM con Tiras Térmicas Pull-Tabs</span>
           <span style="font-size: 0.8rem; color: var(--green); font-weight: 900;">$500 M.O.</span>
         </h4>
-        <p>Alerta contra talleres que usan cinta doble cara escolar. Muestra instalación de tiras elásticas de fábrica para salud al 100%.</p>
-      </div>
-
-      <div class="video-card-item" id="card4" onclick="loadReel(4)">
-        <h4>
-          <span>⚛️ 4. Edición React Remotion (Video-as-Code)</span>
-          <span style="font-size: 0.8rem; color: #ff0055; font-weight: 900;">NUEVO</span>
-        </h4>
-        <p>Generado con el framework Remotion y Chrome Headless Shell. Animación programática con resortes spring() y física en 60 FPS.</p>
+        <p>17 cortes rápidos. Alerta contra talleres que pegan baterías con cinta escolar doble cara. Muestra instalación de pull-tabs para restaurar salud al 100%.</p>
       </div>
 
       <!-- TEXTO COPIABLE PARA PUBLICAR EN REDES -->
@@ -357,17 +319,6 @@
         <pre id="socialCopyBox" style="margin-top: 8px;"></pre>
       </div>
 
-      <!-- BANNER DE LA GUÍA GOOGLE VEO / GEMINI -->
-      <div class="guide-banner">
-        <div>
-          <h5>✨ ¿Quieres generar más videos con el truco de Gemini?</h5>
-          <p>Usa la plantilla transparente 9:16 y el banco de prompts de alta conversión.</p>
-        </div>
-        <a href="aspect_ratio_seed_9_16.png" download class="btn btn-outline" style="white-space: nowrap; font-size: 0.78rem;">
-          🖼️ Descargar Semilla 9:16
-        </a>
-      </div>
-
     </div>
 
   </div>
@@ -375,69 +326,7 @@
   <script>
     const reelsData = {
       1: {
-        video: "reels_exportados/reel_01_pantalla_domicilio_1080x1920.mp4",
-        copy: `👁️ ¿Por qué la gente le tiene tanto miedo a los talleres de celulares? 📱🔐
-
-El mayor temor de todos es que te roben piezas originales o revisen tus fotos privadas. ¡En Volt Repair Studio acabamos con eso!
-
-⚡ Micro-cirugía en tu propia casa u oficina en 25 minutos
-👀 Tú estás presente viendo cada tornillo sobre tu mesa
-💰 Mano de obra fija de pantalla: Solo $700 MXN (+ refacción certificada)
-🛡️ 90 días de garantía total por escrito
-
-📲 Agenda tu cita hoy por WhatsApp: +52 1 720 815 7790
-🌐 Web Oficial: https://anubys6.github.io/volt-repair-studio/
-🎵 TikTok: https://www.tiktok.com/@voltrepair32
-
-#voltrepair32 #VoltRepairStudio #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente`
-      },
-      2: {
-        video: "reels_exportados/reel_02_truetone_eeprom_1080x1920.mp4",
-        copy: `⚠️ ¿Te cambiaron la pantalla y perdiste el TrueTone y el brillo automático? 📉📱
-
-En muchos talleres callejeros montan pantallas genéricas sin programadora. En Volt Repair Studio usamos programadora de micro-chips para calibrar tu pantalla y conservar los 120Hz ProMotion.
-
-🔬 Trabajo quirúrgico frente a ti en 25 minutos
-💰 Mano de obra de pantalla: Solo $700 MXN (+ pieza OEM Grado A+)
-🛡️ 90 días de garantía por escrito
-
-📲 Mándanos mensaje directo al WhatsApp: +52 1 720 815 7790
-🌐 Web: https://anubys6.github.io/volt-repair-studio/
-🎵 TikTok: https://www.tiktok.com/@voltrepair32
-
-#voltrepair32 #TrueTone #PantallaiPhone #CambioDePantalla #VoltRepairStudio #MicroElectronica #ReparacionCelulares`
-      },
-      3: {
-        video: "reels_exportados/reel_03_bateria_oem_1080x1920.mp4",
-        copy: `🚨 ¡Cuidado con cómo te cambian la batería en la calle! 💥🔋
-
-Abrimos este equipo y encontramos cinta doble cara escolar que sobrecalienta el procesador. En Volt Repair Studio instalamos celdas de alta densidad con adhesivos térmicos elásticos pull-tabs de fábrica.
-
-⚡ Recupera la salud de tu batería al 100% en 20 minutos en tu mesa
-💰 Mano de obra garantizada: Solo $500 MXN (+ batería certificada)
-🛡️ 90 días de garantía total
-
-📲 Escríbenos por WhatsApp para cotizar tu modelo: +52 1 720 815 7790
-🌐 https://anubys6.github.io/volt-repair-studio/
-🎵 TikTok: https://www.tiktok.com/@voltrepair32
-
-#voltrepair32 #BateriaiPhone #BateriaSamsung #SaludDeBateria #VoltRepairStudio #ReparacionADomicilio #TecnologiaMexico`
-      },
-      4: {
-        video: "reels_exportados/reel_remotion_dinamico_1080x1920.mp4",
-        copy: `⚡ Reparación de Celulares en tu Sala con Volt Repair Studio 📱🏠
-
-¡Acabamos con el miedo a los talleres callejeros! En Volt Repair Studio reparamos tu equipo frente a tus ojos en 25 minutos. Cero fotos revisadas, refacciones 100% garantizadas.
-
-💰 Mano de obra fija de pantalla: Solo $700 MXN
-🛡️ 90 días de garantía total por escrito
-📲 Agenda por WhatsApp: +52 1 720 815 7790
-
-#voltrepair32 #RemotionVideo #VoltRepairStudio #iPhoneMexico #ReparacionADomicilio #PantallaRota`
-      }
-,
-      5: {
-        video: "reels_exportados/reel_remotion_congruente_amigable_1080x1920.mp4",
+        video: "reels_exportados/reel_01_pantalla_domicilio_master_1080x1920.mp4",
         copy: `⚡ ¡Qué onda amigos! ¿Se te estrelló la pantalla de tu celular? 📱💥
 
 ¡No lo dejes días enteros en las plazas con miedo a que revisen tus fotos o cambien piezas! En Volt Repair Studio vamos directo a tu domicilio y en 25 minutos cambiamos tu display frente a tus propios ojos en tu propio comedor.
@@ -457,10 +346,51 @@ WhatsApp: +52 1 720 815 7790
 🎵 TikTok: https://www.tiktok.com/@voltrepair32
 
 #voltrepair32 #VoltRepairStudio #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente #TrueTone`
+      },
+      2: {
+        video: "reels_exportados/reel_02_truetone_eeprom_master_1080x1920.mp4",
+        copy: `🔬 ¿Sabías que si cambias la pantalla de tu iPhone en la calle pierdes el True Tone? 📉📱
+
+¡Y además el brillo automático se vuelve loco! Eso pasa porque los talleres callejeros no transfieren el número de serie de tu pantalla vieja. ¡En Volt Repair Studio lo hacemos con nivel de laboratorio!
+
+⚡ Vamos directo a tu casa con nuestra programadora JCID
+🔑 Conectamos tu pantalla rota y extraemos el serial criptográfico del microchip
+🛡️ Lo transferimos a tu nueva pantalla certificada Grado A Plus
+✨ Conservas tus colores de fábrica, tu True Tone y los 120 Hertz ProMotion
+👀 Calibración y pruebas en vivo frente a ti en 25 minutos
+💵 Mano de obra fija de solo $700 pesitos
+📝 90 días de garantía total por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y te cotizo de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #TrueTone #PantallaiPhone #CambioDePantalla #VoltRepairStudio #MicroElectronica #ReparacionCelulares #JCID`
+      },
+      3: {
+        video: "reels_exportados/reel_03_bateria_oem_master_1080x1920.mp4",
+        copy: `🚨 ¡Mucho cuidado con cómo te cambian la batería de tu celular en la calle! 💥🔋
+
+¿Tu teléfono se descarga en pocas horas o se calienta demasiado? Hemos abierto equipos donde pegaron la batería con cinta escolar doble cara o resistol, lo que deforma la celda, sobrecalienta el procesador y arruina tu equipo.
+
+⚡ En Volt Repair Studio vamos directo a tu domicilio y en 20 minutos cambiamos tu batería frente a ti
+🔧 Retiramos la celda vieja con pinzas de precisión sin doblar componentes
+🛡️ Instalamos celda de alta densidad con sus tiras térmicas elásticas pull-tabs originales
+✨ Disipan el calor y restauran la salud de tu batería al 100%
+💵 Mano de obra garantizada de solo $500 pesitos
+📝 90 días de garantía por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y estrena batería de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #BateriaiPhone #BateriaSamsung #SaludDeBateria #PullTabs #VoltRepairStudio #ReparacionADomicilio #TecnologiaMexico`
       }
     };
 
-    let currentReelId = 5;
+    let currentReelId = 1;
 
     function loadReel(id) {
       currentReelId = id;
@@ -496,8 +426,8 @@ WhatsApp: +52 1 720 815 7790
       });
     }
 
-    // Inicializar
-    loadReel(5);
+    // Inicializar con Reel 1
+    loadReel(1);
   </script>
 </body>
 </html>

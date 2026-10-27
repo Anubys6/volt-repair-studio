@@ -1,5 +1,7 @@
 import { Composition, staticFile } from "remotion";
 import { VoltReel } from "./VoltReel/VoltReel";
+import { VoltReel2_TrueTone } from "./VoltReel/VoltReel2_TrueTone";
+import { VoltReel3_Bateria } from "./VoltReel/VoltReel3_Bateria";
 import {
   CaptionedVideo,
   calculateCaptionedVideoMetadata,
@@ -9,11 +11,11 @@ import {
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      {/* ⚡ COMPOSICIÓN VIRAL OFICIAL DE VOLT REPAIR STUDIO (17 ESCENAS CONGRUENTES + VOZ AMISTOSA) */}
+      {/* ⚡ REEL 1 MASTER: PANTALLA A DOMICILIO (17 ESCENAS + ALONSO NEURAL) */}
       <Composition
         id="VoltReelPantalla"
         component={VoltReel}
-        durationInFrames={1383} // 46.10s a 30fps sincronizado milimétricamente con la locución
+        durationInFrames={1383} // 46.10s a 30fps
         fps={30}
         width={1080}
         height={1920}
@@ -21,11 +23,36 @@ export const RemotionRoot: React.FC = () => {
           title: "Pantalla a Domicilio Congruente",
           badge: "A DOMICILIO EN TU SALA",
           price: "$700 M.O.",
-          hookText: "¿SE TE ESTRELLÓ LA PANTALLA?",
-          solutionText:
-            "Reparación en tu propio comedor en 25 minutos. Cero fotos revisadas, refacciones Grado A+ garantizadas.",
-          ctaText: "Mándanos WhatsApp y cotiza tu modelo hoy",
-          phone: "+52 1 720 815 7790",
+        }}
+      />
+
+      {/* ⚡ REEL 2 MASTER: PROGRAMADORA EEPROM TRUE TONE Y 120HZ (16 ESCENAS + ALONSO NEURAL) */}
+      <Composition
+        id="VoltReelTrueTone"
+        component={VoltReel2_TrueTone}
+        durationInFrames={1501} // 50.04s a 30fps
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          title: "Programadora EEPROM True Tone",
+          badge: "CALIBRACIÓN EN TU SALA",
+          price: "$700 M.O.",
+        }}
+      />
+
+      {/* ⚡ REEL 3 MASTER: BATERÍA OEM CON TIRAS PULL-TABS (17 ESCENAS + ALONSO NEURAL) */}
+      <Composition
+        id="VoltReelBateria"
+        component={VoltReel3_Bateria}
+        durationInFrames={1623} // 54.10s a 30fps
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          title: "Batería Pull-Tabs OEM",
+          badge: "SALUD 100% EN TU MESA",
+          price: "$500 M.O.",
         }}
       />
 
