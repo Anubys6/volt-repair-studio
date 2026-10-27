@@ -31,3 +31,7 @@ remotion_reels/public/*.webm
 remotion_reels/public/*.mp3
 remotion_reels/public/*.mkv
 remotion_reels/.remotion/
+
+remotion_reels/public/stock/
+videos/b_roll/stock_repair/
+videos/b_roll/stock_curated/
