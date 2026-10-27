@@ -310,7 +310,15 @@
       </p>
 
       <!-- LISTA DE LOS 3 REELS -->
-      <div class="video-card-item active" id="card1" onclick="loadReel(1)">
+      <!-- LISTA DE REELS -->
+      <div class="video-card-item active" id="card5" onclick="loadReel(5)" style="border-color: #00f0ff; background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);">
+        <h4>
+          <span>🌟 5. Reel Congruente + Voz Amistosa (17 Escenas)</span>
+          <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">⭐ MASTER OFICIAL</span>
+        </h4>
+        <p>17 cortes visuales rápidos sincronizados palabra por palabra con la locución cálida y amistosa. Zoom continuo Ken Burns en cada segundo y congruencia 1:1 entre audio y video.</p>
+      </div>
+      <div class="video-card-item" id="card1" onclick="loadReel(1)">
         <h4>
           <span>🏠 1. Pantalla a Domicilio en tu Sala</span>
           <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$700 M.O.</span>
@@ -427,9 +435,32 @@ Abrimos este equipo y encontramos cinta doble cara escolar que sobrecalienta el 
 
 #voltrepair32 #RemotionVideo #VoltRepairStudio #iPhoneMexico #ReparacionADomicilio #PantallaRota`
       }
+,
+      5: {
+        video: "reels_exportados/reel_remotion_congruente_amigable_1080x1920.mp4",
+        copy: `⚡ ¡Qué onda amigos! ¿Se te estrelló la pantalla de tu celular? 📱💥
+
+¡No lo dejes días enteros en las plazas con miedo a que revisen tus fotos o cambien piezas! En Volt Repair Studio vamos directo a tu domicilio y en 25 minutos cambiamos tu display frente a tus propios ojos en tu propio comedor.
+
+🔧 Desmontaje milimétrico con desarmadores pentalobe
+📱 Apertura con ventosa especial (cero rayones en el marco)
+⚡ Desconexión de batería inmediata para proteger circuitos
+🔬 Programadora JCID de microchips para transferir True Tone y 120Hz
+🛡️ Refacción certificada Grado A+ con colores idénticos de fábrica
+✨ Pruebas de multitouch y sensores en vivo contigo presente
+💵 Mano de obra fija transparente: Solo $700 pesitos
+📝 90 días de garantía total por escrito
+
+📲 ¡Mándanos un WhatsApp hoy mismo y te cotizo de volada!
+WhatsApp: +52 1 720 815 7790
+🌐 Sitio Oficial: https://anubys6.github.io/volt-repair-studio/
+🎵 TikTok: https://www.tiktok.com/@voltrepair32
+
+#voltrepair32 #VoltRepairStudio #ReparacionDeCelulares #iPhoneMexico #ReparacionADomicilio #PantallaRota #ManoDeObraTransparente #TrueTone`
+      }
     };
 
-    let currentReelId = 1;
+    let currentReelId = 5;
 
     function loadReel(id) {
       currentReelId = id;
@@ -466,7 +497,7 @@ Abrimos este equipo y encontramos cinta doble cara escolar que sobrecalienta el 
     }
 
     // Inicializar
-    loadReel(1);
+    loadReel(5);
   </script>
 </body>
 </html>

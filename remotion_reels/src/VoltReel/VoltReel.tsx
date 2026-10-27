@@ -12,6 +12,8 @@ import {
 } from "remotion";
 
 interface SceneConfig {
+  from: number;
+  durationInFrames: number;
   img: string;
   badge: string;
   headline: string;
@@ -20,68 +22,142 @@ interface SceneConfig {
 
 const SCENES: SceneConfig[] = [
   {
-    img: "stock/scene_01_broken.jpg",
-    badge: "⚠️ DIAGNÓSTICO EN TU SALA",
-    headline: "¿POR QUÉ LE TIENEN TANTO MIEDO A LOS TALLERES?",
+    from: 0,
+    durationInFrames: 54, // 0.0s - 1.80s
+    img: "stock_congruent/scene_01_intro.jpg",
+    badge: "⚡ VOLT REPAIR STUDIO",
+    headline: "¡QUÉ ONDA AMIGOS!",
+    accent: "#00f0ff",
+  },
+  {
+    from: 54,
+    durationInFrames: 89, // 1.80s - 4.77s
+    img: "stock_congruent/scene_02_broken.jpg",
+    badge: "💥 PANTALLA ESTRELLADA",
+    headline: "¿SE TE ROMPIÓ EL DISPLAY?",
     accent: "#ff0055",
   },
   {
-    img: "stock/scene_02_screws.jpg",
-    badge: "🔧 TORNILLOS PENTALOBE",
-    headline: "DESMONTAJE DE PRECISIÓN FRENTE A TI",
-    accent: "#00f0ff",
-  },
-  {
-    img: "stock/scene_03_lift.jpg",
-    badge: "📱 APERTURA CON VENTOSA",
-    headline: "CERO RAYONES EN EL CHASIS DE TU EQUIPO",
-    accent: "#00f0ff",
-  },
-  {
-    img: "stock/scene_04_shields.jpg",
-    badge: "👀 TRANSPARENCIA TOTAL",
-    headline: "DESCONEXIÓN DE BLINDAJES ANTE TUS OJOS",
+    from: 143,
+    durationInFrames: 60, // 4.77s - 6.77s
+    img: "stock_congruent/scene_03a_plaza.jpg",
+    badge: "⚠️ RIESGO EN PLAZAS",
+    headline: "¡NO LO DEJES DÍAS EN TALLERES!",
     accent: "#ffea00",
   },
   {
-    img: "stock/scene_05_board.jpg",
-    badge: "🔬 MICROELECTRÓNICA",
-    headline: "CALIBRACIÓN DE SENSORES Y MICROCHIPS",
+    from: 203,
+    durationInFrames: 60, // 6.77s - 8.77s
+    img: "stock_congruent/scene_03b_privacy.jpg",
+    badge: "🔒 PRIVACIDAD EN RIESGO",
+    headline: "¿MIEDO A QUE REVISEN TUS FOTOS?",
+    accent: "#ff0055",
+  },
+  {
+    from: 263,
+    durationInFrames: 105, // 8.77s - 12.27s
+    img: "stock_congruent/scene_04_arrival.jpg",
+    badge: "🚗 SERVICIO A DOMICILIO",
+    headline: "VAMOS DIRECTO A TU CASA U OFICINA",
+    accent: "#00f0ff",
+  },
+  {
+    from: 368,
+    durationInFrames: 69, // 12.27s - 14.57s
+    img: "stock_congruent/scene_05a_dining.jpg",
+    badge: "🏠 EN TU PROPIO COMEDOR",
+    headline: "EN TU MESA EN 25 MINUTOS",
+    accent: "#10b981",
+  },
+  {
+    from: 437,
+    durationInFrames: 68, // 14.57s - 16.83s
+    img: "stock_congruent/scene_05b_live.jpg",
+    badge: "👀 TRANSPARENCIA TOTAL",
+    headline: "TODO ANTE TUS PROPIOS OJOS",
+    accent: "#ffea00",
+  },
+  {
+    from: 505,
+    durationInFrames: 114, // 16.83s - 20.63s
+    img: "stock_congruent/scene_06_pentalobe.jpg",
+    badge: "🔧 DESMONTAJE DE PRECISIÓN",
+    headline: "QUITAMOS TORNILLOS PENTALOBE",
+    accent: "#00f0ff",
+  },
+  {
+    from: 619,
+    durationInFrames: 105, // 20.63s - 24.13s
+    img: "stock_congruent/scene_07_suction.jpg",
+    badge: "📱 APERTURA CON VENTOSA",
+    headline: "VENTOSA ESPECIAL: CERO RAYONES",
+    accent: "#00f0ff",
+  },
+  {
+    from: 724,
+    durationInFrames: 112, // 24.13s - 27.87s
+    img: "stock_congruent/scene_08_battery.jpg",
+    badge: "⚡ SEGURIDAD EN CIRCUITOS",
+    headline: "DESCONECTAMOS BATERÍA AL INSTANTE",
+    accent: "#ff0055",
+  },
+  {
+    from: 836,
+    durationInFrames: 56, // 27.87s - 29.73s
+    img: "stock_congruent/scene_09a_truetone.jpg",
+    badge: "🔬 PROGRAMADORA JCID",
+    headline: "TRANSFERENCIA DE TRUE TONE",
     accent: "#a855f7",
   },
   {
-    img: "stock/scene_06_connectors.jpg",
-    badge: "🛡️ REFACCIONES GRADO A+",
-    headline: "CONEXIONES LIMPIAS Y PROTECCIÓN TÉRMICA",
-    accent: "#00f0ff",
-  },
-  {
-    img: "stock/scene_07_new_screen.jpg",
-    badge: "⚡ MANO DE OBRA FIJA $700",
-    headline: "INSTALACIÓN DE NUEVA PANTALLA EN 25 MIN",
-    accent: "#10b981",
-  },
-  {
-    img: "stock/scene_08_tested.jpg",
-    badge: "✨ TRUE TONE CONSERVADO",
-    headline: "PRUEBAS TÁCTILES Y COLORES ORIGINALES",
+    from: 892,
+    durationInFrames: 57, // 29.73s - 31.63s
+    img: "stock_congruent/scene_09b_eeprom.jpg",
+    badge: "✨ FLUIDEZ Y TONOS",
+    headline: "CONSERVAMOS 120HZ Y COLOR ORIGINAL",
     accent: "#ffea00",
   },
   {
-    img: "stock/scene_09_pristine.jpg",
-    badge: "💎 RESULTADO IMPECABLE",
-    headline: "TU CELULAR COMO NUEVO SIN BORRAR TUS FOTOS",
+    from: 949,
+    durationInFrames: 105, // 31.63s - 35.13s
+    img: "stock_congruent/scene_10_new_display.jpg",
+    badge: "🛡️ REFACCIÓN CERTIFICADA",
+    headline: "PANTALLA OLED GRADO A PLUS",
     accent: "#10b981",
   },
   {
-    img: "stock/scene_10_workbench.jpg",
+    from: 1054,
+    durationInFrames: 100, // 35.13s - 38.47s
+    img: "stock_congruent/scene_11_touch_test.jpg",
+    badge: "📱 PRUEBA DE MULTITOUCH",
+    headline: "TEST DE TOUCH Y SENSORES EN VIVO",
+    accent: "#00f0ff",
+  },
+  {
+    from: 1154,
+    durationInFrames: 69, // 38.47s - 40.77s
+    img: "stock_congruent/scene_12a_pricing.jpg",
+    badge: "💵 MANO DE OBRA FIJA",
+    headline: "SOLO $700 DE MANO DE OBRA",
+    accent: "#10b981",
+  },
+  {
+    from: 1223,
+    durationInFrames: 69, // 40.77s - 43.07s
+    img: "stock_congruent/scene_12b_warranty.jpg",
+    badge: "🛡️ RESPALDO TOTAL",
+    headline: "90 DÍAS DE GARANTÍA POR ESCRITO",
+    accent: "#ffea00",
+  },
+  {
+    from: 1292,
+    durationInFrames: 91, // 43.07s - 46.10s
+    img: "stock_congruent/scene_13_whatsapp.jpg",
     badge: "📲 AGENDA HOY MISMO",
-    headline: "MÁNDANOS WHATSAPP Y TE COTIZAMOS DE VOLADA",
+    headline: "¡MÁNDANOS WHATSAPP Y COTIZA YA!",
     accent: "#00f0ff",
   },
 ];
-
-const SCENE_DURATION_FRAMES = 93; // 93 fotogramas * 10 escenas = 930 frames (31 segundos a 30fps)
 
 // Componente individual de cada escena con movimiento continuo Ken Burns
 const SceneSlide: React.FC<{
@@ -91,37 +167,37 @@ const SceneSlide: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Movimiento continuo: zoom del 100% al 118% durante toda la escena (nunca estático)
+  // Movimiento continuo Ken Burns: zoom dinámico del 100% al 116%
   const scale = interpolate(
     frame,
-    [0, SCENE_DURATION_FRAMES],
-    [1.0, 1.18],
+    [0, scene.durationInFrames],
+    [1.0, 1.16],
     { extrapolateRight: "clamp" }
   );
 
-  // Desplazamiento sutil hacia arriba o hacia los lados para dar dinamismo cinematográfico
+  // Desplazamiento cinematográfico alterno
   const translateY = interpolate(
     frame,
-    [0, SCENE_DURATION_FRAMES],
-    index % 2 === 0 ? [-10, 20] : [20, -10],
+    [0, scene.durationInFrames],
+    index % 2 === 0 ? [-12, 18] : [18, -12],
     { extrapolateRight: "clamp" }
   );
 
-  // Transición suave de entrada (crossfade)
-  const fadeIn = interpolate(frame, [0, 8], [0, 1], {
+  // Transición suave de entrada (crossfade de 5 frames)
+  const fadeIn = interpolate(frame, [0, 5], [0, 1], {
     extrapolateRight: "clamp",
   });
 
-  // Animación del texto con resorte físico
+  // Animación del texto con resorte físico elástico
   const textSpring = spring({
     frame,
     fps,
-    config: { damping: 140, mass: 0.6 },
+    config: { damping: 140, mass: 0.55 },
   });
 
   return (
     <AbsoluteFill style={{ opacity: fadeIn }}>
-      {/* Fotografía técnica con movimiento continuo */}
+      {/* Fotografía técnica con movimiento continuo (cero imágenes estáticas) */}
       <AbsoluteFill
         style={{
           transform: `scale(${scale}) translateY(${translateY}px)`,
@@ -138,11 +214,11 @@ const SceneSlide: React.FC<{
         />
       </AbsoluteFill>
 
-      {/* Viñeta cinematográfica oscura (degradado para que los textos resalten al 100%) */}
+      {/* Viñeta cinematográfica oscura para contraste perfecto de texto */}
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(180deg, rgba(6, 9, 17, 0.90) 0%, rgba(6, 9, 17, 0.20) 25%, rgba(6, 9, 17, 0.25) 60%, rgba(6, 9, 17, 0.96) 100%)",
+            "linear-gradient(180deg, rgba(6, 9, 17, 0.90) 0%, rgba(6, 9, 17, 0.20) 22%, rgba(6, 9, 17, 0.25) 62%, rgba(6, 9, 17, 0.96) 100%)",
         }}
       />
 
@@ -150,7 +226,7 @@ const SceneSlide: React.FC<{
       <div
         style={{
           position: "absolute",
-          top: 180,
+          top: 175,
           left: 0,
           right: 0,
           display: "flex",
@@ -168,27 +244,27 @@ const SceneSlide: React.FC<{
             fontWeight: 900,
             fontFamily: "Arial Black, sans-serif",
             letterSpacing: 1,
-            boxShadow: `0 0 30px ${scene.accent}88`,
+            boxShadow: `0 0 30px ${scene.accent}99`,
           }}
         >
           {scene.badge}
         </div>
       </div>
 
-      {/* Titular cinemático de alto impacto (zona segura vertical) */}
+      {/* Titular cinemático de alto impacto sincronizado con la locución */}
       <div
         style={{
           position: "absolute",
-          top: 270,
-          left: 50,
-          right: 50,
+          top: 260,
+          left: 45,
+          right: 45,
           textAlign: "center",
           transform: `translateY(${interpolate(textSpring, [0, 1], [30, 0])}px)`,
         }}
       >
         <h2
           style={{
-            fontSize: 52,
+            fontSize: 48,
             fontWeight: 900,
             color: "#ffffff",
             textTransform: "uppercase",
@@ -232,12 +308,12 @@ export const VoltReel: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#060911" }}>
-      {/* 1. SECUENCIA DINÁMICA DE 10 FOTOS TÉCNICAS (CAMBIO CONSTANTE Y MOVIMIENTO KEN BURNS) */}
+      {/* 1. SECUENCIA DINÁMICA DE 17 FOTOS TÉCNICAS CONGRUEBTES (RÁPIDO CAMBIO Y MOVIMIENTO CONTINUO) */}
       {SCENES.map((scene, i) => (
         <Sequence
           key={i}
-          from={i * SCENE_DURATION_FRAMES}
-          durationInFrames={SCENE_DURATION_FRAMES}
+          from={scene.from}
+          durationInFrames={scene.durationInFrames}
         >
           <SceneSlide scene={scene} index={i} />
         </Sequence>
@@ -247,7 +323,7 @@ export const VoltReel: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: 60,
+          top: 55,
           left: 0,
           right: 0,
           display: "flex",
@@ -311,7 +387,7 @@ export const VoltReel: React.FC = () => {
             background: "rgba(10, 16, 30, 0.95)",
             border: "3px solid #00f0ff",
             borderRadius: 26,
-            padding: "20px 28px",
+            padding: "18px 24px",
             textAlign: "center",
             boxShadow: "0 0 35px rgba(0, 240, 255, 0.4)",
             backdropFilter: "blur(14px)",
@@ -324,7 +400,7 @@ export const VoltReel: React.FC = () => {
               justifyContent: "center",
               gap: 10,
               background: "linear-gradient(135deg, #00f0ff, #0055ff)",
-              padding: "12px 28px",
+              padding: "12px 26px",
               borderRadius: 16,
               boxShadow: "0 0 20px rgba(0, 240, 255, 0.6)",
               marginBottom: 10,
@@ -332,7 +408,7 @@ export const VoltReel: React.FC = () => {
           >
             <span
               style={{
-                fontSize: 30,
+                fontSize: 28,
                 fontWeight: 900,
                 color: "#050914",
                 fontFamily: "Arial Black, sans-serif",
@@ -345,8 +421,8 @@ export const VoltReel: React.FC = () => {
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: 20,
-              fontSize: 21,
+              gap: 18,
+              fontSize: 20,
               color: "#e2e8f0",
               fontWeight: 800,
               fontFamily: "Arial, sans-serif",
@@ -372,9 +448,9 @@ export const VoltReel: React.FC = () => {
         }}
       />
 
-      {/* 5. AUDIO: LOCUCIÓN PROFESIONAL + MÚSICA LO-FI TECH CON DUCKING */}
-      <Audio src={staticFile("volt_voice_1.mp3")} volume={1.0} />
-      <Audio src={staticFile("bg_music.webm")} volume={0.14} loop />
+      {/* 5. AUDIO: VOZ HUMANA Y AMISTOSA (ALONSO NEURAL MEXICANO) + BGM TECH DUCKING */}
+      <Audio src={staticFile("volt_voice_alonso_short_30s.mp3")} volume={1.0} />
+      <Audio src={staticFile("bg_music.webm")} volume={0.12} loop />
     </AbsoluteFill>
   );
 };

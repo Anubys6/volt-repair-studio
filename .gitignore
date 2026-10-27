@@ -17,10 +17,11 @@ $RECYCLE.BIN/
 *.wav
 *.mkv
 *.ass
-videos/b_roll/test_*
 temp_*/
 
-
+# Media working directories
+videos/b_roll/
+videos/reels_exportados/
 
 # Remotion
 node_modules/
@@ -31,7 +32,5 @@ remotion_reels/public/*.webm
 remotion_reels/public/*.mp3
 remotion_reels/public/*.mkv
 remotion_reels/.remotion/
-
 remotion_reels/public/stock/
-videos/b_roll/stock_repair/
-videos/b_roll/stock_curated/
+remotion_reels/public/stock_congruent/

@@ -9,21 +9,21 @@ import {
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      {/* ⚡ COMPOSICIÓN VIRAL OFICIAL DE VOLT REPAIR STUDIO */}
+      {/* ⚡ COMPOSICIÓN VIRAL OFICIAL DE VOLT REPAIR STUDIO (17 ESCENAS CONGRUENTES + VOZ AMISTOSA) */}
       <Composition
         id="VoltReelPantalla"
         component={VoltReel}
-        durationInFrames={30 * 31}
+        durationInFrames={1383} // 46.10s a 30fps sincronizado milimétricamente con la locución
         fps={30}
         width={1080}
         height={1920}
         defaultProps={{
-          title: "Pantalla a Domicilio",
+          title: "Pantalla a Domicilio Congruente",
           badge: "A DOMICILIO EN TU SALA",
           price: "$700 M.O.",
-          hookText: "¿POR QUÉ LE TIENEN TANTO MIEDO A LOS TALLERES?",
+          hookText: "¿SE TE ESTRELLÓ LA PANTALLA?",
           solutionText:
-            "Reparación en tu propia sala en 25 minutos. Cero fotos revisadas, refacciones 100% garantizadas.",
+            "Reparación en tu propio comedor en 25 minutos. Cero fotos revisadas, refacciones Grado A+ garantizadas.",
           ctaText: "Mándanos WhatsApp y cotiza tu modelo hoy",
           phone: "+52 1 720 815 7790",
         }}
