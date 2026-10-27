@@ -91,7 +91,7 @@
     .btn-outline:hover { background: rgba(255, 255, 255, 0.15); }
 
     .main-layout {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 24px auto;
       padding: 0 20px;
       display: grid;
@@ -160,12 +160,27 @@
       margin-bottom: 12px;
     }
 
+    .reels-scroll-list {
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 6px;
+      margin-bottom: 20px;
+    }
+
+    .reels-scroll-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .reels-scroll-list::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.3);
+      border-radius: 4px;
+    }
+
     .video-card-item {
       background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
@@ -184,7 +199,7 @@
     }
 
     .video-card-item h4 {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 4px;
@@ -194,9 +209,9 @@
     }
 
     .video-card-item p {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--muted);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .copy-box {
@@ -204,7 +219,6 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 16px;
-      margin-top: 20px;
       position: relative;
     }
 
@@ -278,41 +292,83 @@
     <!-- REEL SELECTOR & SOCIAL COPY -->
     <div class="controls-card">
       <span class="badge-pill" style="background: rgba(0, 240, 255, 0.2); color: var(--cyan); border: 1px solid var(--cyan);">
-        ⚡ 3 REELS OFICIALES REMOTION MASTER • ALTA RETENCIÓN TIKTOK
+        ⚡ 8 REELS OFICIALES REMOTION MASTER • ALTA RETENCIÓN TIKTOK
       </span>
-      <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">
-        Videos Oficiales de Volt Repair Studio (Cero Fotos Estáticas)
+      <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 6px;">
+        Catálogo Oficial de Videos de Volt Repair Studio
       </h2>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
-        Arquitectura <b>Video-as-Code React Remotion</b>: Voz humana amistosa mexicana (Alonso Neural), cortes rápidos cada 2 segundos sincronizados 1:1 con la locución y movimiento continuo Ken Burns.
+      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 16px;">
+        Arquitectura <b>Video-as-Code React Remotion</b>: Voz humana amistosa (Alonso Neural), cambios de imagen cada 2-3 segundos con sincronización semántica 1:1, movimiento continuo Ken Burns y sin repetir fotografías.
       </p>
 
-      <!-- LISTA DE LOS 3 REELS OFICIALES -->
-      <div class="video-card-item active" id="card1" onclick="loadReel(1)">
-        <h4>
-          <span>🏠 1. Pantalla a Domicilio en tu Comedor</span>
-          <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$700 M.O.</span>
-        </h4>
-        <p>17 cortes rápidos. Acaba con el miedo a los talleres callejeros. El técnico repara frente a ti en 25 minutos sin tocar tus fotos ni borrar datos.</p>
+      <!-- LISTA SCROLLEABLE DE LOS 8 REELS -->
+      <div class="reels-scroll-list">
+        <div class="video-card-item active" id="card1" onclick="loadReel(1)">
+          <h4>
+            <span>🏠 1. Pantalla a Domicilio en tu Comedor</span>
+            <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$700 M.O.</span>
+          </h4>
+          <p>17 cortes rápidos. Reparación en 25 min frente a ti sin tocar tus fotos ni borrar datos.</p>
+        </div>
+
+        <div class="video-card-item" id="card2" onclick="loadReel(2)">
+          <h4>
+            <span>🔬 2. Programadora EEPROM True Tone y 120Hz</span>
+            <span style="font-size: 0.8rem; color: var(--purple); font-weight: 900;">$700 M.O.</span>
+          </h4>
+          <p>16 cortes rápidos. Transfiere seriales criptográficos con JCID para conservar ProMotion.</p>
+        </div>
+
+        <div class="video-card-item" id="card3" onclick="loadReel(3)">
+          <h4>
+            <span>🔋 3. Batería OEM con Tiras Térmicas Pull-Tabs</span>
+            <span style="font-size: 0.8rem; color: var(--green); font-weight: 900;">$500 M.O.</span>
+          </h4>
+          <p>17 cortes rápidos. Alerta contra cinta escolar doble cara. Restaura salud al 100%.</p>
+        </div>
+
+        <div class="video-card-item" id="card4" onclick="loadReel(4)">
+          <h4>
+            <span>⚡ 4. Tapa Trasera con Máquina Láser</span>
+            <span style="font-size: 0.8rem; color: #ff0055; font-weight: 900;">$500 M.O.</span>
+          </h4>
+          <p>14 cortes rápidos. Fibra óptica que desintegra pegamento sin calor en placa ni batería.</p>
+        </div>
+
+        <div class="video-card-item" id="card5" onclick="loadReel(5)">
+          <h4>
+            <span>🔌 5. La Estafa del Puerto de Carga (Pelusa)</span>
+            <span style="font-size: 0.8rem; color: var(--cyan); font-weight: 900;">$300 M.O.</span>
+          </h4>
+          <p>13 cortes rápidos. Limpieza microscópica honesta y tester digital de amperaje USB.</p>
+        </div>
+
+        <div class="video-card-item" id="card6" onclick="loadReel(6)">
+          <h4>
+            <span>🔒 6. Reparación Face ID y Dot Projector</span>
+            <span style="font-size: 0.8rem; color: var(--purple); font-weight: 900;">$700 M.O.</span>
+          </h4>
+          <p>14 cortes rápidos. Micro-soldadura y micro-jumpers de plata para salvar biometría facial.</p>
+        </div>
+
+        <div class="video-card-item" id="card7" onclick="loadReel(7)">
+          <h4>
+            <span>📷 7. Cámara Temblorosa (OIS Roto por Moto)</span>
+            <span style="font-size: 0.8rem; color: var(--yellow); font-weight: 900;">$600 M.O.</span>
+          </h4>
+          <p>12 cortes rápidos. Reemplazo de módulo y calibración OIS para video 4K cinematográfico.</p>
+        </div>
+
+        <div class="video-card-item" id="card8" onclick="loadReel(8)">
+          <h4>
+            <span>🧪 8. Celulares Mojados vs El Mito del Arroz</span>
+            <span style="font-size: 0.8rem; color: var(--green); font-weight: 900;">$500 M.O.</span>
+          </h4>
+          <p>13 cortes rápidos. Tina ultrasónica con alcohol 99% para salvar tarjetas sulfatadas.</p>
+        </div>
       </div>
 
-      <div class="video-card-item" id="card2" onclick="loadReel(2)">
-        <h4>
-          <span>🔬 2. Programadora EEPROM True Tone y 120Hz</span>
-          <span style="font-size: 0.8rem; color: var(--purple); font-weight: 900;">$700 M.O.</span>
-        </h4>
-        <p>16 cortes rápidos. Revela por qué en las plazas dejan los iPhone sin True Tone ni brillo automático, y cómo Volt transfiere seriales con la JCID en tu casa.</p>
-      </div>
-
-      <div class="video-card-item" id="card3" onclick="loadReel(3)">
-        <h4>
-          <span>🔋 3. Batería OEM con Tiras Térmicas Pull-Tabs</span>
-          <span style="font-size: 0.8rem; color: var(--green); font-weight: 900;">$500 M.O.</span>
-        </h4>
-        <p>17 cortes rápidos. Alerta contra talleres que pegan baterías con cinta escolar doble cara. Muestra instalación de pull-tabs para restaurar salud al 100%.</p>
-      </div>
-
-      <!-- TEXTO COPIABLE PARA PUBLICAR EN REDES -->
+      <!-- TEXTO COPIABLE PARA REDES -->
       <div class="copy-box">
         <button class="btn-copy" id="btnCopyText" onclick="copyCurrentCopy()">📋 Copiar Texto</button>
         <span style="font-size: 0.7rem; font-weight: 700; color: var(--cyan); text-transform: uppercase;">Texto y Hashtags para TikTok / Instagram:</span>
@@ -387,6 +443,91 @@ WhatsApp: +52 1 720 815 7790
 🎵 TikTok: https://www.tiktok.com/@voltrepair32
 
 #voltrepair32 #BateriaiPhone #BateriaSamsung #SaludDeBateria #PullTabs #VoltRepairStudio #ReparacionADomicilio #TecnologiaMexico`
+      },
+      4: {
+        video: "reels_exportados/reel_04_tapa_laser_master_1080x1920.mp4",
+        copy: `⚡ ¡Cuidado si cambian el cristal trasero de tu celular con pistola de calor! 💥📱
+
+El calor extremo de 300 grados derrite los sellos de la cámara y deforma la batería. ¡En Volt Repair Studio usamos máquina láser de fibra óptica!
+
+🔬 El rayo láser desintegra el pegamento epóxico sin tocar el chasis
+🛡️ Cámaras y tarjeta madre completamente frías y seguras
+💎 Instalamos cristal templado original con prensa hermética
+💵 Mano de obra fija de solo $500 pesitos
+📝 90 días de garantía por escrito
+
+📲 Agenda por WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+
+#voltrepair32 #TapaTrasera #MaquinaLaser #iPhoneVidrio #VoltRepairStudio #ReparacionCelulares`
+      },
+      5: {
+        video: "reels_exportados/reel_05_puerto_carga_master_1080x1920.mp4",
+        copy: `🔌 ¿Tu teléfono ya no agarra carga o tienes que doblar el cable? 📱⚠️
+
+¡No pagues $800 pesos por un cambio de puerto innecesario! El 90% de las veces solo es pelusa de pantalón compactada al fondo.
+
+🔬 Inspección bajo microscopio óptico con pinzas antiestáticas de titanio
+⚡ Extracción profunda sin doblar pines de cobre
+📊 Medición de amperaje y carga rápida con tester USB digital
+💎 Honestidad total: costo mínimo de mantenimiento
+📝 90 días de garantía por escrito
+
+📲 Mándanos WhatsApp: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+
+#voltrepair32 #PuertoDeCarga #USBC #LimpiezaCelular #VoltRepairStudio #HonestidadTecnica`
+      },
+      6: {
+        video: "reels_exportados/reel_06_face_id_master_1080x1920.mp4",
+        copy: `🔒 ¿Te dijeron que el Face ID de tu iPhone ya no tiene solución? 📱👀
+
+Cuando abren un celular sin cuidado, rasgan el flexor del sensor Dot Projector y Apple bloquea la biometría. ¡En Volt Repair Studio hacemos micro-cirugía bajo microscopio!
+
+🔬 Reconstrucción de pistas con micro-jumpers de plata más delgados que un cabello
+⚡ Trasplante del microchip original a flexor programable JCID
+✨ Pruebas de haz infrarrojo en vivo contigo presente
+🛡️ Recupera tu desbloqueo facial sin perder fotos ni datos
+💵 Mano de obra fija de $700 pesitos con 90 días de garantía
+
+📲 Contáctanos: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+
+#voltrepair32 #FaceID #MicroSoldadura #DotProjector #VoltRepairStudio #ReparacioniPhone`
+      },
+      7: {
+        video: "reels_exportados/reel_07_camara_ois_master_1080x1920.mp4",
+        copy: `📷 ¿La cámara de tu celular tiembla sola, zumba o no enfoca? 📱🏍️
+
+Si pones tu celular en el soporte de una moto, las vibraciones rompen los electroimanes del estabilizador óptico OIS.
+
+⚡ En Volt Repair Studio lo resolvemos en tu sala en 25 minutos
+💎 Instalamos módulo de cámara certificado con cristal de zafiro
+✨ Calibración de sensores y pruebas de macro y zoom en vivo
+🎥 Videos 4K ultra fluidos sin alertas de pieza desconocida
+💵 Mano de obra de $600 pesitos con 90 días de garantía
+
+📲 WhatsApp directo: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+
+#voltrepair32 #CamaraiPhone #EstabilizadorOIS #CamaraTemblorosa #VoltRepairStudio #MotosMexico`
+      },
+      8: {
+        video: "reels_exportados/reel_08_mojados_arroz_master_1080x1920.mp4",
+        copy: `🧪 ¡Por favor nunca metas tu celular en arroz si se te cayó al agua! 📱🍚
+
+El arroz no absorbe el agua atrapada bajo los blindajes soldados; al contrario, suelta almidón que acelera la corrosión y quema la placa.
+
+⚡ Si se moja tu celular: ¡APÁGALO de inmediato y no lo conectes!
+🔬 Tina ultrasónica con alcohol isopropílico de 99% para eliminar minerales
+🔥 Secado térmico controlado y medición de pistas con multímetro
+💎 Salvamos tus fotos y tu tarjeta madre con mano de obra de solo $500 pesitos
+📝 90 días de garantía por escrito
+
+📲 WhatsApp de emergencia: +52 1 720 815 7790
+🌐 https://anubys6.github.io/volt-repair-studio/
+
+#voltrepair32 #CelularMojado #MitoDelArroz #TinaUltrasonica #VoltRepairStudio #SalvandoDatos`
       }
     };
 
@@ -426,7 +567,6 @@ WhatsApp: +52 1 720 815 7790
       });
     }
 
-    // Inicializar con Reel 1
     loadReel(1);
   </script>
 </body>

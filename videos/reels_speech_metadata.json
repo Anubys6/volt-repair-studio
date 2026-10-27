@@ -1,0 +1,27 @@
+{
+  "4": {
+    "audio_file": "volt_voice_reel4.mp3",
+    "duration_sec": 55.15,
+    "duration_frames": 1654
+  },
+  "5": {
+    "audio_file": "volt_voice_reel5.mp3",
+    "duration_sec": 58.22,
+    "duration_frames": 1746
+  },
+  "6": {
+    "audio_file": "volt_voice_reel6.mp3",
+    "duration_sec": 62.47,
+    "duration_frames": 1874
+  },
+  "7": {
+    "audio_file": "volt_voice_reel7.mp3",
+    "duration_sec": 55.46,
+    "duration_frames": 1663
+  },
+  "8": {
+    "audio_file": "volt_voice_reel8.mp3",
+    "duration_sec": 63.0,
+    "duration_frames": 1890
+  }
+}
